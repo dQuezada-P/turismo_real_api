@@ -2,7 +2,7 @@ const oracledb = require('oracledb')
 
 const db = {
     user: 'TRSYS',
-    password: 'turismoreal',
+    password: '1234',
     connectString: '172.31.13.230:1521'
 }
 
