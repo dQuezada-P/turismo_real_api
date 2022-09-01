@@ -7,7 +7,7 @@ const router = require('../routes/routes.js')
 
 // Configuraciones
 
-app.set('port', 8080)
+app.set('port', 3000)
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded( { extended:false } ))

@@ -1,4 +1,7 @@
 
+#bd
+.config/
+
 # Logs
 logs
 *.log

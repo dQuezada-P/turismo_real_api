@@ -1,7 +1,6 @@
 {
   "name": "turismo_real_api_",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +13,17 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "morgan": "^1.10.0",
+    "node": "^16.17.0",
     "nodemon": "^2.0.19",
     "oracledb": "^5.4.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dQuezada-P/turismo_real_api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dQuezada-P/turismo_real_api/issues"
+  },
+  "homepage": "https://github.com/dQuezada-P/turismo_real_api#readme",
+  "description": ""
 }
