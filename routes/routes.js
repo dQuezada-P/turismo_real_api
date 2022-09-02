@@ -8,12 +8,12 @@ const db = require('../config/config.js')
 // *Verbos HTTPS
 
 // *POST
-router.post('/createClient', async (req,res) =>{
+router.post('/', async (req,res) =>{
 
     const { rut,nombre,apellido,correo,estado,direccion,telefono,rol } = req.body
     let r = {type:oracledb.NUMBER, dir:oracledb.BIND_OUT}
 
-    sql = `BEGIN CREAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
+    sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
 
     const options = {
         autoCommit: true
@@ -26,14 +26,13 @@ router.post('/createClient', async (req,res) =>{
 
 })
 
-
 // *PUT
 
-router.put('/modifyClient',async(req,res)=>{
+router.put('/',async(req,res)=>{
     const { rut,nombre,apellido,correo,estado,direccion,telefono,rol } = req.body
     let r = {type:oracledb.NUMBER, dir:oracledb.BIND_OUT}
 
-    sql = `BEGIN MODIFICAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
+    sql = `BEGIN ACCIONES_USUARIO.MODIFICAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
 
     const options = {
         autoCommit: true
@@ -45,15 +44,14 @@ router.put('/modifyClient',async(req,res)=>{
     
 })
 
-
 // *DELETE
 
-router.delete('/deleteClient', async (req,res) =>{
+router.delete('/', async (req,res) =>{
 
     const {rut} = req.body
     let r = {type:oracledb.NUMBER, dir:oracledb.BIND_OUT}
 
-    sql = `BEGIN ELIMINAR_USUARIO(:rut,:r);END;`
+    sql = `BEGIN ACCIONES_USUARIO.ELIMINAR_USUARIO(:rut,:r);END;`
 
     const options = {
         autoCommit: true
@@ -65,10 +63,9 @@ router.delete('/deleteClient', async (req,res) =>{
     await db.Open(sql, [rut,r], options, callback)
 })
 
-
 // *GET
-router.get('/readClient', async (req,res) => {
-    const sql = `BEGIN VER_USUARIO_CLIENTE(:cursor); END;`
+router.get('/', async (req,res) => {
+    const sql = `BEGIN ACCIONES_USUARIO.VER_USUARIO_CLIENTE(:cursor); END;`
     
     const binds = {
         cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT }
