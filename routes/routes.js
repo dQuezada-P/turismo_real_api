@@ -10,10 +10,10 @@ const db = require('../config/config.js')
 // *POST
 router.post('/', async (req,res) =>{
 
-    const { rut,nombre,apellido,correo,estado,direccion,telefono,rol } = req.body
+    const { rut,nombre,apellido,correo,estado,direccion,telefono,pass,rol } = req.body
     let r = {type:oracledb.NUMBER, dir:oracledb.BIND_OUT}
 
-    sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
+    sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:pass,:rol,:r); END;`
 
     const options = {
         autoCommit: true
@@ -22,17 +22,17 @@ router.post('/', async (req,res) =>{
     const callback = (result) => {
         res.json(result)
     }
-    await db.Open(sql, [rut,nombre,apellido,correo,estado,direccion,telefono,rol,r], options, callback)
+    await db.Open(sql, [rut,nombre,apellido,correo,estado,direccion,telefono,pass,rol,r], options, callback)
 
 })
 
 // *PUT
 
 router.put('/',async(req,res)=>{
-    const { rut,nombre,apellido,correo,estado,direccion,telefono,rol } = req.body
+    const { rut,nombre,apellido,correo,estado,direccion,telefono,pass,rol } = req.body
     let r = {type:oracledb.NUMBER, dir:oracledb.BIND_OUT}
 
-    sql = `BEGIN ACCIONES_USUARIO.MODIFICAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:rol,:r); END;`
+    sql = `BEGIN ACCIONES_USUARIO.MODIFICAR_USUARIO(:rut,:nombre,:apellido,:correo,:estado,:direccion,:telefono,:pass,:rol,:r); END;`
 
     const options = {
         autoCommit: true
@@ -40,7 +40,7 @@ router.put('/',async(req,res)=>{
     const callback = (result) => {
         res.json(result)
     }
-    await db.Open(sql, [rut,nombre,apellido,correo,estado,direccion,telefono,rol,r], options, callback)
+    await db.Open(sql, [rut,nombre,apellido,correo,estado,direccion,telefono,pass,rol,r], options, callback)
     
 })
 
