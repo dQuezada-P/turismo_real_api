@@ -1,18 +1,22 @@
-const express = require('express')
-const morgan = require('morgan')
-const cors = require('cors')
-const app = express()
+const express = require("express");
+const morgan = require("morgan");
+//const cors = require('cors')
+const app = express();
 
-const router = require('../routes/routes.js')
+//* setting
+app.set("port", process.env.PORT || 3000);
+app.set("json spaces", 2);
 
-// Configuraciones
+//* middlewares
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.set('port', 3000)
-app.use(morgan('dev'))
-app.use(express.json())
-app.use(express.urlencoded( { extended:false } ))
-app.use(router)
+//* routes
+app.use("/api/usuario", require("../routes/routesUser.js"));
+app.use("/api/depto", require("../routes/routesDepartment.js"));
 
-app.listen(app.get('port'), ()=> {
-    console.log('Server status 200 on port 8080')
-})
+//* server
+app.listen(app.get("port"), () => {
+  console.log(`Server on port ${app.get("port")}`);
+});
