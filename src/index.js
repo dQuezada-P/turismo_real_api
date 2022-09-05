@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 //* routes
 app.use("/api/usuario", require("../routes/routesUser.js"));
 app.use("/api/depto", require("../routes/routesDepartment.js"));
+app.use("/api/inventario", require("../routes/routesInventary.js"));
+app.use("/api/servicio", require("../routes/routesService"));
 
 //* server
 app.listen(app.get("port"), () => {

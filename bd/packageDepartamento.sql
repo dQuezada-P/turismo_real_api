@@ -5,7 +5,7 @@ AS
         V_NOMBRE IN VARCHAR2,  
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        V_FECHA IN DATE,
+        V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
@@ -17,7 +17,7 @@ AS
     V_NOMBRE IN VARCHAR2,  
     V_NUMERO_BANNO IN NUMBER, 
     V_NUMERO_HABITACION IN NUMBER,
-    V_FECHA IN DATE,
+    V_FECHA IN VARCHAR2,
     V_DIRECCION IN VARCHAR2,
     V_VALOR IN NUMBER,
     V_LOCALIDAD IN NUMBER,
@@ -28,8 +28,7 @@ AS
 
     PROCEDURE VER_DEPARTAMENTO (V_DEPTOS OUT SYS_REFCURSOR);
 END;
---------------------------------------------------------------
-
+----------------------------------------
 create or replace PACKAGE BODY ACCIONES_DEPARTAMENTO
 AS
         PROCEDURE CREAR_DEPARTAMENTO(
@@ -37,7 +36,7 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        V_FECHA IN DATE,
+        V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
@@ -45,7 +44,7 @@ AS
         RESULTADO OUT NUMBER)
     AS
     BEGIN
-        INSERT INTO DEPARTAMENTO VALUES(V_ID,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,V_FECHA,V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION);  
+        INSERT INTO DEPARTAMENTO VALUES(V_ID,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,TO_DATE(V_FECHA,'DD-MM-YYYY HH24:MI:SS'),V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION);  
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
@@ -60,7 +59,7 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        V_FECHA IN DATE,
+        V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
@@ -73,7 +72,7 @@ AS
         NOMBRE = V_NOMBRE,
         NUMERO_BANNO = V_NUMERO_BANNO,
         NUMERO_HABITACION = V_NUMERO_HABITACION,
-        FECHA_INS = V_FECHA,
+        FECHA_INS = TO_DATE(V_FECHA,'DD-MM-YYYY HH24:MI:SS'),
         DIRECCION = V_DIRECCION,
         VALOR_ARRIENDO = V_VALOR,
         ID_LOCALIDAD = V_LOCALIDAD,
@@ -103,7 +102,17 @@ AS
         PROCEDURE VER_DEPARTAMENTO (V_DEPTOS OUT SYS_REFCURSOR)
     AS
     BEGIN
-        OPEN V_DEPTOS FOR SELECT * FROM DEPARTAMENTO;                                      
+        OPEN V_DEPTOS FOR SELECT    D.ID,
+                                    D.NUMERO_BANNO,
+                                    D.NUMERO_BANNO,
+                                    D.NUMERO_HABITACION,
+                                    D.FECHA_INS,
+                                    D.DIRECCION,
+                                    D.VALOR_ARRIENDO,
+                                    L.NOMBRE AS "UBICACION",
+                                    D.DESCRIPCION 
+                                    FROM DEPARTAMENTO D 
+                                    JOIN LOCALIDAD L ON D.ID = L.ID;                                      
 
     END;
 END;
