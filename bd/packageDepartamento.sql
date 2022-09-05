@@ -103,7 +103,7 @@ AS
     AS
     BEGIN
         OPEN V_DEPTOS FOR SELECT    D.ID,
-                                    D.NUMERO_BANNO,
+                                    D.NOMBRE,
                                     D.NUMERO_BANNO,
                                     D.NUMERO_HABITACION,
                                     D.FECHA_INS,
