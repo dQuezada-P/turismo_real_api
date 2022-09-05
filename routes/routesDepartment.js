@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
         fecha : row[4],
         direccion : row[5],
         valor_arriendo : row[6],
-        id_localidad : row[7],
+        ubicacion : row[7],
         descripcion : row[8],
       })
     })
