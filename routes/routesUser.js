@@ -144,7 +144,8 @@ router.get("/", async (req, res) => {
         estado : row[4],
         direccion : row[5],
         telefono : row[6],
-        tipo_usuario : row[7],
+        pass : row[7],
+        tipo_usuario : row[8],
       })
     })
 
