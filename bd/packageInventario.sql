@@ -23,7 +23,7 @@ AS
     PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER);
 
     PROCEDURE VER_INVENTARIO(V_INVENTARIOS OUT SYS_REFCURSOR);
-
+     
 END;
 ---------------------------------------------------------------
 create or replace PACKAGE BODY ACCIONES_INVENTARIO
