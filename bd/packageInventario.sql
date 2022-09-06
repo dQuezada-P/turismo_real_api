@@ -25,8 +25,7 @@ AS
     PROCEDURE VER_INVENTARIO(V_INVENTARIOS OUT SYS_REFCURSOR);
 
 END;
------------------------------------------------------------
-
+---------------------------------------------------------------
 create or replace PACKAGE BODY ACCIONES_INVENTARIO
 AS
     PROCEDURE CREAR_INVENTARIO(

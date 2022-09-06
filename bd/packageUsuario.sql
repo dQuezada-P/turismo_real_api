@@ -32,7 +32,7 @@ AS
 
     PROCEDURE VER_USUARIO_FUNCIONARIO (V_USERS OUT SYS_REFCURSOR);
 END;
-----------------------------------------------------------------
+
 create or replace PACKAGE BODY ACCIONES_USUARIO
 AS
         PROCEDURE CREAR_USUARIO(
