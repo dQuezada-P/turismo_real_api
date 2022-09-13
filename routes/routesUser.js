@@ -3,6 +3,8 @@
 //? Variables
 const { Router } = require("express");
 const oracledb = require("oracledb");
+const { parse } = require("path");
+const internal = require("stream");
 const { json } = require("stream/consumers");
 const router = Router();
 const db = require("../config/config.js");
@@ -21,7 +23,7 @@ router.post("/", async (req, res) => {
     telefono,
     pass,
     rol,
-  } = req.body;
+  } = req.query;
 
   binds = {
     rut: rut,
@@ -32,9 +34,10 @@ router.post("/", async (req, res) => {
     direccion: direccion,
     telefono: telefono,
     pass: pass,
-    rol: rol,
+    rol: parseInt(rol) ,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-  };
+    msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
+  }
   sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  :rut,
                                                 :nombre,
                                                 :apellido,
@@ -44,11 +47,12 @@ router.post("/", async (req, res) => {
                                                 :telefono,
                                                 :pass,
                                                 :rol,
-                                                :r ); 
+                                                :r,
+                                                :msg ); 
                                                 END;`;
 
   const callback = (result) => {
-    
+    console.log(result)
     res.json(result);
   };
   await db.Open(sql, binds, { isAutoCommit: true }, callback);
@@ -77,7 +81,7 @@ router.put("/", async (req, res) => {
     direccion: direccion,
     telefono: telefono,
     pass: pass,
-    rol: rol,
+    rol: { type: oracledb.NUMBER, dir: oracledb.BIND_IN, val: rol },
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
   };
 
@@ -94,6 +98,7 @@ router.put("/", async (req, res) => {
                                                     END;`;
 
   const callback = (result) => {
+    console.log(result)
     res.json(result);
   };
   await db.Open(sql, binds, { isAutoCommit: true }, callback);
@@ -131,8 +136,6 @@ router.get("/", async (req, res) => {
   };
 
   const jsonListGen = (rows) => {
-    console.log(rows)
-
     const json = []
 
     rows.map((row)=>{
@@ -148,7 +151,7 @@ router.get("/", async (req, res) => {
         tipo_usuario : row[8],
       })
     })
-
+    console.log(json)
     return json
   }
 

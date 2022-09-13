@@ -23,7 +23,6 @@ router.get("/", async (req, res) => {
   };
 
   const jsonListGen = (rows) => {
-    console.log(rows)
 
     const json = []
 
@@ -40,7 +39,9 @@ router.get("/", async (req, res) => {
         descripcion : row[8],
       })
     })
-
+    
+    console.log(json)
+    
     return json
   }
 
