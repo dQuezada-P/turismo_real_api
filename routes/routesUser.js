@@ -18,26 +18,25 @@ router.post("/", async (req, res) => {
     nombre,
     apellido,
     correo,
-    estado,
     direccion,
     telefono,
-    pass,
-    rol,
-  } = req.query;
+    password
+  } = req.body;
 
   binds = {
     rut: rut,
     nombre: nombre,
     apellido: apellido,
     correo: correo,
-    estado: estado,
+    estado: 'A',
     direccion: direccion,
     telefono: telefono,
-    pass: pass,
-    rol: parseInt(rol) ,
+    pass: password,
+    rol: 3,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   }
+  console.log(req.body)
   sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  :rut,
                                                 :nombre,
                                                 :apellido,
