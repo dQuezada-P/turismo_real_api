@@ -28,7 +28,9 @@ AS
 
     PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR);
 
-    PROCEDURE VER_USUARIO_CLIENTE (V_USERS OUT SYS_REFCURSOR);
+    PROCEDURE VER_USUARIOS_CLIENTE (V_USERS OUT SYS_REFCURSOR);
+
+    PROCEDURE VER_USUARIO_CLIENTE (V_RUT IN VARCHAR2 ,V_USERS OUT SYS_REFCURSOR);
 
     PROCEDURE VER_USUARIO_FUNCIONARIO (V_USERS OUT SYS_REFCURSOR);
 END;
@@ -123,7 +125,7 @@ AS
 
     END;
     ------
-        PROCEDURE VER_USUARIO_CLIENTE ( V_USERS OUT SYS_REFCURSOR )
+        PROCEDURE VER_USUARIOS_CLIENTE ( V_USERS OUT SYS_REFCURSOR )
     AS
     BEGIN
         OPEN V_USERS FOR SELECT U.RUT,
@@ -139,6 +141,23 @@ AS
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
                                 WHERE U.ID_ROL = 3;                                      
+
+    END;
+    ------
+        PROCEDURE VER_USUARIO_CLIENTE ( V_RUT IN VARCHAR2, V_USERS OUT SYS_REFCURSOR )
+    AS
+    BEGIN
+        OPEN V_USERS FOR SELECT U.RUT,
+                                U.NOMBRE,
+                                U.APELLIDO,
+                                U.CORREO,
+                                U.ESTADO,
+                                U.DIRECCION,
+                                U.TELEFONO
+                                FROM USUARIO U
+                                JOIN ROL R 
+                                ON U.ID_ROL = R.ID
+                                WHERE U.ID_ROL = 3 AND U.RUT = V_RUT;                                      
 
     END;
     -------
