@@ -67,23 +67,18 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_APELLIDO IN VARCHAR2, 
         V_CORREO IN VARCHAR2, 
-        V_ESTADO IN CHAR,
         V_DIRECCION IN VARCHAR2,
         V_TELEFONO IN VARCHAR2,
-        V_PASS IN VARCHAR2,
-        V_ROL IN NUMBER,
-        RESULTADO OUT NUMBER)
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2)
     AS
     BEGIN
         UPDATE USUARIO
         SET NOMBRE = V_NOMBRE,
             APELLIDO = V_APELLIDO,
             CORREO = V_CORREO,
-            ESTADO = V_ESTADO,
             DIRECCION = V_DIRECCION,
-            TELEFONO = V_TELEFONO,
-            PASS = V_PASS,
-            ID_ROL = V_ROL
+            TELEFONO = V_TELEFONO
         WHERE RUT = V_RUT;
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
@@ -91,6 +86,7 @@ AS
         EXCEPTION
             WHEN OTHERS THEN
                RESULTADO:=0;
+               MSG:=SQLERRM;
                ROLLBACK;
     END;
     -----

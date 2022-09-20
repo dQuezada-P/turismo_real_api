@@ -138,11 +138,9 @@ router.put("/", async (req, res) => {
     nombre,
     apellido,
     correo,
-    estado,
     direccion,
     telefono,
-    pass,
-    rol,
+    password
   } = req.body;
 
   binds = {
@@ -150,12 +148,10 @@ router.put("/", async (req, res) => {
     nombre: nombre,
     apellido: apellido,
     correo: correo,
-    estado: estado,
     direccion: direccion,
     telefono: telefono,
-    pass: pass,
-    rol: { type: oracledb.NUMBER, dir: oracledb.BIND_IN, val: rol },
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
 
   sql = `BEGIN ACCIONES_USUARIO.MODIFICAR_USUARIO(  :rut,
