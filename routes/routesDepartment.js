@@ -8,10 +8,51 @@ const db = require("../config/config.js");
 
 //? verbos HTTP
 //* GET
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTO(:cursor); END;`;
 
   const binds = {
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+
+  const callback = async (result) => {
+    const resultSet = result.outBinds.cursor;
+    rows = await resultSet.getRows();
+    await resultSet.close();
+    res.json(jsonListGen(rows))
+  };
+
+  const jsonListGen = (rows) => {
+
+    const json = []
+
+    rows.map((row)=>{
+      json.push({ 
+        id : row[0], 
+        nombre : row[1],
+        numero_banno : row[2],
+        numero_Habitacion : row[3],
+        fecha : row[4],
+        direccion : row[5],
+        valor_arriendo : row[6],
+        ubicacion : row[7],
+        descripcion : row[8],
+      })
+    })
+    
+    console.log(json)
+    
+    return json
+  }
+
+  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+});
+
+router.get("/", async (req, res) => {
+  const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTO(:id,:cursor); END;`;
+
+  const binds = {
+    id: req.query.id,
     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
   };
 

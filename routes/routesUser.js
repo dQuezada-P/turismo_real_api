@@ -133,14 +133,14 @@ router.post("/", async (req, res) => {
 
 // *PUT
 router.put("/", async (req, res) => {
+  console.log("b: \n", req.body)
   const {
     rut,
     nombre,
     apellido,
     correo,
     direccion,
-    telefono,
-    password
+    telefono
   } = req.body;
 
   binds = {
@@ -158,12 +158,10 @@ router.put("/", async (req, res) => {
                                                     :nombre,
                                                     :apellido,
                                                     :correo,
-                                                    :estado,
                                                     :direccion,
                                                     :telefono,
-                                                    :pass,
-                                                    :rol,
-                                                    :r ); 
+                                                    :r,
+                                                    :msg ); 
                                                     END;`;
 
   const callback = (result) => {
