@@ -43,6 +43,44 @@ router.post("/", async (req, res) => {
   await db.Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
+
+router.get("/", async (req, res) => {
+  const sql = `BEGIN ACCIONES_USUARIO.VER_USUARIO_CLIENTE(:rut,:cursor); END;`;
+
+  const binds = {
+    rut: req.query.rut,
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+
+  const callback = async (result) => {
+    const resultSet = result.outBinds.cursor;
+    rows = await resultSet.getRows();
+    console.log(rows)
+    await resultSet.close();
+    res.json(jsonListGen(rows))
+  };
+
+  const jsonListGen = (rows) => {
+    let json
+
+    rows.map((row)=>{
+      json = { 
+        rut : row[0], 
+        nombre : row[1],
+        apellido : row[2],
+        correo : row[3],
+        estado : row[4],
+        direccion : row[5],
+        telefono : row[6]
+      }
+    })
+    console.log(json)
+    return json
+  }
+
+  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+});
+
 //*PUT
 router.put("/", async (req, res) => {
   const {
