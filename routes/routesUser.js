@@ -128,8 +128,15 @@ router.post("/", async (req, res) => {
 
 // *PUT
 router.put("/", async (req, res) => {
-  const { rut, nombre, apellido, correo, direccion, telefono, password } =
-    req.body;
+  console.log("b: \n", req.body)
+  const {
+    rut,
+    nombre,
+    apellido,
+    correo,
+    direccion,
+    telefono
+  } = req.body;
 
   binds = {
     rut: rut,
@@ -146,12 +153,10 @@ router.put("/", async (req, res) => {
                                                     :nombre,
                                                     :apellido,
                                                     :correo,
-                                                    :estado,
                                                     :direccion,
                                                     :telefono,
-                                                    :pass,
-                                                    :rol,
-                                                    :r ); 
+                                                    :r,
+                                                    :msg ); 
                                                     END;`;
 
   const callback = (result) => {
