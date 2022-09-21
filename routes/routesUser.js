@@ -69,15 +69,15 @@ router.get("/", async (req, res) => {
 
     rows.map((row) => {
       json = {
-        id: row[0],
+        rut: row[0],
         nombre: row[1],
-        numero_banno: row[2],
-        numero_Habitacion: row[3],
-        fecha: row[4],
+        apellido: row[2],
+        correo: row[3],
+        estado: row[4],
         direccion: row[5],
-        valor_arriendo: row[6],
-        ubicacion: row[7],
-        descripcion: row[8],
+        telefono: row[6],
+        pass: row[7],
+        tipo_usuario: row[8],
       };
     });
     console.log(json);
