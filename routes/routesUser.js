@@ -1,11 +1,13 @@
 //const { dir } = require('console')
 
 //? Variables
-const { Router } = require("express")
-const oracledb = require("oracledb")
-const router = Router()
-const db = require("../config/config.js")
-const bcrypt = require("bcrypt")
+const { Router } = require("express");
+const oracledb = require("oracledb");
+const { parse } = require("path");
+const internal = require("stream");
+const { json } = require("stream/consumers");
+const router = Router();
+const db = require("../config/config.js");
 
 // *Verbos HTTPS
 
@@ -90,11 +92,6 @@ router.post("/", async (req, res) => {
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
     req.body;
 
-  const salt = 10
-  const encryptedPass = bcrypt.hash(password, salt)
-  bcrypt.compare(guess, stored_hash, function(err, res) {
-
-  });
   binds = {
     rut: rut,
     nombre: nombre,
@@ -103,50 +100,7 @@ router.post("/", async (req, res) => {
     estado: "A",
     direccion: direccion,
     telefono: telefono,
-    pass: encryptedPass,
-    rol: 3,
-    r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-    msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
-  };
-  console.log(req.body);
-  sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  :rut,
-                                                :nombre,
-                                                :apellido,
-                                                :correo,
-                                                :estado,
-                                                :direccion,
-                                                :telefono,
-                                                :pass,
-                                                :rol,
-                                                :r,
-                                                :msg ); 
-                                                END;`;
-
-  const callback = (result) => {
-    console.log(result);
-    res.json(result);
-  };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
-});
-
-router.post("/auth", async (req, res) => {
-  const { correo, password } =
-    req.body;
-
-  const salt = 10
-  const encryptedPass = bcrypt.hash(password, salt)
-  bcrypt.compare(guess, stored_hash, function(err, res) {
-
-  });
-  binds = {
-    rut: rut,
-    nombre: nombre,
-    apellido: apellido,
-    correo: correo,
-    estado: "A",
-    direccion: direccion,
-    telefono: telefono,
-    pass: encryptedPass,
+    pass: password,
     rol: 3,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
