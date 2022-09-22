@@ -22,7 +22,7 @@ AS
         V_TELEFONO IN VARCHAR2,
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2);
-    
+
     PROCEDURE ELIMINAR_USUARIO(V_RUT IN VARCHAR2, RESULTADO OUT NUMBER);
 
     PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR);
@@ -174,5 +174,4 @@ AS
                                 WHERE U.ID_ROL = 2;                                      
 
     END;
-
 END;
