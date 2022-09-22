@@ -139,9 +139,9 @@ router.post("/auth", async (req, res) => {
   };
   
   sql = `BEGIN ACCIONES_USUARIO.AUTH_USUARIO(  
-                                                :correo,
-                                                :cursor); 
-                                                END;`;
+                                            :correo,
+                                            :cursor); 
+                                            END;`;
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor
