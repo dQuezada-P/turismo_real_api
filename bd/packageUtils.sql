@@ -1,0 +1,41 @@
+create or replace PACKAGE UTILS
+AS
+    PROCEDURE VER_LOCALIDADES (V_LOCATION OUT SYS_REFCURSOR);
+END;
+/
+create or replace PACKAGE BODY UTILS
+AS
+    PROCEDURE VER_LOCALIDADES (V_LOCATION OUT SYS_REFCURSOR)
+    AS
+    BEGIN
+        OPEN V_LOCATION FOR SELECT * FROM LOCALIDAD;
+    END;
+
+    --     PROCEDURE CREAR_USUARIO(
+    --     V_RUT IN VARCHAR2, 
+    --     V_NOMBRE IN VARCHAR2, 
+    --     V_APELLIDO IN VARCHAR2, 
+    --     V_CORREO IN VARCHAR2, 
+    --     V_ESTADO IN CHAR,
+    --     V_DIRECCION IN VARCHAR2,
+    --     V_TELEFONO IN VARCHAR2,
+    --     V_PASS IN VARCHAR2,
+    --     V_ROL IN NUMBER,
+    --     RESULTADO OUT NUMBER,
+    --     MSG OUT VARCHAR2)
+    -- AS
+    -- BEGIN
+    --     INSERT INTO USUARIO VALUES(V_RUT,V_NOMBRE,V_APELLIDO,V_CORREO,V_ESTADO,V_DIRECCION,V_TELEFONO,V_PASS,V_ROL);  
+    --     RESULTADO := SQL%ROWCOUNT;
+    --     COMMIT;
+
+    --     EXCEPTION
+    --         WHEN OTHERS THEN
+    --            RESULTADO:=0;
+    --            MSG:=SQLERRM;
+    --            ROLLBACK;
+    -- END;
+    
+    -------
+        
+END;
