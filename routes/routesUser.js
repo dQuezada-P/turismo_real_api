@@ -1,13 +1,11 @@
 //const { dir } = require('console')
 
 //? Variables
-const { Router } = require("express");
-const oracledb = require("oracledb");
-const { parse } = require("path");
-const internal = require("stream");
-const { json } = require("stream/consumers");
-const router = Router();
-const db = require("../config/config.js");
+const { Router } = require("express")
+const oracledb = require("oracledb")
+const router = Router()
+const db = require("../config/config.js")
+const bcrypt = require("bcrypt")
 
 // *Verbos HTTPS
 
@@ -92,6 +90,10 @@ router.post("/", async (req, res) => {
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
     req.body;
 
+  const salt = 10
+  const encryptedPass = await bcrypt.hash(password, salt)
+  console.log(encryptedPass)
+  
   binds = {
     rut: rut,
     nombre: nombre,
@@ -100,12 +102,12 @@ router.post("/", async (req, res) => {
     estado: "A",
     direccion: direccion,
     telefono: telefono,
-    pass: password,
+    pass: encryptedPass,
     rol: 3,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
-  console.log(req.body);
+  console.log(req.binds);
   sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  :rut,
                                                 :nombre,
                                                 :apellido,
@@ -122,6 +124,47 @@ router.post("/", async (req, res) => {
   const callback = (result) => {
     console.log(result);
     res.json(result);
+  };
+  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+});
+
+router.post("/auth", async (req, res) => {
+  const { correo, password } =
+    req.body;
+  console.log(req.body)
+
+  binds = {
+    correo: correo,
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+  
+  sql = `BEGIN ACCIONES_USUARIO.AUTH_USUARIO(  
+                                                :correo,
+                                                :cursor); 
+                                                END;`;
+
+  const callback = async (result) => {
+    const resultSet = result.outBinds.cursor
+    rows = await resultSet.getRows()
+    await resultSet.close()
+    const json = jsonListGen(rows)
+    bcrypt.compare(password, json.hashedPass, function(err, result) {
+      console.error("error: ",err)
+      res.json(result)
+    });
+  };
+
+  const jsonListGen = (rows) => {
+    let json;
+
+    rows.map((row) => {
+      json = {
+        correo: row[0],
+        hashedPass: row[1]
+      };
+    });
+    console.log(json);
+    return json;
   };
   await db.Open(sql, binds, { isAutoCommit: true }, callback);
 });
