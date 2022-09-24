@@ -22,7 +22,7 @@ router.get("/all", async (req, res) => {
     rows = await resultSet.getRows();
     await resultSet.close();
     res.json(jsonListGen(rows));
-    console.log(rows)
+    // console.log(rows)
   };
 
   const jsonListGen = (rows) => {
@@ -89,6 +89,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
     req.body;
+  console.log(req.body)
 
   const salt = 10
   const encryptedPass = await bcrypt.hash(password, salt)
