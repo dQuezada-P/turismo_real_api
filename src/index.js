@@ -1,6 +1,17 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require('cors')
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import routerUser from "../routes/routesUser.js";
+import routerDepartment from "../routes/routesDepartment.js";
+import routerUtil from "../routes/routesUtils.js";
+import routerInventary from "../routes/routesInventary.js";
+import routerTransport from "../routes/routesTransportService.js";
+import routerTour from "../routes/routesTourService.js";
+import fileUpload from "express-fileupload";
+import { UploadImagen, GetImage } from "../controllers/files.js";
+// const express = require("express");
+// const morgan = require("morgan");
+// const cors = require('cors')
 const app = express();
 
 //* setting
@@ -12,15 +23,23 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "../images",
+  })
+);
 
 //* routes
-app.use("/api/usuario", require("../routes/routesUser.js"));
-app.use("/api/departamento/", require("../routes/routesDepartment.js"));
-app.use("/api/utils", require("../routes/routesUtils.js"));
-app.use("/api/inventario", require("../routes/routesInventary.js"));
-app.use("/api/servicioTransporte", require("../routes/routesTransportService"));
-app.use("/api/servicioTour", require("../routes/routesTourService"));
-
+app.use("/api/usuario", routerUser);
+app.use("/api/departamento/", routerDepartment);
+app.use("/api/utils", routerUtil);
+app.use("/api/inventario", routerInventary);
+app.use("/api/servicioTransporte", routerTransport);
+app.use("/api/servicioTour", routerTour);
+app.use("/api/files", UploadImagen, GetImage, (req, res) => {
+  return res.send(req.UploadImagen);
+});
 
 //* server
 app.listen(app.get("port"), () => {

@@ -1,12 +1,13 @@
-//const { dir } = require('console')
 
-//? Variables
-const { Router } = require("express")
-const oracledb = require("oracledb")
-const router = Router()
-const db = require("../config/config.js")
-const bcrypt = require("bcrypt")
-
+import {Router} from 'express'
+import oracledb from 'oracledb'
+import Open from '../config/config.js'
+import bcrypt from 'bcrypt'
+// const { Router } = require("express")
+// const oracledb = require("oracledb")
+// const db = require("../config/config.js")
+// const bcrypt = require("bcrypt")
+ const router = Router()
 // *Verbos HTTPS
 
 // *GET
@@ -19,7 +20,7 @@ router.get("/all", async (req, res) => {
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
+    const rows = await resultSet.getRows();
     await resultSet.close();
     res.json(jsonListGen(rows));
     // console.log(rows)
@@ -44,7 +45,7 @@ router.get("/all", async (req, res) => {
     return json;
   };
 
-  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+  await Open(sql, binds, { isAutoCommit: false }, callback);
 });
 
 router.get("/", async (req, res) => {
@@ -57,7 +58,7 @@ router.get("/", async (req, res) => {
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
+    const rows = await resultSet.getRows();
     await resultSet.close();
     res.json(jsonListGen(rows));
   };
@@ -82,7 +83,7 @@ router.get("/", async (req, res) => {
     return json;
   };
 
-  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+  await Open(sql, binds, { isAutoCommit: false }, callback);
 });
 
 // *POST
@@ -126,7 +127,7 @@ router.post("/", async (req, res) => {
     console.log(result);
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
 router.post("/auth", async (req, res) => {
@@ -146,7 +147,7 @@ router.post("/auth", async (req, res) => {
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor
-    rows = await resultSet.getRows()
+    const rows = await resultSet.getRows()
     await resultSet.close()
     const json = jsonListGen(rows)
     bcrypt.compare(password, json.hashedPass, function(err, result) {
@@ -167,7 +168,7 @@ router.post("/auth", async (req, res) => {
     console.log(json);
     return json;
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
 // *PUT
@@ -223,7 +224,7 @@ router.delete("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
-module.exports = router;
+export default router;

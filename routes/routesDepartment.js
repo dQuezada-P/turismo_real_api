@@ -1,10 +1,12 @@
 //const { dir } = require('console')
-
-//? Variables
-const { Router } = require("express");
-const oracledb = require("oracledb");
+// //? Variables
+import { Router } from "express";
+import oracledb from "oracledb";
+import Open from "../config/config.js";
+// const { Router } = require("express");
+// const oracledb = require("oracledb");
 const router = Router();
-const db = require("../config/config.js");
+// const db = require("../config/config.js");
 
 //? verbos HTTP
 //* GET
@@ -17,18 +19,16 @@ router.get("/all", async (req, res) => {
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
+    const rows = await resultSet.getRows();
     await resultSet.close();
     res.json(rows);
-
-    
   };
 
-  options = {
+  const options = {
     outFormat: oracledb.OUT_FORMAT_OBJECT,
     isAutoCommit: false,
   };
-  await db.Open(sql, binds, options, callback);
+  await Open(sql, binds, options, callback);
 });
 
 router.get("/", async (req, res) => {
@@ -39,21 +39,21 @@ router.get("/", async (req, res) => {
     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
   };
 
-  console.log(req.query.id)
+  console.log(req.query.id);
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
+    const rows = await resultSet.getRows();
     await resultSet.close();
-    const [departemnt] = rows
+    const [departemnt] = rows;
     res.json(departemnt);
   };
-  options = {
+  const options = {
     outFormat: oracledb.OUT_FORMAT_OBJECT,
     isAutoCommit: false,
   };
 
-  await db.Open(sql, binds, options, callback);
+  await Open(sql, binds, options, callback);
 });
 
 //* POST
@@ -102,7 +102,7 @@ router.post("/", async (req, res) => {
     console.log(result);
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
 //* PUT
@@ -147,7 +147,7 @@ router.put("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
 //* DELETE
@@ -162,7 +162,7 @@ router.delete("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
-module.exports = router;
+export default router;

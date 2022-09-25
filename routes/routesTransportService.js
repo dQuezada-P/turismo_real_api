@@ -1,9 +1,12 @@
 //? Variables
-const { Router } = require("express");
-const oracledb = require("oracledb");
+import {Router} from 'express'
+import oracledb from 'oracledb'
+import db from '../config/config.js'
+// const { Router } = require("express");
+// const oracledb = require("oracledb");
 const router = Router();
-const db = require("../config/config.js");
-
+// const db = require("../config/config.js");
+//!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
 //? Verbos HTTP
 
 //*POST
@@ -103,4 +106,4 @@ router.get("/", async (req, res) => {
   await db.Open(sql, binds, { isAutoCommit: true }, callback);
 });
 
-module.exports = router;
+export default router
