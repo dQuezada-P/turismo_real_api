@@ -1,7 +1,7 @@
 //? Variables
 import {Router} from 'express'
 import oracledb from 'oracledb'
-import db from '../config/config.js'
+import {conectBD} from '../config/config.js'
 // const { Router } = require("express");
 // const oracledb = require("oracledb");
 const router = Router();
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 //*PUT
 router.put("/", async (req, res) => {
@@ -55,7 +55,7 @@ router.put("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
 //*DELETE
@@ -69,7 +69,7 @@ router.delete("/", async (req, res) => {
   const callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
 //*GET
@@ -103,7 +103,7 @@ router.get("/", async (req, res) => {
 
     return json;
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
 export default router

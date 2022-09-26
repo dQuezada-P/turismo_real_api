@@ -1,7 +1,7 @@
 //? Variables
 import {Router} from 'express'
 import oracledb from 'oracledb'
-import db from '../config/config.js'
+import {conectBD} from '../config/config.js'
 
 //!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
 
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
   callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
 
@@ -84,7 +84,7 @@ router.get("/", async (req, res) => {
     return json
   }
 
-  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+  await conectBD(sql, binds, { isAutoCommit: false }, callback);
 });
 
 //*PUT
@@ -121,7 +121,7 @@ router.put("/", async (req, res) => {
   callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
 //*DELETE
@@ -135,7 +135,7 @@ router.delete("/", async (req, res) => {
   callback = (result) => {
     res.json(result);
   };
-  await db.Open(sql, binds, { isAutoCommit: true }, callback);
+  await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 //*GET
 router.get("/", async (req, res) => {
@@ -149,7 +149,7 @@ router.get("/", async (req, res) => {
     await resultSet.close();
     res.json(rows);
   };
-  await db.Open(sql, binds, { isAutoCommit: false }, callback);
+  await conectBD(sql, binds, { isAutoCommit: false }, callback);
 });
 
 export default router

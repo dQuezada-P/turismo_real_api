@@ -2,7 +2,7 @@ import { conectBD } from "../config/config.js";
 import oracledb from "oracledb";
 
 export const getDepartments = async (req, res) => {
-  const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTO(:cursor); END;`;
+  const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTOS(:cursor); END;`;
 
   const binds = {
     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },

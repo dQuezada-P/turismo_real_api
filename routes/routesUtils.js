@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import oracledb from 'oracledb'
-import db from '../config/config.js'
+import {conectBD} from '../config/config.js'
 
 const router = Router();
 
@@ -13,19 +13,20 @@ router.get("/locations", async (req, res) => {
       cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
     };
 
-    options = {
+    const options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       isAutoCommit: false
     }
   
     const callback = async (result) => {
       const resultSet = result.outBinds.cursor;
-      rows = await resultSet.getRows();
+      const rows = await resultSet.getRows();
+      console.log(rows)
       await resultSet.close();
       res.json(rows);
     };
   
-    await db.Open(sql, binds, options , callback);
+    await conectBD(sql, binds, options , callback);
   });
 
 export default router
