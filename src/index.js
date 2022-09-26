@@ -13,6 +13,7 @@ import { UploadImagen, GetImage } from "../controllers/files.js";
 // const morgan = require("morgan");
 // const cors = require('cors')
 
+
 const app = express();
 
 //* setting
@@ -39,7 +40,6 @@ app.use("/api/inventario", routerInventary);
 app.use("/api/servicioTransporte", routerTransport);
 app.use("/api/servicioTour", routerTour);
 app.use("/api/files", UploadImagen, GetImage);
-
 
 //* server
 app.listen(app.get("port"), () => {
