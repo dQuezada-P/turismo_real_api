@@ -122,9 +122,29 @@ export const deleteUser = async(req, res) => {
   res.json(user);
 };
 
-export const authUser = (req, res) => {
+export const authUser = async (req, res) => {
+  const { correo, password } =
+    req.body;
+  console.log(req.body)
 
-};
+  const binds = {
+    correo: correo,
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+  
+  const sql = `BEGIN ACCIONES_USUARIO.AUTH_USUARIO(  
+                                            :correo,
+                                            :cursor); 
+                                            END;`;
+
+  const json = await conectBD(sql, binds, { isAutoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT });                                          
+  console.log(json)
+  bcrypt.compare(password, json[0].PASS, function(err, result) {
+    console.error("error: ",err)
+    res.json(result)
+  });
+    
+}
 
 
 // router.post("/auth", async (req, res) => {
