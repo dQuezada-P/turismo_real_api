@@ -2,10 +2,7 @@ import {Router} from 'express'
 import oracledb from 'oracledb'
 import db from '../config/config.js'
 
-// const { Router } = require("express");
-// const oracledb = require("oracledb");
 const router = Router();
-// const db = require("../config/config.js");
 
 //!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
 

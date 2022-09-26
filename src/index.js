@@ -12,6 +12,7 @@ import { UploadImagen, GetImage } from "../controllers/files.js";
 // const express = require("express");
 // const morgan = require("morgan");
 // const cors = require('cors')
+
 const app = express();
 
 //* setting
@@ -31,15 +32,14 @@ app.use(
 );
 
 //* routes
-app.use("/api/usuario", routerUser);
+app.use("/api/usuario",routerUser)
 app.use("/api/departamento/", routerDepartment);
 app.use("/api/utils", routerUtil);
 app.use("/api/inventario", routerInventary);
 app.use("/api/servicioTransporte", routerTransport);
 app.use("/api/servicioTour", routerTour);
-app.use("/api/files", UploadImagen, GetImage, (req, res) => {
-  return res.send(req.UploadImagen);
-});
+app.use("/api/files", UploadImagen, GetImage);
+
 
 //* server
 app.listen(app.get("port"), () => {
