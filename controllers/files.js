@@ -1,8 +1,10 @@
 import { uploadFile, getUrl } from "../utils/s3.js";
 
 export const UploadImagen = async (req, res, next) => {
+  console.log(req.files)
   try {
     const images = Object.values(req.files); //const keys = Object.keys(req.files);
+    console.log(images)
     async function SubirImagen() {
       images.forEach(async (image) => {
         await uploadFile(image);

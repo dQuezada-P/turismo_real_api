@@ -18,15 +18,8 @@ router.get("/locations", async (req, res) => {
       isAutoCommit: false
     }
   
-    const callback = async (result) => {
-      const resultSet = result.outBinds.cursor;
-      const rows = await resultSet.getRows();
-      console.log(rows)
-      await resultSet.close();
-      res.json(rows);
-    };
-  
-    await conectBD(sql, binds, options , callback);
+    const locations = await conectBD(sql, binds, options);
+    res.json(locations);
   });
 
 export default router

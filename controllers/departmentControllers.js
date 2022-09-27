@@ -25,12 +25,12 @@ export const getDepartment = async (req, res) => {
     outFormat: oracledb.OUT_FORMAT_OBJECT,
     isAutoCommit: false,
   };
-  const department = await conectBD(sql, binds, options);
+  const [department] = await conectBD(sql, binds, options);
+  console.log(department)
   res.json(department);
 };
 
-export const addDepartment = async (req, res) => {
-  const {
+export const addDepartment = async (req, res) => {const {
     nombre,
     numero_banno,
     numero_habitacion,
@@ -38,7 +38,12 @@ export const addDepartment = async (req, res) => {
     valor_arriendo,
     localidad,
     descripcion,
-  } = req.body;
+  } = JSON.parse(req.body.content);
+  
+  console.log(valor_arriendo)
+  const valor = valor_arriendo.toString().replace('$','').replace(',','')
+  console.log(valor)
+  
   const dateNow = new Date();
   const fecha = `${dateNow.getDate()}/${dateNow.getMonth()}/${dateNow.getFullYear()}`;
 
@@ -48,7 +53,7 @@ export const addDepartment = async (req, res) => {
     numero_habitacion: parseInt(numero_habitacion, 10),
     fecha: fecha,
     direccion: direccion,
-    valor_arriendo: parseInt(valor_arriendo, 10),
+    valor_arriendo: parseInt(valor, 10),
     id_localidad: parseInt(localidad, 10),
     descripcion: descripcion,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
