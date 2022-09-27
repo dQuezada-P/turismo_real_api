@@ -1,5 +1,6 @@
 import { conectBD } from "../config/config.js";
 import oracledb from "oracledb";
+import { UploadImagen } from "./files.js";
 
 export const getDepartments = async (req, res) => {
   const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTOS(:cursor); END;`;
@@ -47,7 +48,7 @@ export const addDepartment = async (req, res) => {const {
   const dateNow = new Date();
   const fecha = `${dateNow.getDate()}/${dateNow.getMonth()}/${dateNow.getFullYear()}`;
 
-  const binds = {
+  let binds = {
     nombre: nombre,
     numero_banno: parseInt(numero_banno, 10),
     numero_habitacion: parseInt(numero_habitacion, 10),
@@ -59,7 +60,7 @@ export const addDepartment = async (req, res) => {const {
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
-  const sql = `BEGIN ACCIONES_DEPARTAMENTO.CREAR_DEPARTAMENTO(:nombre,
+  let sql = `BEGIN ACCIONES_DEPARTAMENTO.CREAR_DEPARTAMENTO(:nombre,
                                                               :numero_banno,
                                                               :numero_habitacion,
                                                               :fecha,
@@ -76,6 +77,29 @@ export const addDepartment = async (req, res) => {const {
     isAutoCommit: true,
   };
   const department = await conectBD(sql, binds, options, false);
+  
+  const images = await UploadImagen(req.files)
+
+  if(images){
+    binds = {
+      id: department.r,
+      imagenes: images.toString(),
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    console.log(binds)
+
+    sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
+          :id,
+          :imagenes,
+          :r);
+          END;`;
+
+    const { r } = await conectBD(sql, binds, { isAutoCommit:true }, false);
+
+    console.log(r)
+  }
+  
+
 
   res.json(department);
 };
