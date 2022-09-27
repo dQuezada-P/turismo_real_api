@@ -30,7 +30,7 @@ export const getUser = async (req, res) => {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       isAutoCommit: true,
     };
-    const user = await conectBD(sql, binds, options);
+    const [user] = await conectBD(sql, binds, options);
     res.json(user);
   } catch (error) {
     console.error(error);
