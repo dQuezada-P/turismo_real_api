@@ -27,6 +27,7 @@ export class DepartmentDao extends Department {
       DIRECCION,
       VALOR_ARRIENDO,
       ID_LOCALIDAD,
+      "",
       DESCRIPCION,
       ESTADO_DISPONIBLE,
       ESTADO_RESERVA,
@@ -64,6 +65,7 @@ export class DepartmentDao extends Department {
         department.FECHA_INS,
         department.DIRECCION,
         department.VALOR_ARRIENDO,
+        department.ID_LOCALIDAD,
         department.UBICACION,
         department.DESCRIPCION,
         department.ESTADO_DISPONIBLE,
@@ -75,6 +77,7 @@ export class DepartmentDao extends Department {
   }
 
   async getDepartmentBD(id) {
+    console.log(id)
     const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTO(:id,:cursor); END;`;
     const binds = {
       id: id,
@@ -97,8 +100,9 @@ export class DepartmentDao extends Department {
     } catch (error) {
       console.error(error);
     }
-    const listDepartments = rows.map((department) => {
-      return new Department(
+    let  departmentObj = null;
+    rows.map((department) => {
+      departmentObj = new Department(
         department.ID,
         department.NOMBRE,
         department.NUMERO_BANNO,
@@ -106,6 +110,7 @@ export class DepartmentDao extends Department {
         department.FECHA_INS,
         department.DIRECCION,
         department.VALOR_ARRIENDO,
+        department.ID_LOCALIDAD,
         department.UBICACION,
         department.DESCRIPCION,
         department.ESTADO_DISPONIBLE,
@@ -113,41 +118,44 @@ export class DepartmentDao extends Department {
         department.IMAGENES
       );
     });
-    return listDepartments;
+    return departmentObj;
   }
 
-  async addDepartmetBD(formFiles) {
+  async addDepartmetBD(responseAction) {
     const dateNow = new Date();
     const _fecha = `${dateNow.getDate()}-${dateNow.getMonth()}-${dateNow.getFullYear()}`;
 
-    let result;
-    let sql = `BEGIN ACCIONES_DEPARTAMENTO.CREAR_DEPARTAMENTO(:nombre,
-                                                                :numero_banno,
-                                                                :numero_habitacion,
-                                                                :fecha,
-                                                                :direccion,
-                                                                :valor_arriendo,
-                                                                :id_localidad,
-                                                                :descripcion,
-                                                                :estado_disponible,
-                                                                :estado_reserva,
-                                                                :r,
-                                                                :msg);
-                                                                END;`;
+    let sql = `BEGIN ACCIONES_DEPARTAMENTO.CREAR_DEPARTAMENTO(
+      :nombre,
+      :numero_banno,
+      :numero_habitacion,
+      :fecha,
+      :direccion,
+      :valor_arriendo,
+      :id_localidad,
+      :descripcion,
+      :r,
+      :msg);
+      END;`;
+      // :estado_disponible,
+      // :estado_reserva,
     let binds = {
-      nombre: this._nombre,
-      numero_banno: this._numero_banno,
-      numero_habitacion: this._numero_habitacion,
+      nombre: this.NOMBRE,
+      numero_banno: this.NUMERO_BANNO,
+      numero_habitacion: this.NUMERO_HABITACION,
       fecha: _fecha,
-      direccion: this._direccion,
-      valor_arriendo: this._valor_arriendo,
-      id_localidad: this._id_localidad,
-      descripcion: this._descripcion,
-      estado_disponible: this._estado_disponible,
-      estado_reserva: this.estado_reserva,
+      direccion: this.DIRECCION,
+      valor_arriendo: this.VALOR_ARRIENDO,
+      id_localidad: this.ID_LOCALIDAD,
+      descripcion: this.DESCRIPCION,
+      // estado_disponible: this.estado_disponible,
+      // estado_reserva: this.estado_reserva,
       r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
       msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
     };
+
+    console.log('binds')
+    console.log(binds)
 
     const options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
@@ -155,8 +163,7 @@ export class DepartmentDao extends Department {
     };
 
     const callBack = async (res) => {
-      const images = await UploadImagen(formFiles);
-      console.log(images);
+      const images = await UploadImagen(this.IMAGENES);
 
       if (images) {
         binds = {
@@ -164,7 +171,6 @@ export class DepartmentDao extends Department {
           imagenes: images.toString(),
           r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
         };
-        console.log(binds);
 
         sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
               :id,
@@ -172,11 +178,16 @@ export class DepartmentDao extends Department {
               :r);
               END;`;
 
-        const { r } = await connectdb(sql, binds, { isAutoCommit: true });
+        const {r} = await connectdb(sql, binds, { isAutoCommit: true });
+        console.log(r);
+        responseAction(r)
       }
     };
+
     try {
       await connectdb(sql, binds, options).then((resultSet) => {
+        console.log("resultSet")
+        console.log(resultSet)
         callBack(resultSet);
       });
     } catch (error) {
@@ -204,16 +215,16 @@ export class DepartmentDao extends Department {
                                                                 :msg);
                                                                 END;`;
     let binds = {
-      id: this._id,
-      nombre: this._nombre,
-      numero_banno: this._numero_banno,
-      numero_habitacion: this._numero_habitacion,
+      id: this.id,
+      nombre: this.nombre,
+      numero_banno: this.numero_banno,
+      numero_habitacion: this.numero_habitacion,
       fecha: _fecha,
-      direccion: this._direccion,
-      valor_arriendo: this._valor_arriendo,
-      id_localidad: this._id_localidad,
-      descripcion: this._descripcion,
-      estado_disponible: this._estado_disponible,
+      direccion: this.direccion,
+      valor_arriendo: this.valor_arriendo,
+      id_localidad: this.id_localidad,
+      descripcion: this.descripcion,
+      estado_disponible: this.estado_disponible,
       estado_reserva: this.estado_reserva,
       r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
       msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
