@@ -140,12 +140,16 @@ export const authUser = async (req, res) => {
                                             :cursor); 
                                             END;`;
 
-  const json = await conectBD(sql, binds, { isAutoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT });                                          
+  const [json] = await conectBD(sql, binds, { isAutoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT });                                          
   console.log(json)
-  bcrypt.compare(password, json[0].PASS, function(err, result) {
-    console.error("error: ",err)
+  bcrypt.compare(password, json.PASS, function(err, result) {
     delete json.PASS
-    res.json(json)
+    const response = {
+      auth: result
+    }
+    if (result) response.user = json
+    res.json(response)
+    
   });
     
 }
