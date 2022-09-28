@@ -1,27 +1,41 @@
+import {  } from "oracledb";
+
 class Department {
   constructor(
+    ID,
     NOMBRE,
     NUMERO_BANNO,
     NUMERO_HABITACION,
-    ESTADO,
+    FECHA_INS,
     DIRECCION,
     VALOR_ARRIENDO,
     ID_LOCALIDAD,
     DESCRIPCION,
-    URLS_IAMGEN
+    ESTADO_DISPONIBLE,
+    ESTADO_RESERVA,
+    IMAGENES
   ) {
-    (this._nombre = NOMBRE),
+    (this._id = ID),
+      (this._nombre  = NOMBRE),
       (this._numero_banno = NUMERO_BANNO),
       (this._numero_habitacion = NUMERO_HABITACION),
-      (this._estado = ESTADO),
+      (this._fecha_ins = FECHA_INS),
       (this._direccion = DIRECCION),
       (this._valor_arriendo = VALOR_ARRIENDO),
       (this._id_localidad = ID_LOCALIDAD),
       (this._descripcion = DESCRIPCION),
-      (this._urls_imagen = URLS_IAMGEN);
-    this.add_date = ADD_DATE;
+      (this._estado_disponible = ESTADO_DISPONIBLE),
+      (this.estado_reserva = ESTADO_RESERVA),
+      (this.imagen = IMAGENES);
   }
 
+  get ID() {
+    return this._id;
+  }
+
+  set ID(newValue) {
+    this._id = newValue;
+  }
   get NOMBRE() {
     return _nombre;
   }
@@ -46,12 +60,12 @@ class Department {
     _numero_habitacion = newValue;
   }
 
-  get ESTADO() {
-    return _estado;
+  get FECHA_INS() {
+    return _fecha_ins;
   }
 
-  set ESTADO(newValue) {
-    _estado = newValue;
+  set FECHA_INS(newValue) {
+    _fecha_ins = newValue;
   }
 
   get DIRECCION() {
@@ -84,11 +98,24 @@ class Department {
     _descripcion = newValue;
   }
 
-  get URLS_IAMGEN() {
+  get URLS_IMAGEN() {
     return _urls_imagen;
   }
-  set URLS_IAMGEN(newValue) {
+  set URLS_IMAGEN(newValue) {
     _urls_imagen = newValue;
+  }
+
+  get ESTADO_DISPONIBLE() {
+    return _estado_disponible;
+  }
+  set ESTADO_DISPONIBLE(newValue) {
+    _estado_disponible = newValue;
+  }
+  get ESTADO_RESERVA() {
+    return estado_reserva;
+  }
+  set ESTADO_RESERVA(newValue) {
+    estado_reserva = newValue;
   }
 }
 export default Department;
