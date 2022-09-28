@@ -38,22 +38,25 @@ export const getUser = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
+  console.log(req.body)
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
-    req.body;
+    JSON.parse(req.body.content);
+
   const salt = 10;
   const encryptedPass = await bcrypt.hash(password, salt);
-  const sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  :rut,
-                                                     :nombre,
-                                                     :apellido,
-                                                     :correo,
-                                                     :estado,
-                                                     :direccion,
-                                                     :telefono,
-                                                     :pass,
-                                                     :rol,
-                                                     :r,
-                                                     :msg );
-                                                     END;`;
+  const sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  
+    :rut,
+    :nombre,
+    :apellido,
+    :correo,
+    :estado,
+    :direccion,
+    :telefono,
+    :pass,
+    :rol,
+    :r,
+    :msg );
+    END;`;
   const binds = {
     rut,
     nombre,
@@ -141,7 +144,8 @@ export const authUser = async (req, res) => {
   console.log(json)
   bcrypt.compare(password, json[0].PASS, function(err, result) {
     console.error("error: ",err)
-    res.json(result)
+    delete json.PASS
+    res.json(json)
   });
     
 }
