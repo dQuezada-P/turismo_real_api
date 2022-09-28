@@ -51,10 +51,10 @@ AS
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2)
     AS
-        V_ID NUMBER;
+        V_ID INT;
     BEGIN
         INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,FECHA_INS,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION) 
-        VALUES(DEPARTAMENTO_AUTO.NEXTVAL,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,V_FECHA,V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION)RETURNING departamento.id INTO V_ID;
+        VALUES(DEPARTAMENTO_AUTO.NEXTVAL,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,V_FECHA,V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION) RETURNING departamento.id INTO V_ID;  
         RESULTADO := V_ID;
         COMMIT;
 
@@ -70,7 +70,7 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        -- V_FECHA IN VARCHAR2,
+        --V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
@@ -83,7 +83,7 @@ AS
         NOMBRE = V_NOMBRE,
         NUMERO_BANNO = V_NUMERO_BANNO,
         NUMERO_HABITACION = V_NUMERO_HABITACION,
-        -- FECHA_INS = TO_DATE(V_FECHA,'DD-MM-YYYY HH24:MI:SS'),
+        --FECHA_INS = TO_DATE(V_FECHA,'DD-MM-YYYY HH24:MI:SS'),
         DIRECCION = V_DIRECCION,
         VALOR_ARRIENDO = V_VALOR,
         ID_LOCALIDAD = V_LOCALIDAD,
@@ -156,10 +156,11 @@ AS
                                     D.FECHA_INS,
                                     D.DIRECCION,
                                     D.VALOR_ARRIENDO,
+                                    D.ID_LOCALIDAD,
                                     L.NOMBRE AS "UBICACION",
                                     D.DESCRIPCION 
                                     FROM DEPARTAMENTO D 
-                                    JOIN LOCALIDAD L ON D.ID = L.ID
+                                    JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
                                     WHERE D.ID = V_ID;                                      
 
     END;
