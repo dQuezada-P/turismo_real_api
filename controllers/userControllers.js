@@ -1,19 +1,16 @@
-import { conectBD } from "../config/config.js";
 import oracledb from "oracledb";
 import bcrypt from "bcrypt";
 
+import { conectBD } from "../config/config.js";
+
+import User from '../models/usersModel.js'
+
 export const getUsers = async (req, res) => {
   try {
-    const sql = `BEGIN ACCIONES_USUARIO.VER_USUARIOS_CLIENTE(:cursor); END;`;
-    const binds = {
-      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-    };
-    const options = {
-      outFormat: oracledb.OUT_FORMAT_OBJECT,
-      isAutoCommit: false,
-    };
-    const users = await conectBD(sql, binds, options);
-    res.json(users);
+    const usersList = await new User().getUsers();
+    console.log('usersList');
+    console.log(usersList);
+    res.json(usersList);
   } catch (error) {
     console.error(error);
   }
@@ -42,7 +39,7 @@ export const addUser = async (req, res) => {
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
     JSON.parse(req.body.content);
 
-  const salt = 10;
+  const salt = await bcrypt.genSalt(10);
   const encryptedPass = await bcrypt.hash(password, salt);
   const sql = `BEGIN ACCIONES_USUARIO.CREAR_USUARIO(  
     :rut,
@@ -151,6 +148,35 @@ export const authUser = async (req, res) => {
     res.json(response)
     
   });
+    
+}
+
+export const authUserDesk = async (req, res) => {
+  const { correo, rut, password } =
+    req.body;
+  console.log(req.body)
+  res.json('hola')
+  // const binds = {
+  //   correo: correo,
+  //   cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  // };
+  
+  // const sql = `BEGIN ACCIONES_USUARIO.AUTH_USUARIO(  
+  //                                           :correo,
+  //                                           :cursor); 
+  //                                           END;`;
+
+  // const [json] = await conectBD(sql, binds, { isAutoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT });                                          
+  // console.log(json)
+  // bcrypt.compare(password, json.PASS, function(err, result) {
+  //   delete json.PASS
+  //   const response = {
+  //     auth: result
+  //   }
+  //   if (result) response.user = json
+  //   res.json(response)
+    
+  // });
     
 }
 

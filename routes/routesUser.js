@@ -1,6 +1,6 @@
 
 import {Router} from 'express'
-import {getUsers,getUser,addUser,editUser,deleteUser,authUser} from '../controllers/userControllers.js'
+import {getUsers,getUser,addUser,editUser,deleteUser,authUser, authUserDesk} from '../controllers/userControllers.js'
  const router = Router()
 // *Verbos HTTPS
 
@@ -12,6 +12,7 @@ router.get('/',getUser)
 router.post('/',addUser)
 
 router.post('/auth',authUser)
+router.post('/authdesk',authUserDesk)
 
 router.put('/',editUser)
 
