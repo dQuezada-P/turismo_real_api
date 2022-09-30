@@ -1,106 +1,124 @@
-import * as userDal from "../dao/userDao.js"
+import bcrypt from "bcrypt";
+
+import * as userDao from "../dao/userDao.js"
 
 class User {
-    constructor(RUT,NOMBRE,APELLIDO,IMAGEN,CORREO,ESTADO,DIRECCION,TELEFONO,PASS,ID_ROL) {
-      (this._rut = RUT),
-      (this._nombre  = NOMBRE),
-      (this.apellido = APELLIDO),
-      (this.imagen = IMAGEN),
-      (this.correo = CORREO),
-      (this.estado = ESTADO),
-      (this.direccion = DIRECCION),
-      (this.telefono = TELEFONO),
-      (this.pass = PASS),
-      (this.id_rol = ID_ROL)
+    constructor(rut,nombre,apellido,imagen,correo,estado,direccion,telefono,pass,id_rol) {
+      (this._rut = rut),
+      (this._nombre  = nombre),
+      (this._apellido = apellido),
+      (this._imagen = imagen),
+      (this._correo = correo),
+      (this._estado = estado),
+      (this._direccion = direccion),
+      (this._telefono = telefono),
+      (this._pass = pass),
+      (this._id_rol = id_rol)
     }
 
-    getUser(){
-        
+    async getUser(rut, correo = null){
+        return await userDao.getUser(rut, correo)
     }
 
     async getUsers(){
-        return await userDal.getUsers()
+        return await userDao.getUsers()
     }
 
-    addUser(){
+    async addUser(){
+        return await userDao.addUser(this)
+    }
 
+    async editUser(){
+        return await userDao.editUser(this)
     }
-    
+
+    async findUser(username){
+        return await userDao.findUser(username)
+    }
+
+    async comparePassword (password, hashedPassword)  {
+        return await bcrypt.compare(password, hashedPassword)
+    }
+
+    async encryptPassword (password) {
+        const salt = await bcrypt.genSalt(10);
+        return await bcrypt.hash(password, salt);
+    };
   
-    get RUT() {
-      return this.rut;
-    }
-  
-    set RUT(newValue) {
-      this.rut = newValue;
-    }
-    get NOMBRE() {
-      return this.nombre;
-    }
-  
-    set NOMBRE(newValue) {
-      this.nombre = newValue;
-    }
-  
-    get APELLIDO() {
-      return this.apellido;
-    }
-  
-    set APELLIDO(newValue) {
-      this.apellido = newValue;
+    get rut() {
+        return this._rut;
     }
   
-    get IMAGEN() {
-      return this.imagen;
+    set rut(newvalue) {
+        this._rut = newvalue;
+    }
+    get nombre() {
+        return this._nombre;
     }
   
-    set IMAGEN(newValue) {
-      this.imagen = newValue;
+    set nombre(newvalue) {
+        this._nombre = newvalue;
     }
   
-    get CORREO() {
-      return this.correo;
+    get apellido() {
+        return this._apellido;
     }
   
-    set CORREO(newValue) {
-      this.correo = newValue;
+    set apellido(newvalue) {
+        this._apellido = newvalue;
     }
   
-    get ESTADO() {
-      return this.estado;
+    get imagen() {
+        return this._imagen;
     }
   
-    set ESTADO(newValue) {
-      this.estado = newValue;
+    set imagen(newvalue) {
+        this._imagen = newvalue;
     }
   
-    get DIRECCION() {
-      return this.direccion;
+    get correo() {
+        return this._correo;
     }
   
-    set DIRECCION(newValue) {
-      this.direccion = newValue;
+    set correo(newvalue) {
+        this._correo = newvalue;
     }
   
-    get TELEFONO() {
-      return this.telefono;
-    }
-    set TELEFONO(newValue) {
-      this.telefono = newValue;
+    get estado() {
+        return this._estado;
     }
   
-    get PASS() {
-      return this.pass;
-    }
-    set PASS(newValue) {
-      this.pass = newValue;
+    set estado(newvalue) {
+        this._estado = newvalue;
     }
   
-    get ID_ROL() {
-      return this.id_rol;
+    get direccion() {
+        return this._direccion;
     }
-    set ID_ROL(newValue) {
-      this.id_rol = newValue;
+  
+    set direccion(newvalue) {
+        this._direccion = newvalue;
+    }
+  
+    get telefono() {
+        return this._telefono;
+    }
+    set telefono(newvalue) {
+        this._telefono = newvalue;
+    }
+  
+    get pass() {
+        return this._pass;
+    }
+    set pass(newvalue) {
+        this._pass = newvalue;
+    }
+  
+    get id_rol() {
+        return this._id_rol;
+    }
+    set id_rol(newvalue) {
+        this._id_rol = newvalue;
     }
   
 }

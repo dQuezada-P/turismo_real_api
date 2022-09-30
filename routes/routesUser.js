@@ -1,18 +1,19 @@
 
 import {Router} from 'express'
-import {getUsers,getUser,addUser,editUser,deleteUser,authUser, authUserDesk} from '../controllers/userControllers.js'
- const router = Router()
+
+import { verifyToken } from '../middlewares/auth.js'
+
+import {getUsers,getUser,addUser,editUser,deleteUser } from '../controllers/userControllers.js'
+ 
+const router = Router()
 // *Verbos HTTPS
 
 // *GET
 router.get('/all',getUsers)
 
-router.get('/',getUser)
+router.get('/', [ verifyToken ], getUser)
 
 router.post('/',addUser)
-
-router.post('/auth',authUser)
-router.post('/authdesk',authUserDesk)
 
 router.put('/',editUser)
 

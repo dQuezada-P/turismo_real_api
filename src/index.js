@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import routerUser from "../routes/routesUser.js";
+import routerAuth from "../routes/routesAuth.js";
 import routerDepartment from "../routes/routesDepartment.js";
 import routerUtil from "../routes/routesUtils.js";
 import routerInventary from "../routes/routesInventary.js";
@@ -33,7 +34,8 @@ app.use(
 );
 
 //* routes
-app.use("/api/usuario",routerUser)
+app.use("/api/usuario", routerUser)
+app.use("/api/auth", routerAuth)
 app.use("/api/departamento/", routerDepartment);
 app.use("/api/utils", routerUtil);
 app.use("/api/inventario", routerInventary);

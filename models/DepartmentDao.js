@@ -56,6 +56,8 @@ export class DepartmentDao extends Department {
     } catch (error) {
       console.error(error);
     }
+    
+    
     const listDepartments = rows.map((department) => {
       return new Department(
         department.ID,
@@ -73,6 +75,7 @@ export class DepartmentDao extends Department {
         department.IMAGENES
       );
     });
+    
     return listDepartments;
   }
 

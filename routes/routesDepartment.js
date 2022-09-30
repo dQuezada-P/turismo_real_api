@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verifyToken } from "../middlewares/auth.js";
 import {
   getDepartments,
   getDepartment,
@@ -9,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get("/all", getDepartments);
+router.get("/all", [ verifyToken ], getDepartments);
 router.get("/", getDepartment);
 router.post("/", addDepartment);
 router.put("/", editDepartment);

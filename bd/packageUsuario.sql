@@ -38,13 +38,38 @@ END;
 /
 create or replace PACKAGE BODY ACCIONES_USUARIO
 AS
-    PROCEDURE AUTH_USUARIO (V_CORREO IN VARCHAR2 ,V_USER OUT SYS_REFCURSOR)
+    PROCEDURE AUTH_USUARIO (V_USERNAME IN VARCHAR2 ,V_USER OUT SYS_REFCURSOR, MSG OUT VARCHAR2)
     AS
+        CURSOR C_RUT IS SELECT U.RUT FROM USUARIO U WHERE U.RUT = V_USERNAME;
+        CURSOR C_CORREO IS SELECT U.CORREO FROM USUARIO U WHERE U.CORREO = V_USERNAME; 
+        COUNT_ROW NUMBER;
+        C VARCHAR2(60);
     BEGIN
-         OPEN V_USER FOR SELECT U.CORREO,
-                                U.PASS
-                                FROM USUARIO U
-                                WHERE U.CORREO = V_CORREO;         
+        OPEN C_CORREO ;
+        FETCH C_CORREO INTO C;  
+        
+        COUNT_ROW := C_CORREO%ROWCOUNT;
+        CLOSE C_CORREO;
+        
+        IF COUNT_ROW > 0 THEN
+            OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.CORREO = V_USERNAME;
+        ELSE
+            OPEN C_RUT;
+            FETCH C_RUT INTO C;  
+            
+            COUNT_ROW := C_RUT%ROWCOUNT;
+            CLOSE C_RUT;
+            
+            IF COUNT_ROW > 0 THEN
+                OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.RUT = V_USERNAME;
+            END IF;
+        END IF;
+        
+    EXCEPTION
+        WHEN OTHERS THEN
+           MSG:=SQLERRM;
+           ROLLBACK;
+                 
     END;
     --------
     PROCEDURE CREAR_USUARIO(
