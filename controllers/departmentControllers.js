@@ -3,6 +3,8 @@ import oracledb from "oracledb";
 import { DepartmentDao } from "../models/departmentDao.js";
 
 export const getDepartments = async (req, res) => {
+  console.log('hola')
+  console.log(req.query)
   const departmenDao = await new DepartmentDao().getDepartmentsBD();
   res.json(departmenDao);
 };

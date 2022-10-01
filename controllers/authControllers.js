@@ -11,10 +11,17 @@ export const loginHandler = async (req, res) => {
         
         // const { correo } = req.body;
 
+        // VALIDAR QUE EL USUARIO EXISTA
         const { userRes, msg } = await authUser(username)
         console.log('Mensaje de la bd: ', msg)
         if ( userRes === undefined ) 
-            return res.status(400).json({ message: "Usuario o Contraseña inválida" });
+        {
+            res.status(400).json({
+                auth: false,
+                message: "Usuario o Contraseña inválida"
+            });
+            return;
+        }
 
         const userModel = new User();
 
@@ -22,13 +29,19 @@ export const loginHandler = async (req, res) => {
         delete userRes.PASS
 
         if (!matchPassword)
-            res.status(400).json({message: "Usuario o Contraseña inválida"});
+        {
+            res.status(400).json({
+                auth: false,
+                message: "Usuario o Contraseña inválida"
+            });
+            return;
+        }
         
         const token = jwt.sign(
             { rut: userRes.RUT, correo: userRes.CORREO }, 
             API_SECRET_KEY, 
             { expiresIn: 86400 } // 24 hours
-        );
+        ); 
         
         console.log({
             auth: true,

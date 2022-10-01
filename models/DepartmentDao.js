@@ -52,6 +52,7 @@ export class DepartmentDao extends Department {
         result = resultSet.cursor;
       });
       rows = await result.getRows();
+      console.log(rows)
       result.close();
     } catch (error) {
       console.error(error);
