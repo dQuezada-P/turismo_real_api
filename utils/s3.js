@@ -9,6 +9,7 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 
 import fs from "fs";
@@ -23,23 +24,42 @@ const client = new S3Client({
 });
 
 export const uploadFile = async (file) => {
-  const stream = fs.createReadStream(file.tempFilePath);
-  const bucketParams = {
-    Bucket: AWS_BUCKET_NAME,
-    Key: file.name,
-    Body: stream,
-  };
-  const command = new PutObjectCommand(bucketParams);
-  const result = await client.send(command);
-
-  console.log(result);
+  try {
+    const stream = fs.createReadStream(file.tempFilePath);
+    const bucketParams = {
+      Bucket: AWS_BUCKET_NAME,
+      Key: file.name,
+      Body: stream,
+    };
+    const command = new PutObjectCommand(bucketParams);
+    await client.send(command);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getUrl = async (file) => {
-  const photo = new GetObjectCommand({
-    Bucket: AWS_BUCKET_NAME,
-    Key: file,
-  });
+  try {
+    const photo = new GetObjectCommand({
+      Bucket: AWS_BUCKET_NAME,
+      Key: file,
+    });
 
-  return await getSignedUrl(client, photo);
+    return await getSignedUrl(client, photo);
+  } catch (error) {
+    console.error(error);
+  }
 };
+
+export const deleteFile = async(file) =>{
+  try {
+    const bucketParams = {
+      Bucket: AWS_BUCKET_NAME,
+      Key: file,
+    }
+    const command = new DeleteObjectCommand(bucketParams)
+    return await client.send(command)
+  } catch (error) {
+    console.error(error)
+  }
+}

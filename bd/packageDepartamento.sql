@@ -1,60 +1,64 @@
 create or replace PACKAGE ACCIONES_DEPARTAMENTO
 AS
     PROCEDURE CREAR_DEPARTAMENTO(
-        V_NOMBRE IN VARCHAR2,  
+        V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
         V_DESCRIPCION IN VARCHAR2,
+        V_ESTADO_DISPONIBLE IN VARCHAR2,
+        V_ESTADO_RESERVA IN VARCHAR2,
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2);
 
-    PROCEDURE MODIFICAR_DEPARTAMENTO(
-    V_ID IN VARCHAR2, 
-    V_NOMBRE IN VARCHAR2,  
-    V_NUMERO_BANNO IN NUMBER, 
-    V_NUMERO_HABITACION IN NUMBER,
-    -- V_FECHA IN VARCHAR2,
-    V_DIRECCION IN VARCHAR2,
-    V_VALOR IN NUMBER,
-    V_LOCALIDAD IN NUMBER,
-    V_DESCRIPCION IN VARCHAR2,
-    RESULTADO OUT NUMBER);
+      PROCEDURE MODIFICAR_DEPARTAMENTO(
+        V_ID IN VARCHAR2, 
+        V_NOMBRE IN VARCHAR2, 
+        V_NUMERO_BANNO IN NUMBER, 
+        V_NUMERO_HABITACION IN NUMBER,
+        V_DIRECCION IN VARCHAR2,
+        V_VALOR IN NUMBER,
+        V_LOCALIDAD IN NUMBER,
+        V_DESCRIPCION IN VARCHAR2,
+        V_ESTADO_DISPONIBLE IN VARCHAR2,
+        V_ESTADO_RESERVA IN VARCHAR2,
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2);
 
     PROCEDURE ACTUALIZAR_IMAGENES(
     V_ID IN VARCHAR2, 
     V_IMAGENES IN CLOB,
     RESULTADO OUT NUMBER);
 
-    PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER);
+    PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
 
     PROCEDURE VER_DEPARTAMENTOS (V_DEPTOS OUT SYS_REFCURSOR);
-    
+
     PROCEDURE VER_DEPARTAMENTO (V_ID IN VARCHAR2, V_DEPTOS OUT SYS_REFCURSOR);
 END;
 /
---------------------------------------------------------------------
 create or replace PACKAGE BODY ACCIONES_DEPARTAMENTO
 AS
         PROCEDURE CREAR_DEPARTAMENTO(
         V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
         V_DESCRIPCION IN VARCHAR2,
+        V_ESTADO_DISPONIBLE IN VARCHAR2,
+        V_ESTADO_RESERVA IN VARCHAR2,
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2)
     AS
-        V_ID INT;
+     V_ID NUMBER;
     BEGIN
-        INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,FECHA_INS,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION) 
-        VALUES(DEPARTAMENTO_AUTO.NEXTVAL,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,V_FECHA,V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION) RETURNING departamento.id INTO V_ID;  
+        INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION,ESTADO_DISPONIBLE,ESTADO_RESERVA)
+        VALUES(DEPARTAMENTO_AUTO.NEXTVAL,V_NOMBRE,V_NUMERO_BANNO,V_NUMERO_HABITACION,V_DIRECCION,V_VALOR,V_LOCALIDAD,V_DESCRIPCION,V_ESTADO_DISPONIBLE,V_ESTADO_RESERVA)
+        RETURNING departamento.id INTO V_ID; 
         RESULTADO := V_ID;
         COMMIT;
 
@@ -70,12 +74,14 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_NUMERO_BANNO IN NUMBER, 
         V_NUMERO_HABITACION IN NUMBER,
-        --V_FECHA IN VARCHAR2,
         V_DIRECCION IN VARCHAR2,
         V_VALOR IN NUMBER,
         V_LOCALIDAD IN NUMBER,
         V_DESCRIPCION IN VARCHAR2,
-        RESULTADO OUT NUMBER)
+        V_ESTADO_DISPONIBLE IN VARCHAR2,
+        V_ESTADO_RESERVA IN VARCHAR2,
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2)
     AS
     BEGIN
         UPDATE DEPARTAMENTO 
@@ -83,18 +89,20 @@ AS
         NOMBRE = V_NOMBRE,
         NUMERO_BANNO = V_NUMERO_BANNO,
         NUMERO_HABITACION = V_NUMERO_HABITACION,
-        --FECHA_INS = TO_DATE(V_FECHA,'DD-MM-YYYY HH24:MI:SS'),
         DIRECCION = V_DIRECCION,
         VALOR_ARRIENDO = V_VALOR,
         ID_LOCALIDAD = V_LOCALIDAD,
-        DESCRIPCION = V_DESCRIPCION
+        DESCRIPCION = V_DESCRIPCION,
+        ESTADO_DISPONIBLE = V_ESTADO_DISPONIBLE,
+        ESTADO_RESERVA = V_ESTADO_RESERVA
         WHERE ID = V_ID;
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
         EXCEPTION
-            WHEN INVALID_NUMBER THEN
+            WHEN OTHERS THEN
                RESULTADO:=0;
+                MSG:=SQLERRM;
                ROLLBACK;
     END;
     ---------------------
@@ -117,7 +125,7 @@ AS
                ROLLBACK;
     END;
     ---------------------
-        PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER)
+        PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
     AS
     BEGIN
         DELETE FROM DEPARTAMENTO WHERE ID = V_ID;
@@ -125,7 +133,8 @@ AS
         COMMIT;
         EXCEPTION
             WHEN OTHERS THEN
-               RESULTADO:=0;
+                RESULTADO:=0;
+               MSG:=SQLERRM;
                ROLLBACK;
     END;
     -------------------------
@@ -136,32 +145,35 @@ AS
                                     D.NOMBRE,
                                     D.NUMERO_BANNO,
                                     D.NUMERO_HABITACION,
-                                    D.FECHA_INS,
                                     D.DIRECCION,
                                     D.VALOR_ARRIENDO,
+                                    D.ID_LOCALIDAD,
                                     L.NOMBRE AS "UBICACION",
-                                    D.DESCRIPCION 
+                                    D.DESCRIPCION,
+                                    D.ESTADO_DISPONIBLE,
+                                    D.ESTADO_RESERVA,
+                                    D.IMAGENES
                                     FROM DEPARTAMENTO D 
-                                    JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID;                                      
+                                    JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
+                                    ORDER BY D.ID;                                      
 
     END;
     -------------------------
     PROCEDURE VER_DEPARTAMENTO (V_ID IN VARCHAR2, V_DEPTOS OUT SYS_REFCURSOR)
     AS
     BEGIN
-        OPEN V_DEPTOS FOR SELECT    D.ID,
-                                    D.NOMBRE,
+        OPEN V_DEPTOS FOR SELECT D.ID, D.NOMBRE,
                                     D.NUMERO_BANNO,
                                     D.NUMERO_HABITACION,
-                                    D.FECHA_INS,
                                     D.DIRECCION,
                                     D.VALOR_ARRIENDO,
                                     D.ID_LOCALIDAD,
                                     L.NOMBRE AS "UBICACION",
-                                    D.DESCRIPCION 
-                                    FROM DEPARTAMENTO D 
-                                    JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
-                                    WHERE D.ID = V_ID;                                      
+                                    D.DESCRIPCION ,
+                                    D.ESTADO_DISPONIBLE,
+                                    D.ESTADO_RESERVA,
+                                    D.IMAGENES FROM DEPARTAMENTO D JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID WHERE D.ID = V_ID;
+                                                                  
 
     END;
 END;

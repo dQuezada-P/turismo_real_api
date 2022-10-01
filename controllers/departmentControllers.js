@@ -1,21 +1,35 @@
 import { conectBD } from "../config/config.js";
 import oracledb from "oracledb";
-import { DepartmentDao } from "../models/departmentDao.js";
+import Department from "../models/departmentModel.js";
+import { formatImagenUrl } from "../utils/imageUrl.js";
 
 export const getDepartments = async (req, res) => {
-  console.log('hola')
-  console.log(req.query)
-  const departmenDao = await new DepartmentDao().getDepartmentsBD();
-  res.json(departmenDao);
+  try {
+    const departmentList = await new Department().getDepartments();
+    const departmentsList  = departmentList.map((dept) => {
+      if(dept.IMAGENES != null)
+        dept.IMAGENES = formatImagenUrl(dept.IMAGENES)
+        return dept
+    });
+    res.json(departmentsList)
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getDepartment = async (req, res) => {
-  const departmenDao = await new DepartmentDao().getDepartmentBD(req.query.id);
-
-  res.json(departmenDao);
+  const [department] = await new Department().getDepartment(req.query.id);
+  if (department == null)
+    res.json({ msg: "Departamento no se encuentra registrado" });
+  else {
+    if(department.IMAGENES != null)
+      department.IMAGENES = formatImagenUrl(department.IMAGENES)
+    res.json(department);
+  }
 };
 
 export const addDepartment = async (req, res) => {
+  const responseAction = (r) => res.json(r);
   const {
     nombre,
     numero_banno,
@@ -25,66 +39,59 @@ export const addDepartment = async (req, res) => {
     localidad,
     descripcion,
     estado_disponible,
-    estado_reserva
-  } = JSON.parse(req.body.content); //? .content se define en la aplicación de escritorio
-  console.log(JSON.parse(req.body.content))
-  const department = new DepartmentDao(
+    estado_reserva,
+  } = JSON.parse(req.body.content);
+  const department = new Department(
     null,
     nombre,
-    numero_banno,
-    numero_habitacion,
-    null,
+    parseInt(numero_banno,10),
+    parseInt(numero_habitacion,10),
     direccion,
-    valor_arriendo.replace('$','').replace(',',''),
+    parseInt(valor_arriendo.replace("$", "").replace(",", ""),10),
     localidad,
+    null,
     descripcion,
     estado_disponible,
     estado_reserva,
     req.files
   );
-  
-  const responseAction = (r) => res.json(r);
-
-  await department.addDepartmetBD(responseAction);
-  
- 
+  console.log(department)
+  await department.addDepartment(responseAction);
 };
 export const editDepartment = async (req, res) => {
+
   const {
-    _id,
-    _nombre,
-    _numero_banno,
-    _numero_habitacion,
-    _direccion,
-    _valor_arriendo,
-    _id_localidad,
-    _descripcion,
-    _estado_disponible,
-    _estado_reserva,
-    imagen,
+    id,
+    nombre,
+    numero_banno,
+    numero_habitacion,
+    direccion,
+    valor_arriendo,
+    localidad,
+    descripcion,
+    // estado_disponible,
+    // estado_reserva,
+    files,
   } = req.body;
 
-  const department = new DepartmentDao(
-    _id,
-    _nombre,
-    _numero_banno,
-    _numero_habitacion,
+  const department = new Department(
+    id,
+    nombre,
+    numero_banno,
+    numero_habitacion,
+    direccion,
+    valor_arriendo.replace("$", "").replace(",", ""),
+    localidad,
     null,
-    _direccion,
-    _valor_arriendo,
-    _id_localidad,
-    _descripcion,
-    _estado_disponible,
-    _estado_reserva,
-    imagen
+    descripcion,
+    "y",
+    "y",
+    // estado_disponible,
+    // estado_reserva,
+    files
   );
-
-  res.json(await department.editDepartmentBD());
-
 };
 export const deleteDepartment = async (req, res) => {
-  const departmenDao = await new DepartmentDao().deleteDepartmentBD(
-    req.body._id
-  );
+  const departmenDao = await new Department().deleteDepartment(req.query.id);
   res.json(departmenDao);
 };
