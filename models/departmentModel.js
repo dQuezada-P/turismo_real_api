@@ -1,10 +1,12 @@
+
+import * as departmentDao from '../dao/departmentDao.js';
+
 class Department {
   constructor(
     ID,
     NOMBRE,
     NUMERO_BANNO,
     NUMERO_HABITACION,
-    FECHA_INS,
     DIRECCION,
     VALOR_ARRIENDO,
     ID_LOCALIDAD,
@@ -18,7 +20,6 @@ class Department {
     (this.nombre  = NOMBRE),
     (this.numero_banno = NUMERO_BANNO),
     (this.numero_habitacion = NUMERO_HABITACION),
-    (this.fecha_ins = FECHA_INS),
     (this.direccion = DIRECCION),
     (this.valor_arriendo = VALOR_ARRIENDO),
     (this.id_localidad = ID_LOCALIDAD),
@@ -27,6 +28,26 @@ class Department {
     (this.estado_disponible = ESTADO_DISPONIBLE),
     (this.estado_reserva = ESTADO_RESERVA),
     (this.imagenes = IMAGENES);
+  }
+
+  async getDepartments(){
+    return await departmentDao.getDepartmentsBD()
+  }
+
+  async getDepartment(id){
+    return await departmentDao.getDepartmentBD(id)
+  }
+
+  async addDepartment(responseAction){
+    return await departmentDao.addDepartmetBD(this,responseAction)
+  }
+
+  async editDepartment(){
+    return await departmentDao.editDepartmentBD(this)
+  }
+
+  async deleteDepartment(id,images){
+   return departmentDao.deleteDepartmentBD(id,images)
   }
 
   get ID() {

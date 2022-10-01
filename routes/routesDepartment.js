@@ -10,7 +10,8 @@ import {
 
 const router = Router();
 
-router.get("/all", [ verifyToken ], getDepartments);
+// router.get("/all", [ verifyToken ], getDepartments);
+router.get("/all", getDepartments);
 router.get("/", getDepartment);
 router.post("/", addDepartment);
 router.put("/", editDepartment);
