@@ -10,6 +10,7 @@ import routerTransport from "../routes/routesTransportService.js";
 import routerTour from "../routes/routesTourService.js";
 import fileUpload from "express-fileupload";
 import { UploadImagen, GetImage } from "../controllers/files.js";
+import routerEstadistic from "../routes/routesEstadist.js";
 // const express = require("express");
 // const morgan = require("morgan");
 // const cors = require('cors')
@@ -42,6 +43,7 @@ app.use("/api/inventario", routerInventary);
 app.use("/api/servicioTransporte", routerTransport);
 app.use("/api/servicioTour", routerTour);
 app.use("/api/files", UploadImagen, GetImage);
+app.use("/api/estadistica", routerEstadistic);
 
 //* server
 app.listen(app.get("port"), () => {
