@@ -1,5 +1,4 @@
 import oracledb from "oracledb";
-import bcrypt from "bcrypt";
 
 import { conectBD } from "../config/config.js";
 
@@ -16,6 +15,7 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
+    console.log(req.query)
     const { rut, correo } = req.query;
     const user = await new User().getUser(rut, correo)
     res.json(user);

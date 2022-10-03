@@ -93,7 +93,7 @@ export const addDepartmetBD = async (department,responseAction) => {
       binds = {
         id: res.r,
         imagenes: images.toString(),
-        r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+        r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
       };
 
       sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
@@ -103,8 +103,7 @@ export const addDepartmetBD = async (department,responseAction) => {
               END;`;
 
       const { r } = await connectdb(sql, binds, { isAutoCommit: true });
-        if(r == 1 )
-        responseAction(r);
+      responseAction(r);
      
     }
   };

@@ -55,7 +55,6 @@ export const addDepartment = async (req, res) => {
     estado_reserva,
     req.files
   );
-  console.log(department)
   await department.addDepartment(responseAction);
 };
 export const editDepartment = async (req, res) => {

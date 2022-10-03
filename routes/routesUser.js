@@ -10,7 +10,7 @@ const router = Router()
 
 router.get('/all',getUsers)
 
-router.get('/', [ verifyToken ], getUser)
+router.get('/', getUser)
 
 router.post('/',addUser)
 
