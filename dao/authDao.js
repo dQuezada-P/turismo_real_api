@@ -4,6 +4,7 @@ import { connectdb } from "../config/config.js";
 
 export const authUser = async (username) => {
     try {
+        console.log(username)
         const binds = {
             username: username,
             cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
@@ -27,11 +28,10 @@ export const authUser = async (username) => {
             userRes: cursor,
             msg
         } 
-        console.log(cursor)
+        console.log(resp)
 
         if ( cursor !== undefined ){
             const [user] = await cursor.getRows();
-            console.log( user )  
             resp.userRes = user
         }
                                    

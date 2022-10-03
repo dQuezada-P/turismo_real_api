@@ -3,7 +3,7 @@ export const formatImagenUrl = (stringsImages) => {
   const imagenes = strings.map((string) => {
     let [url, name] = string.split(";");
     let object = {
-      name: name,
+      name: name.trim(),
       url: url,
     };
     return object;
