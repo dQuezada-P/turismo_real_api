@@ -86,12 +86,13 @@ export const addDepartmetBD = async (department,responseAction) => {
     isAutoCommit: true,
   };
 
-  const callBack = async (res) => {
-    const images = await UploadImagen(department.IMAGENES);
+  const callBack = async (res) => {3
+    const department_id = res.r;
+    const images = await UploadImagen(department.IMAGENES, department_id.toString());
 
     if (images) {
       binds = {
-        id: res.r,
+        id: department_id,
         imagenes: images.toString(),
         r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
       };
@@ -116,6 +117,7 @@ export const addDepartmetBD = async (department,responseAction) => {
     console.error(error);
   }
 };
+
 
 export const editDepartmentBD = async (department) => {
 

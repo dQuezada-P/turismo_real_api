@@ -1,14 +1,13 @@
 import { conectBD } from "../config/config.js";
 import oracledb from "oracledb";
 import Department from "../models/departmentModel.js";
-import { formatImagenUrl } from "../utils/imageUrl.js";
 
 export const getDepartments = async (req, res) => {
   try {
     const departmentList = await new Department().getDepartments();
     const departmentsList  = departmentList.map((dept) => {
       if(dept.IMAGENES != null)
-        dept.IMAGENES = formatImagenUrl(dept.IMAGENES)
+        dept.IMAGENES = dept.IMAGENES.split(',')
         return dept
     });
     res.json(departmentsList)
@@ -23,7 +22,7 @@ export const getDepartment = async (req, res) => {
     res.json({ msg: "Departamento no se encuentra registrado" });
   else {
     if(department.IMAGENES != null)
-      department.IMAGENES = formatImagenUrl(department.IMAGENES)
+      department.IMAGENES = department.IMAGENES.split(',')
     res.json(department);
   }
 };
