@@ -5,6 +5,7 @@ AS
                             V_HORARIO IN VARCHAR2,
                             V_CONDUCTOR IN VARCHAR2,
                             V_PRECIO IN NUMBER,
+                            V_PATENTE IN VARCHAR2,
                             RESULTADO OUT NUMBER);
 
     PROCEDURE MODIFICAR_TRANSPORTE(V_ID IN NUMBER,
@@ -28,10 +29,11 @@ AS
                                                 V_HORARIO IN VARCHAR2,
                                                 V_CONDUCTOR IN VARCHAR2,
                                                 V_PRECIO IN NUMBER,
+                                                V_PATENTE IN VARCHAR2,
                                                 RESULTADO OUT NUMBER)
     AS
     BEGIN
-        INSERT INTO TRANSPORTE VALUES(TRANSPORTE_AUTO.NEXTVAL,V_CIUDAD,V_VEHICULO,TO_DATE(V_HORARIO,'DD-MM-YYYY HH24:MI:SS'),V_CONDUCTOR,V_PRECIO);
+        INSERT INTO TRANSPORTE VALUES(TRANSPORTE_AUTO.NEXTVAL,V_CIUDAD,V_VEHICULO,TO_DATE(V_HORARIO,'DD-MM-YYYY HH24:MI:SS'),V_CONDUCTOR,V_PRECIO,V_PATENTE);
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
