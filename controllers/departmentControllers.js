@@ -7,7 +7,14 @@ export const getDepartments = async (req, res) => {
     const departmentList = await new Department().getDepartments();
     const departmentsList  = departmentList.map((dept) => {
       if(dept.IMAGENES != null)
-        dept.IMAGENES = dept.IMAGENES.split(',')
+        dept.IMAGENES = dept.IMAGENES.split(',').map((img)=>{
+          const destructured = img.split('/')
+          const imgName = destructured[destructured.length - 1]
+          return {
+            name: imgName,
+            url: img
+          }
+        })
         return dept
     });
     res.json(departmentsList)
@@ -22,7 +29,14 @@ export const getDepartment = async (req, res) => {
     res.json({ msg: "Departamento no se encuentra registrado" });
   else {
     if(department.IMAGENES != null)
-      department.IMAGENES = department.IMAGENES.split(',')
+      department.IMAGENES = department.IMAGENES.split(',').map((img)=>{
+        const destructured = img.split('/')
+        const imgName = destructured[destructured.length - 1]
+        return {
+          name: imgName,
+          url: img
+        }
+      })
     res.json(department);
   }
 };
