@@ -24,7 +24,9 @@ app.set("json spaces", 2);
 //* middlewares
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(
   fileUpload({

@@ -1,25 +1,26 @@
 import {Router} from 'express'
-import oracledb from 'oracledb'
-import {conectBD} from '../config/config.js'
+import { getLocations } from '../controllers/locationsControllers.js';
+
 
 const router = Router();
 
-//!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
 
-router.get("/locations", async (req, res) => {
-    const sql = `BEGIN UTILS.VER_LOCALIDADES(:cursor); END;`;
-  
-    const binds = {
-      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-    };
+router.get('/locations',getLocations)
 
-    const options = {
-      outFormat: oracledb.OUT_FORMAT_OBJECT,
-      isAutoCommit: false
-    }
+// router.get("/locations", async (req, res) => {
+  //   const sql = `BEGIN UTILS.VER_LOCALIDADES(:cursor); END;`;
   
-    const locations = await conectBD(sql, binds, options);
-    res.json(locations);
-  });
+  //   const binds = {
+  //     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  //   };
+
+  //   const options = {
+  //     outFormat: oracledb.OUT_FORMAT_OBJECT,
+  //     isAutoCommit: false
+  //   }
+  
+  //   const locations = await conectBD(sql, binds, options);
+  //   res.json(locations);
+  // });
 
 export default router
