@@ -4,8 +4,11 @@ import { API_SECRET_KEY } from "../config/credentials.js";
 import User from "../models/usersModel.js";
 
 export const verifyToken = async (req, res, next) => {
-    let token = req.headers.authorization;
-    console.log(token)
+    const token = req.headers.authorization;
+    const { login } = req.body;
+    console.log(req.headers)
+    console.log(req.body)
+    // console.log(req)
   
     if (!token) return res.status(403).json({ message: "No se ha enviado un Token" });
   
@@ -19,6 +22,11 @@ export const verifyToken = async (req, res, next) => {
         const user = await userModel.getUser(rut, correo);
         
         if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        if(login) {
+            res.json(user);
+            return;
+        }
         
         next();
     } catch (error) {
