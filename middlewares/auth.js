@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import { API_SECRET_KEY } from "../config/credentials.js";
 import User from "../models/usersModel.js";
 
+
+
+
 export const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization;
     const { login } = req.body;
@@ -13,22 +16,26 @@ export const verifyToken = async (req, res, next) => {
     if (!token) return res.status(403).json({ message: "No se ha enviado un Token" });
   
     try {
-        const decoded = jwt.verify(token, API_SECRET_KEY);
-        console.log(decoded)
-        const { rut, correo } = decoded
-        req.query.rut = rut
+        return jwt.verify(token, API_SECRET_KEY, async (err, decoded) => { 
+            if (err?.name == "TokenExpiredError") return res.status(403).json({ message: "Token ha expirado. Inicie sesión nuevamente" });
 
-        const userModel = new User()
-        const user = await userModel.getUser(rut, correo);
+            const { rut, correo } = decoded
         
-        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+            req.query.rut = rut
 
-        if(login) {
-            res.json(user);
-            return;
-        }
+            const userModel = new User()
+            const user = await userModel.getUser(rut, correo);
+            
+            if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+            if(login) {
+                res.json(user);
+                return;
+            }
+            
+            next();
+        });
         
-        next();
     } catch (error) {
         console.log('error')
         console.log(error)

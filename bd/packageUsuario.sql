@@ -52,7 +52,11 @@ AS
         CLOSE C_CORREO;
 
         IF COUNT_ROW > 0 THEN
-            OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.CORREO = V_USERNAME;
+            OPEN V_USER FOR 
+                SELECT * FROM USUARIO U 
+                JOIN ROL R
+                ON U.ID_ROL = R.ID
+                WHERE U.CORREO = V_USERNAME;
         ELSE
             OPEN C_RUT;
             FETCH C_RUT INTO C;  
@@ -61,7 +65,11 @@ AS
             CLOSE C_RUT;
 
             IF COUNT_ROW > 0 THEN
-                OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.RUT = V_USERNAME;
+                OPEN V_USER FOR 
+                    SELECT * FROM USUARIO U 
+                    JOIN ROL R
+                    ON U.ID_ROL = R.ID
+                    WHERE U.RUT = V_USERNAME;
             END IF;
         END IF;
 
@@ -148,7 +156,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.DESCRIPCION AS "CARGO"
+                                R.CARGO AS "CARGO"
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
@@ -167,7 +175,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.DESCRIPCION AS "CARGO"
+                                R.CARGO AS "CARGO"
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
@@ -203,7 +211,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.DESCRIPCION AS "CARGO"
+                                R.CARGO AS "CARGO"
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
