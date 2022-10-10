@@ -1,5 +1,3 @@
-import { conectBD } from "../config/config.js";
-import oracledb from "oracledb";
 import Department from "../models/departmentModel.js";
 
 export const getDepartments = async (req, res) => {
