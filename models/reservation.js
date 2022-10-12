@@ -10,7 +10,8 @@ class Reservation{
     DEPARTAMENTO,
     SERVICIO,
     CHECKIN,
-    CHECKOUT
+    CHECKOUT,
+    MONTO,
   )
   {
     this.id = ID,
@@ -21,7 +22,8 @@ class Reservation{
     this.departamento = DEPARTAMENTO,
     this.servicio = SERVICIO,
     this.checkin = CHECKIN,
-    this.checkout = CHECKOUT
+    this.checkout = CHECKOUT,
+    this.monto = MONTO
   }
 
   async createReservation(){
@@ -90,6 +92,13 @@ class Reservation{
 
   set CHECKOUT(newValue) {
     this.checkout = newValue;
+  }
+  get MONTO() {
+    return this.monto;
+  }
+
+  set MONTO(newValue) {
+    this.monto = newValue;
   }
 }
 
