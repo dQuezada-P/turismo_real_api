@@ -14,7 +14,7 @@ const router = Router();
 //*POST
 router.post("/", async (req, res) => {
   const { ciudad, cupo, precio, descripcion, horario } = req.body;
-  binds = {
+  const binds = {
     ciudad: ciudad,
     cupo: cupo,
     precio: precio,
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     horario: horario,
     resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
   };
-  sql = `BEGIN ACCIONES_TOUR.CREAR_TOUR(:ciudad,
+  const sql = `BEGIN ACCIONES_TOUR.CREAR_TOUR(:ciudad,
                                         :cupo,
                                         :precio,
                                         :descripcion,
@@ -76,14 +76,14 @@ router.delete("/", async (req, res) => {
 
 //*GET
 router.get("/", async (req, res) => {
-  binds = {
+  const binds = {
     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
   };
-  sql = `BEGIN ACCIONES_TOUR.VER_TOUR(:cursor);END;`;
+  const sql = `BEGIN ACCIONES_TOUR.VER_TOUR(:cursor);END;`;
 
   const callback = async (result) => {
     const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
+    const rows = await resultSet.getRows();
     await resultSet.close();
     res.json(jsonListGen(rows));
   };

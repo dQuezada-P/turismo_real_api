@@ -20,7 +20,7 @@ AS
 
     PROCEDURE VER_TRANSPORTE(V_TRANSPORTES OUT SYS_REFCURSOR);
 END;
-
+/
 ----------------------------------------------------------------------
 create or replace PACKAGE BODY ACCIONES_TRANSPORTE
 AS

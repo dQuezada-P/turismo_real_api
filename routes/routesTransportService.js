@@ -1,7 +1,7 @@
 //? Variables
 import {Router} from 'express'
 import oracledb from 'oracledb'
-import {conectBD} from '../config/config.js'
+import {conectBD, connectdb} from '../config/config.js'
 // const { Router } = require("express");
 // const oracledb = require("oracledb");
 const router = Router();
@@ -73,37 +73,23 @@ router.delete("/", async (req, res) => {
 });
 
 //*GET
-router.get("/", async (req, res) => {
-  binds = {
+router.get("/all", async (req, res) => {
+  const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:cursor);END;`;
+  
+  const binds = {
     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
   };
-  sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:cursor);END;`;
 
-  const callback = async (result) => {
-    const resultSet = result.outBinds.cursor;
-    rows = await resultSet.getRows();
-    await resultSet.close();
-    res.json(jsonListGen(rows));
-  };
-  const jsonListGen = (rows) => {
-    console.log(rows);
+  const options = {
+    outFormat: oracledb.OUT_FORMAT_OBJECT,
+  }
 
-    const json = [];
+  const { cursor } = await connectdb(sql, binds, options);
 
-    rows.map((row) => {
-      json.push({
-        id: row[0],
-        ciudad: row[1],
-        vehiculo: row[2],
-        horario: row[3],
-        conductor: row[4],
-        precio: row[5],
-      });
-    });
+  const transports = await cursor.getRows();
+  console.log(transports)
 
-    return json;
-  };
-  await conectBD(sql, binds, { isAutoCommit: true }, callback);
+  res.json(transports)
 });
 
 export default router
