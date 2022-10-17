@@ -4,26 +4,24 @@ class Reservation{
   constructor(
     ID,
     FECHA_INICIO,
-    FECHA_SALIDA,
+    DIAS,
     CANTIDAD_PERSONA,
     CLIENTE,
     DEPARTAMENTO,
-    SERVICIO,
     CHECKIN,
     CHECKOUT,
-    MONTO,
+    ABONO,
   )
   {
     this.id = ID,
     this.fecha_inicio = FECHA_INICIO,
-    this.fecha_salida = FECHA_SALIDA,
+    this.dias = DIAS,
     this.cantidad_persona = CANTIDAD_PERSONA,
     this.cliente = CLIENTE,
     this.departamento = DEPARTAMENTO,
-    this.servicio = SERVICIO,
     this.checkin = CHECKIN,
     this.checkout = CHECKOUT,
-    this.monto = MONTO
+    this.abono = ABONO
   }
 
   async createReservation(){
@@ -44,12 +42,12 @@ class Reservation{
   set FECHA_INICIO(newValue) {
     this.fecha_inicio = newValue;
   }
-  get FECHA_SALIDA() {
-    return this.fecha_salida;
+  get DIAS() {
+    return this.dias;
   }
 
-  set FECHA_SALIDA(newValue) {
-    this.fecha_salida = newValue;
+  set DIAS(newValue) {
+    this.dias = newValue;
   }
   get CANTIDAD_PERSONA() {
     return this.cantidad_persona;
@@ -72,13 +70,6 @@ class Reservation{
   set DEPARTAMENTO(newValue) {
     this.departamento = newValue;
   }
-  get SERVICIO() {
-    return this.servicio;
-  }
-
-  set SERVICIO(newValue) {
-    this.servicio = newValue;
-  }
   get CHECKIN() {
     return this.checkin;
   }
@@ -93,12 +84,12 @@ class Reservation{
   set CHECKOUT(newValue) {
     this.checkout = newValue;
   }
-  get MONTO() {
-    return this.monto;
+  get ABONO() {
+    return this.abono;
   }
 
-  set MONTO(newValue) {
-    this.monto = newValue;
+  set ABONO(newValue) {
+    this.abono = newValue;
   }
 }
 
