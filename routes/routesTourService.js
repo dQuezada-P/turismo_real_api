@@ -75,39 +75,8 @@ router.delete("/", async (req, res) => {
   await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
+
 //*GET
-// router.get("/all", async (req, res) => {
-//   const binds = {
-//     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-//   };
-//   const sql = ``;
-
-//   const callback = async (result) => {
-//     const resultSet = result.outBinds.cursor;
-//     const rows = await resultSet.getRows();
-//     await resultSet.close();
-//     res.json(jsonListGen(rows));
-//   };
-//   const jsonListGen = (rows) => {
-//     console.log(rows);
-
-//     const json = [];
-
-//     rows.map((row) => {
-//       json.push({
-//         id: row[0],
-//         ciudad: row[1],
-//         cupo: row[2],
-//         precio: row[3],
-//         descripcion: row[4],
-//         horario: row[5],
-//       });
-//     });
-
-//     return json;
-//   };
-//   await conectBD(sql, binds, { isAutoCommit: true }, callback);
-// });
 router.get("/all", getTours);
 
 export default router
