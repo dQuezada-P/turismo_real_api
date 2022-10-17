@@ -2,6 +2,7 @@
 import {Router} from 'express'
 import oracledb from 'oracledb'
 import {conectBD, connectdb} from '../config/config.js'
+import { getTours } from '../controllers/tour.controller.js';
 // const { Router } = require("express");
 // const oracledb = require("oracledb");
 const router = Router();
@@ -107,23 +108,6 @@ router.delete("/", async (req, res) => {
 //   };
 //   await conectBD(sql, binds, { isAutoCommit: true }, callback);
 // });
-router.get("/all", async (req, res) => {
-  const sql = `BEGIN ACCIONES_TOUR.VER_TOUR(:cursor);END;`;
-  
-  const binds = {
-    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-  };
-
-  const options = {
-    outFormat: oracledb.OUT_FORMAT_OBJECT,
-  }
-
-  const { cursor } = await connectdb(sql, binds, options);
-
-  const tours = await cursor.getRows();
-  console.log(tours)
-
-  res.json(tours)
-});
+router.get("/all", getTours);
 
 export default router
