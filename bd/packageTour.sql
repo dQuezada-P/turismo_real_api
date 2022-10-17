@@ -44,7 +44,7 @@ BEGIN
 
     EXCEPTION
         WHEN OTHERS THEN
-    resultado := 0; 
+    RESULTADO := 0; 
     rollback;
     END;
 

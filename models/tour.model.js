@@ -14,6 +14,10 @@ class Tour {
     async getTours() {
         return await tourDao.getTours();
     }
+
+    async addTour() {
+        return await tourDao.addTour(this);
+    }
 }
 
 export default Tour;

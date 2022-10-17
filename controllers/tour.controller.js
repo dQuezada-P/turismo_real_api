@@ -2,30 +2,25 @@
 import Tour from "../models/tour.model.js"
 
 export const getTours = async (req, res) => {
-    const tourModel = new Tour()
-    const tourList = await tourModel.getTours();
+  const tourModel = new Tour()
+  const tourList = await tourModel.getTours();
 
-    res.json(tourList)
+  res.json(tourList)
 }
 
+export const addTour = async (req, res) => {
+  const { ciudad, cupo, precio, descripcion, horario } = req.body;
+  const tourModel = new Tour(
+    null,
+    ciudad,
+    cupo,
+    precio,
+    horario,
+    descripcion
+  );
+  
+  console.log(tourModel)
 
-async (req, res) => {
-
-
-    const sql = `BEGIN ACCIONES_TOUR.VER_TOUR(:cursor);END;`;
-    
-    const binds = {
-      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-    };
-  
-    const options = {
-      outFormat: oracledb.OUT_FORMAT_OBJECT,
-    }
-  
-    const { cursor } = await connectdb(sql, binds, options);
-  
-    const tours = await cursor.getRows();
-    console.log(tours)
-  
-    res.json(tours)
-  }
+  const resultado = await tourModel.addTour();
+  res.json(resultado);
+}
