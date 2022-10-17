@@ -1,7 +1,9 @@
 //? Variables
 import {Router} from 'express'
+import { get } from 'http';
 import oracledb from 'oracledb'
 import {conectBD, connectdb} from '../config/config.js'
+import { getTransports } from '../controllers/transport.controller.js';
 // const { Router } = require("express");
 // const oracledb = require("oracledb");
 const router = Router();
@@ -73,23 +75,6 @@ router.delete("/", async (req, res) => {
 });
 
 //*GET
-router.get("/all", async (req, res) => {
-  const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:cursor);END;`;
-  
-  const binds = {
-    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-  };
-
-  const options = {
-    outFormat: oracledb.OUT_FORMAT_OBJECT,
-  }
-
-  const { cursor } = await connectdb(sql, binds, options);
-
-  const transports = await cursor.getRows();
-  console.log(transports)
-
-  res.json(transports)
-});
+router.get("/all",getTransports);
 
 export default router
