@@ -4,6 +4,7 @@ import { get } from 'http';
 import oracledb from 'oracledb'
 import {conectBD, connectdb} from '../config/config.js'
 import { getTransports } from '../controllers/transport.controller.js';
+import { addTransport } from '../controllers/transport.controller.js'; 
 // const { Router } = require("express");
 // const oracledb = require("oracledb");
 const router = Router();
@@ -11,29 +12,12 @@ const router = Router();
 //!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
 //? Verbos HTTP
 
+//*GET
+router.get("/all",getTransports);
+
 //*POST
-router.post("/", async (req, res) => {
-  const { ciudad, vehiculo, horario, conductor, precio } = req.body;
-  binds = {
-    ciudad: ciudad,
-    vehiculo: vehiculo,
-    horario: horario,
-    conductor: conductor,
-    precio: precio,
-    resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-  };
-  sql = `BEGIN ACCIONES_TRANSPORTE.CREAR_TRANSPORTE(:ciudad,
-                                                    :vehiculo,
-                                                    :horario,
-                                                    :conductor,
-                                                    :precio,
-                                                    :resultado);
-                                                    END;`;
-  const callback = (result) => {
-    res.json(result);
-  };
-  await conectBD(sql, binds, { isAutoCommit: true }, callback);
-});
+router.post("/", addTransport);
+
 //*PUT
 router.put("/", async (req, res) => {
   const { id, ciudad, vehiculo, horario, conductor, precio } = req.body;
@@ -74,7 +58,5 @@ router.delete("/", async (req, res) => {
   await conectBD(sql, binds, { isAutoCommit: true }, callback);
 });
 
-//*GET
-router.get("/all",getTransports);
 
 export default router

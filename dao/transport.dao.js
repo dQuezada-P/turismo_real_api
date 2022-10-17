@@ -1,5 +1,6 @@
 import { connectdb } from "../config/config.js";
 import oracledb from "oracledb";
+import Transport from "../models/transport.model.js";
 
 export const getTransports = async () => {
     try {
@@ -19,4 +20,33 @@ export const getTransports = async () => {
     } catch (error) {
         
     }
-}
+};
+
+export const addTransport = async (transport) => {
+  const sql = `BEGIN ACCIONES_TRANSPORTE.CREAR_TRANSPORTE(
+    :ciudad,
+    :vehiculo,
+    :horario,
+    :conductor,
+    :precio,
+    :patente,
+    :resultado);
+    END;`;
+
+    const binds = {
+      ciudad: transport.ciudad,
+      vehiculo: transport.vehiculo,
+      horario: transport.horario,
+      conductor: transport.conductor,
+      precio: transport.precio,
+      patente: transport.patente,
+      resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    }
+
+    const options = {
+      isAutoCommit: true
+    }
+
+    const {resultado} = await connectdb (sql, binds, options);
+    return resultado
+};

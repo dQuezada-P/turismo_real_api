@@ -14,6 +14,9 @@ class Transport {
     async getTransports(){
         return await transportDao.getTransports();
     }
+    async addTransport() {
+        return await transportDao.addTransport(this);
+    }
 }
 
 export default Transport;
