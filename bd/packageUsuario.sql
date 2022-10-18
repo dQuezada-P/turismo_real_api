@@ -1,17 +1,24 @@
 create or replace PACKAGE ACCIONES_USUARIO
 AS
     PROCEDURE CREAR_USUARIO(
-    V_RUT IN VARCHAR2, 
-    V_NOMBRE IN VARCHAR2, 
-    V_APELLIDO IN VARCHAR2, 
-    V_CORREO IN VARCHAR2, 
-    V_ESTADO IN CHAR,
-    V_DIRECCION IN VARCHAR2,
-    V_TELEFONO IN VARCHAR2,
-    V_PASS IN VARCHAR2,
-    V_ROL IN NUMBER,
-    RESULTADO OUT NUMBER,
-    MSG OUT VARCHAR2);
+        V_RUT IN VARCHAR2, 
+        V_NOMBRE IN VARCHAR2, 
+        V_APELLIDO IN VARCHAR2, 
+        V_CORREO IN VARCHAR2, 
+        V_ESTADO IN CHAR,
+        V_DIRECCION IN VARCHAR2,
+        V_TELEFONO IN VARCHAR2,
+        V_PASS IN VARCHAR2,
+        V_ROL IN NUMBER,
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2);
+        
+    PROCEDURE CREAR_CONDUCTOR(V_ID_USUARIO IN VARCHAR2,     
+                        V_VEHICULO IN VARCHAR2,
+                        V_PATENTE IN VARCHAR2,
+                        V_ID_LOCALIDAD IN NUMBER,
+                        RESULTADO OUT NUMBER,
+                        MSG OUT VARCHAR2);
 
     PROCEDURE MODIFICAR_USUARIO(
         V_RUT IN VARCHAR2,
@@ -22,8 +29,18 @@ AS
         V_TELEFONO IN VARCHAR2,
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2);
-
+        
+    PROCEDURE MODIFICAR_CONDUCTOR(V_ID_CONDUCTOR IN NUMBER,
+                            V_ID_USUARIO IN VARCHAR2 ,     
+                            V_VEHICULO IN VARCHAR2,
+                            V_PATENTE IN VARCHAR2,
+                            V_ID_LOCALIDAD IN NUMBER,
+                            RESULTADO OUT NUMBER,
+                            MSG OUT VARCHAR2);
+                            
     PROCEDURE ELIMINAR_USUARIO(V_RUT IN VARCHAR2, RESULTADO OUT NUMBER);
+
+    PROCEDURE ELIMINAR_CONDUCTOR(V_ID_CONDUCTOR IN VARCHAR2, RESULTADO OUT NUMBER);
 
     PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR);
 
@@ -52,11 +69,7 @@ AS
         CLOSE C_CORREO;
 
         IF COUNT_ROW > 0 THEN
-            OPEN V_USER FOR 
-                SELECT * FROM USUARIO U 
-                JOIN ROL R
-                ON U.ID_ROL = R.ID
-                WHERE U.CORREO = V_USERNAME;
+            OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.CORREO = V_USERNAME;
         ELSE
             OPEN C_RUT;
             FETCH C_RUT INTO C;  
@@ -65,11 +78,7 @@ AS
             CLOSE C_RUT;
 
             IF COUNT_ROW > 0 THEN
-                OPEN V_USER FOR 
-                    SELECT * FROM USUARIO U 
-                    JOIN ROL R
-                    ON U.ID_ROL = R.ID
-                    WHERE U.RUT = V_USERNAME;
+                OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.RUT = V_USERNAME;
             END IF;
         END IF;
 
@@ -94,7 +103,26 @@ AS
     MSG OUT VARCHAR2)
     AS
     BEGIN
-        INSERT INTO USUARIO (ID ,RUT, NOMBRE, APELLIDO, IMAGEN, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL) VALUES(USUARIO_AUTO.NEXTVAL, V_RUT,V_NOMBRE,V_APELLIDO,'https://pbs.twimg.com/profile_images/825896631132422144/XG4CZU8N_400x400.jpg',V_CORREO,V_DIRECCION,V_TELEFONO,V_PASS,V_ROL);  
+        INSERT INTO USUARIO VALUES(USUARIO_AUTO.NEXTVAL,V_RUT,V_NOMBRE,V_APELLIDO,'',V_CORREO,V_ESTADO,V_DIRECCION,V_TELEFONO,V_PASS,V_ROL);  
+        RESULTADO := SQL%ROWCOUNT;
+        COMMIT;
+
+        EXCEPTION
+            WHEN OTHERS THEN
+               RESULTADO:=0;
+               MSG:=SQLERRM;
+               ROLLBACK;
+    END;
+    -----------------
+    PROCEDURE CREAR_CONDUCTOR(V_ID_USUARIO IN VARCHAR2 ,     
+                            V_VEHICULO IN VARCHAR2,
+                            V_PATENTE IN VARCHAR2,
+                            V_ID_LOCALIDAD IN NUMBER,
+                            RESULTADO OUT NUMBER,
+                            MSG OUT VARCHAR2)
+    AS
+    BEGIN
+    INSERT INTO CONDUCTOR VALUES(CONDUCTOR_AUTO.nextval,V_ID_USUARIO,V_VEHICULO,V_PATENTE,V_ID_LOCALIDAD);
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
@@ -133,6 +161,32 @@ AS
                ROLLBACK;
     END;
     -----
+    PROCEDURE MODIFICAR_CONDUCTOR(V_ID_CONDUCTOR IN NUMBER,
+                            V_ID_USUARIO IN VARCHAR2 ,     
+                            V_VEHICULO IN VARCHAR2,
+                            V_PATENTE IN VARCHAR2,
+                            V_ID_LOCALIDAD IN NUMBER,
+                            RESULTADO OUT NUMBER,
+                            MSG OUT VARCHAR2)
+        AS
+        BEGIN
+        UPDATE CONDUCTOR
+        SET ID_USUARIO = V_ID_USUARIO,
+        VEHICULO = V_VEHICULO,
+        PATENTE = V_PATENTE,
+        ID_LOCALIDAD = V_ID_LOCALIDAD
+        WHERE ID = V_ID_CONDUCTOR;
+        RESULTADO := SQL%ROWCOUNT;
+        COMMIT;
+
+        EXCEPTION
+            WHEN OTHERS THEN
+               RESULTADO:=0;
+               MSG:=SQLERRM;
+               ROLLBACK;
+        END;
+    
+-------------------------------
     PROCEDURE ELIMINAR_USUARIO(V_RUT IN VARCHAR2, RESULTADO OUT NUMBER)
     AS
     BEGIN
@@ -145,6 +199,18 @@ AS
                ROLLBACK;
     END;
     -----
+    PROCEDURE ELIMINAR_CONDUCTOR(V_ID_CONDUCTOR IN VARCHAR2, RESULTADO OUT NUMBER)
+        AS
+    BEGIN
+        DELETE FROM CONDUCTOR WHERE ID = V_ID_CONDUCTOR;
+        RESULTADO := SQL%ROWCOUNT;
+        COMMIT;
+        EXCEPTION
+            WHEN OTHERS THEN
+               RESULTADO:=0;
+               ROLLBACK;
+    END;
+    ------------
         PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR)
     AS
     BEGIN
@@ -156,7 +222,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.CARGO AS "CARGO"
+                                R.CARGO
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
@@ -175,7 +241,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.CARGO AS "CARGO"
+                                R.CARGO
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
@@ -211,7 +277,7 @@ AS
                                 U.DIRECCION,
                                 U.TELEFONO,
                                 U.PASS,
-                                R.CARGO AS "CARGO"
+                                R.CARGO
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
