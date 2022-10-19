@@ -240,7 +240,6 @@ AS
                                 U.ESTADO,
                                 U.DIRECCION,
                                 U.TELEFONO,
-                                U.PASS,
                                 R.CARGO
                                 FROM USUARIO U
                                 JOIN ROL R 

@@ -26,7 +26,7 @@ export const getUser = async (req, res) => {
 
 export const addUser = async (req, res) => {
   const { rut, nombre, apellido, correo, direccion, telefono, password } =
-    JSON.parse(req.body);
+    req.body;
 
   const newUser = new User(rut, nombre, apellido, 'imagen', correo, 'A', direccion, telefono, null, 3);
   newUser.pass = await newUser.encryptPassword(password);
