@@ -1,16 +1,9 @@
 //? Variables
 import {Router} from 'express'
-import { get } from 'http';
 import oracledb from 'oracledb'
-import {conectBD, connectdb} from '../config/config.js'
-import { getTransports } from '../controllers/transport.controller.js';
-import { addTransport } from '../controllers/transport.controller.js'; 
-// const { Router } = require("express");
-// const oracledb = require("oracledb");
+import { conectBD } from '../config/config.js'
+import { getTransports, addTransport } from '../controllers/transport.controller.js';
 const router = Router();
-// const db = require("../config/config.js");
-//!ARREGLARRRRRRRRRRRRRRRRRRRRRRR!
-//? Verbos HTTP
 
 //*GET
 router.get("/all",getTransports);
