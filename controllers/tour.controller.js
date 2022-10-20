@@ -8,8 +8,8 @@ export const getTours = async (req, res) => {
 };
 
 export const addTour = async (req, res) => {
-  const { ciudad, cupo, precio, descripcion, horario } = req.body;
-  const tourModel = new Tour(null, ciudad, cupo, precio, horario, descripcion);
+  const { cupo, precio, fecha, hora_inicio, duracion, descripcion, id_localidad } = req.body;
+  const tourModel = new Tour(null, cupo, precio,fecha, hora_inicio, duracion, descripcion, id_localidad);
 
   console.log(tourModel);
 

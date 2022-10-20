@@ -2,6 +2,7 @@ import { connectdb } from "../config/config.js";
 import oracledb from "oracledb";
 import Transport from "../models/transport.model.js";
 
+//VER TRANSPORTES
 export const getTransports = async () => {
     try {
         const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:cursor);END;`;
@@ -21,7 +22,7 @@ export const getTransports = async () => {
         
     }
 };
-
+//AGREGAR TRANSPORTES
 export const addTransport = async (transport) => {
   const sql = `BEGIN ACCIONES_TRANSPORTE.CREAR_TRANSPORTE(
     :ciudad,
