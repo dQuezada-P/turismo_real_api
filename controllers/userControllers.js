@@ -6,12 +6,28 @@ import User from '../models/usersModel.js'
 
 export const getUsers = async (req, res) => {
   try {
-    const usersList = await new User().getUsers();
-    res.json(usersList);
+    const { id_rol } = req.query;
+    const usersList = await new User().getUsers(id_rol);
+
+    if (id_rol != 4) { res.json(usersList); return;}
+    
+    const drivers = await getDrivers(usersList);
+    res.json(drivers);
+    
   } catch (error) {
     console.error(error);
   }
 };
+
+const getDrivers = async (usersList) => {
+  const { users, drivers } = usersList;
+    drivers.forEach((driver, index) => {
+      driver.CONDUCTOR = users[index];
+    })
+
+    console.log(drivers)
+    return drivers;
+}
 
 export const getUser = async (req, res) => {
   try {
@@ -62,45 +78,3 @@ export const deleteUser = async(req, res) => {
   const user = await conectBD(sql, binds, options, false);
   res.json(user);
 };
-
-
-// router.post("/auth", async (req, res) => {
-//   const { correo, password } =
-//     req.body;
-//   console.log(req.body)
-
-//   binds = {
-//     correo: correo,
-//     cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-//   };
-  
-//   sql = `BEGIN ACCIONES_USUARIO.AUTH_USUARIO(  
-//                                             :correo,
-//                                             :cursor); 
-//                                             END;`;
-
-//   const callback = async (result) => {
-//     const resultSet = result.outBinds.cursor
-//     const rows = await resultSet.getRows()
-//     await resultSet.close()
-//     const json = jsonListGen(rows)
-//     bcrypt.compare(password, json.hashedPass, function(err, result) {
-//       console.error("error: ",err)
-//       res.json(result)
-//     });
-//   };
-
-//   const jsonListGen = (rows) => {
-//     let json;
-
-//     rows.map((row) => {
-//       json = {
-//         correo: row[0],
-//         hashedPass: row[1]
-//       };
-//     });
-//     console.log(json);
-//     return json;
-//   };
-//   await Open(sql, binds, { isAutoCommit: true }, callback);
-// });

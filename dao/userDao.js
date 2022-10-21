@@ -1,4 +1,5 @@
 import oracledb from "oracledb";
+import internal from "stream";
 import { connectdb } from "../config/config.js";
 
 export const getUser = async (rut, correo) => {
@@ -27,10 +28,11 @@ export const getUser = async (rut, correo) => {
   }
 };
 
-export const getUsers = async () => {
+export const getUsers = async (id_rol) => {
   try {
-	  const sql = `BEGIN ACCIONES_USUARIO.VER_USUARIOS_CLIENTE(:cursor); END;`;
-    const binds = {
+	  let sql = `BEGIN ACCIONES_USUARIO.GET_USUARIOS(:id_rol, :cursor); END;`;
+    let binds = {
+      id_rol: parseInt(id_rol),
       cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
     };
     const options = {
@@ -40,12 +42,34 @@ export const getUsers = async () => {
 
     const { cursor } = await connectdb(sql, binds, options);
     const users = await cursor.getRows();
-    console.log(users);
-    return users;
+
+    if (id_rol != 4) return users;
+
+    const drivers = await getDrivers();
+    return { users, drivers }
+
   } catch (error) {
     console.error(error);
   }
 };
+
+const getDrivers = async () => {
+  try {
+    const sql = `BEGIN ACCIONES_USUARIO.GET_CONDUCTORES(:cursor); END;`;
+    const binds = {
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+    };  
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: false,
+    };
+
+    const { cursor } = await connectdb(sql, binds, options);
+    return await cursor.getRows();
+  } catch (error) {
+    
+  }
+}
 
 export const addUser = async (user) => {
   try {
