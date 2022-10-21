@@ -117,18 +117,7 @@ export const addUser = async (user) => {
 
 export const editUser = async (user) => {
   try {
-    const binds = {
-      rut: user.rut,
-      nombre: user.nombre,
-      apellido: user.apellido,
-      correo: user.correo,
-      direccion: user.direccion,
-      telefono: user.telefono,
-      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
-    };
-    console.log(binds)
-  
+     
     const sql = `BEGIN ACCIONES_USUARIO.MODIFICAR_USUARIO(  
       :rut,
       :nombre,
@@ -140,6 +129,18 @@ export const editUser = async (user) => {
       :msg );
       END;`;
 
+    const binds = {
+      rut: user.rut,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      correo: user.correo,
+      direccion: user.direccion,
+      telefono: user.telefono,
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
+    };
+    console.log(binds)
+
     const options = {
       isAutoCommit: true,
     };
@@ -147,6 +148,7 @@ export const editUser = async (user) => {
     const response = await connectdb(sql, binds, options);
     console.log(response)
     return response;
+    
   } catch (error) {
     console.log(error);
     return error;
