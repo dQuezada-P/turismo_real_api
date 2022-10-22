@@ -84,7 +84,7 @@ export const editDepartment = async (req, res) => {
     files,
   } = req.body;
 
-  const department = new Department(
+  const newDepartment = new Department(
     id,
     nombre,
     numero_banno,
@@ -100,6 +100,8 @@ export const editDepartment = async (req, res) => {
     // estado_reserva,
     files
   );
+  const response = await newDepartment.editDepartment();
+  res.json(response);
 
 };
 export const deleteDepartment = async (req, res) => {
