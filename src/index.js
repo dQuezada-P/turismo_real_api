@@ -12,6 +12,8 @@ import fileUpload from "express-fileupload";
 import { UploadImagen, GetImage } from "../controllers/files.js";
 import routerEstadistic from "../routes/routesEstadist.js";
 import routerReservation from "../routes/routesReservation.js";
+import routerMercadoPago from "../routes/routesMercadoPago.js";
+
 
 
 const app = express();
@@ -45,6 +47,7 @@ app.use("/api/servicio-tour", routerTour);
 app.use("/api/files", UploadImagen, GetImage);
 app.use("/api/estadistica", routerEstadistic);
 app.use("/api/reserva",routerReservation)
+app.use("/api/mercadopago",routerMercadoPago)
 
 
 //* server
