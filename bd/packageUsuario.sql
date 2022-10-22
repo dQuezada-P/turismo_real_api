@@ -41,6 +41,10 @@ AS
     PROCEDURE ELIMINAR_USUARIO(V_RUT IN VARCHAR2, RESULTADO OUT NUMBER);
 
     PROCEDURE ELIMINAR_CONDUCTOR(V_ID_CONDUCTOR IN VARCHAR2, RESULTADO OUT NUMBER);
+    
+    PROCEDURE GET_USUARIOS ( V_ID_ROL IN NUMBER, V_USERS OUT SYS_REFCURSOR );
+
+    PROCEDURE GET_CONDUCTORES (V_USERS OUT SYS_REFCURSOR);
 
     PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR);
 
@@ -211,7 +215,53 @@ AS
                ROLLBACK;
     END;
     ------------
-        PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR)
+    PROCEDURE VER_USUARIOS_CLIENTE ( V_USERS OUT SYS_REFCURSOR )
+    AS
+    BEGIN
+        OPEN V_USERS FOR SELECT U.RUT,
+                                U.NOMBRE,
+                                U.APELLIDO,
+                                U.CORREO,
+                                U.ESTADO,
+                                U.DIRECCION,
+                                U.TELEFONO,
+                                R.CARGO
+                                FROM USUARIO U
+                                JOIN ROL R 
+                                ON U.ID_ROL = R.ID
+                                WHERE U.ID_ROL = 3;                                      
+
+    END;
+
+    PROCEDURE GET_USUARIOS ( V_ID_ROL IN NUMBER, V_USERS OUT SYS_REFCURSOR )
+    AS
+    BEGIN
+        OPEN V_USERS FOR SELECT U.RUT,
+                                U.NOMBRE,
+                                U.APELLIDO,
+                                U.CORREO,
+                                U.ESTADO,
+                                U.DIRECCION,
+                                U.TELEFONO,
+                                R.CARGO
+                                FROM USUARIO U
+                                JOIN ROL R 
+                                ON U.ID_ROL = R.ID
+                                WHERE U.ID_ROL = V_ID_ROL
+                                ORDER BY U.ID;                                      
+
+    END;
+    ------
+    PROCEDURE GET_CONDUCTORES (V_USERS OUT SYS_REFCURSOR)
+    AS
+    BEGIN
+        OPEN V_USERS FOR SELECT *
+                        FROM CONDUCTOR C
+                        ORDER BY C.ID_USUARIO; 
+
+    END;
+    ------
+    PROCEDURE VER_USUARIO_ADMINISTRADOR (V_USERS OUT SYS_REFCURSOR)
     AS
     BEGIN
         OPEN V_USERS FOR SELECT U.RUT,
@@ -229,27 +279,9 @@ AS
                                 WHERE U.ID_ROL = 1; 
 
     END;
+    
     ------
-        PROCEDURE VER_USUARIOS_CLIENTE ( V_USERS OUT SYS_REFCURSOR )
-    AS
-    BEGIN
-        OPEN V_USERS FOR SELECT U.RUT,
-                                U.NOMBRE,
-                                U.APELLIDO,
-                                U.CORREO,
-                                U.ESTADO,
-                                U.DIRECCION,
-                                U.TELEFONO,
-                                U.PASS,
-                                R.CARGO
-                                FROM USUARIO U
-                                JOIN ROL R 
-                                ON U.ID_ROL = R.ID
-                                WHERE U.ID_ROL = 3;                                      
-
-    END;
-    ------
-        PROCEDURE VER_USUARIO_CLIENTE ( V_RUT IN VARCHAR2, V_USERS OUT SYS_REFCURSOR )
+    PROCEDURE VER_USUARIO_CLIENTE ( V_RUT IN VARCHAR2, V_USERS OUT SYS_REFCURSOR )
     AS
     BEGIN
         OPEN V_USERS FOR SELECT U.RUT,

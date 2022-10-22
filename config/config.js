@@ -46,7 +46,6 @@ export const connectdb = async (sql, binds, options) => {
     await connection.execute(sql, binds, options).then((resultSet) => {
       result = resultSet.outBinds;
     });
-
     return result;
   } catch (error) {
     console.error(error);
