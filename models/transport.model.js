@@ -1,14 +1,13 @@
 import * as transportDao from '../dao/transport.dao.js'
 
 class Transport {
-    constructor (id, ciudad, vehiculo, horario, conductor, precio, patente){
+    constructor (id, id_conductor, id_terminal, fecha, horario, precio){
         this.id = id
-        this.ciudad = ciudad
-        this.vehiculo = vehiculo
+        this.id_conductor = id_conductor
+        this.id_terminal = id_terminal
+        this.fecha = fecha
         this.horario = horario
-        this.conductor = conductor
         this.precio = precio
-        this.patente = patente
     }
 
     async getTransports(){

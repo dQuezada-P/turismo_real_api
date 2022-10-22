@@ -24,23 +24,22 @@ export const getTransports = async () => {
 };
 //AGREGAR TRANSPORTES
 export const addTransport = async (transport) => {
+
   const sql = `BEGIN ACCIONES_TRANSPORTE.CREAR_TRANSPORTE(
-    :ciudad,
-    :vehiculo,
+    :id_conductor,
+    :id_terminal,
+    :fecha,
     :horario,
-    :conductor,
     :precio,
-    :patente,
     :resultado);
     END;`;
 
     const binds = {
-      ciudad: transport.ciudad,
-      vehiculo: transport.vehiculo,
+      id_conductor: transport.id_conductor,
+      id_terminal: transport.id_terminal,
+      fecha: transport.fecha,
       horario: transport.horario,
-      conductor: transport.conductor,
       precio: transport.precio,
-      patente: transport.patente,
       resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     }
 

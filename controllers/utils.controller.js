@@ -9,14 +9,14 @@ export const getLocations = async (req, res) => {
 export const getDrivers = async (req, res) => {
   const { id_localidad } = req.query;
   const drivers = await utilsDao.getDrivers(id_localidad)
-  drivers?.length === 0 ? res.json({msg : 'No hay codnuctores'}) : res.json(drivers);
+  drivers?.length === 0 ? res.json({msg : 'No hay conductores'}) : res.json(drivers);
   
 };
 
 export const getTerminals = async (req, res) => {
   const { id_localidad } = req.query;
   const terminals = await utilsDao.getTerminals(id_localidad)
-  terminals?.length === 0 ? res.json({msg : 'No hay codnuctores'}) : res.json(terminals);
+  terminals?.length === 0 ? res.json({msg : 'No hay terminales'}) : res.json(terminals);
   
 };
 

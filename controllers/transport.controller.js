@@ -8,20 +8,19 @@ export const getTransports = async (req, res) => {
 }
 
 export const addTransport = async (req, res) => {
-    const {ciudad, vehiculo, horario, conductor, precio, patente } = req.body;
+    const {id_terminal, id_conductor, fecha, horario, precio } = req.body;
     console.log(req.body)  
     const transportModel = new Transport(
         null,
-        ciudad, 
-        vehiculo,
+        id_conductor,
+        id_terminal,
+        fecha, 
         horario,
-        conductor,
         precio,
-        patente
     );
     console.log(req.body)    
     console.log(transportModel)
 
-    // const resultado = await transportModel.addTransport();
-    // res.json(resultado);
+    const resultado = await transportModel.addTransport();
+    res.json(resultado);
 }
