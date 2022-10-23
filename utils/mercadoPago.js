@@ -1,11 +1,11 @@
 import mercadopago from "mercadopago";
 import { config } from "dotenv";
 import axios from "axios";
-import {parse, stringify, toJSON, fromJSON} from 'flatted';
+import { parse, stringify, toJSON, fromJSON } from "flatted";
 config();
 
 export const payMercadoPago = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { cliente, arriendo } = req.body;
 
   // console.log(
@@ -19,13 +19,23 @@ export const payMercadoPago = async (req, res) => {
   let preference = {
     items: [
       {
+        id: arriendo.id,
         title: arriendo.nombre,
         unit_price: parseInt(
           arriendo.abono.substr(1, arriendo.abono.lenght).replace(".", "")
         ),
         quantity: 1,
+        picture_url: arriendo.img,
       },
     ],
+    payer: {
+      name: cliente.nombre,
+      email: cliente.correo,
+    },
+    metadata: {
+      cliente: cliente,
+      arriendo: arriendo,
+    },
     back_urls: {
       success: "http://localhost:5173/notificacion",
       failure: "http://localhost:5173/notificacion",
@@ -35,7 +45,6 @@ export const payMercadoPago = async (req, res) => {
   };
   try {
     const { response } = await mercadopago.preferences.create(preference);
-    console.log(response)
     res.json(response.id);
   } catch (error) {
     res.json({ msg: "Error al intentar pagar" });
@@ -53,13 +62,14 @@ export const webHook = async (req, res) => {
         },
       }
     );
-
-    // console.log(result)
     res.json({
-      status : toJSON(result)[61],
-      order : toJSON(result)[96],
-      payMethod : toJSON(result)[56],
-      mount : toJSON(result)[5].transaction_amount,
+      status : result.data.status,
+      abono : result.data.transaction_amount,
+      id : result.data.metadata.arriendo.id,
+      rut : result.data.metadata.cliente.rut,
+      fecha : result.data.metadata.arriendo.fecha,
+      dias : result.data.metadata.arriendo.dias,
+      cantP : result.data.metadata.arriendo.cant_personas
     });
   } catch (error) {
     console.log(error);

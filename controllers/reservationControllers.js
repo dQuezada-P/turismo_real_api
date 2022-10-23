@@ -1,21 +1,26 @@
 import Reservation from "../models/reservation.js";
 
 export const createReservation = async (req, res) => {
-  console.log(req.body)
-  const { fecha_inicio, dias, cantidad_persona, cliente, departamento, bono } =
-    req.body;
+  const { fecha, dias, cantP, rut, id, abono } = req.body.payment;
+  
+  // const formatDate = fecha.splice('T',',');
+  console.log(fecha.split('T')[0])
+  let [newfecha] = fecha.split('T')
+  newfecha = newfecha.split('-')
+  newfecha = newfecha[2]+'/'+newfecha[1]+'/'+newfecha[0]
+
   const reservation = new Reservation(
     null,
-    fecha_inicio,
+    newfecha,
     dias,
-    cantidad_persona,
-    cliente,
-    departamento,
+    cantP,
+    rut,
+    id,
     null,
     null,
-    bono
+    abono
   );
-
+  console.log(reservation)
   try {
     const result = await reservation.createReservation();
     if (result) {
