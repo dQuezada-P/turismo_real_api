@@ -73,7 +73,22 @@ AS
         CLOSE C_CORREO;
 
         IF COUNT_ROW > 0 THEN
-            OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.CORREO = V_USERNAME;
+            OPEN V_USER FOR SELECT 
+                                U.RUT,
+                                U.NOMBRE,
+                                U.APELLIDO,
+                                U.IMAGEN,
+                                U.CORREO,
+                                U.ESTADO,
+                                U.DIRECCION,
+                                U.TELEFONO,
+                                U.PASS,
+                                U.ID_ROL,
+                                R.CARGO
+                                FROM USUARIO U
+                                JOIN ROL R 
+                                ON U.ID_ROL = R.ID
+                                WHERE U.CORREO = V_USERNAME;
         ELSE
             OPEN C_RUT;
             FETCH C_RUT INTO C;  
@@ -82,7 +97,22 @@ AS
             CLOSE C_RUT;
 
             IF COUNT_ROW > 0 THEN
-                OPEN V_USER FOR SELECT * FROM USUARIO U WHERE U.RUT = V_USERNAME;
+                OPEN V_USER FOR SELECT 
+                                U.RUT,
+                                U.NOMBRE,
+                                U.APELLIDO,
+                                U.IMAGEN,
+                                U.CORREO,
+                                U.ESTADO,
+                                U.DIRECCION,
+                                U.TELEFONO,
+                                U.PASS,
+                                U.ID_ROL,
+                                R.CARGO
+                                FROM USUARIO U
+                                JOIN ROL R  
+                                ON U.ID_ROL = R.ID
+                                WHERE U.RUT = V_USERNAME;
             END IF;
         END IF;
 
