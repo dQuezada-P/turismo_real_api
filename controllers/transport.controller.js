@@ -24,3 +24,30 @@ export const addTransport = async (req, res) => {
     const resultado = await transportModel.addTransport();
     res.json(resultado);
 }
+
+export const getTransport = async (req, res) => {
+    try {
+        const {id} = req.query;
+        const transport = await new Transport().getTransport(id)
+        if (transport == null)
+            res.json({msg: "Transporte no se encuentra registrado"});
+        res.json(transport);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const editTransport = async (req, res) =>{
+    const {id, id_terminal, id_conductor, fecha, horario, precio } = req.body;
+    const newTransport = new Transport(
+        id,
+        id_conductor,
+        id_terminal,
+        fecha, 
+        horario,
+        precio,
+    );
+
+    const response = await newTransport.editTransport();
+    res.json(response);
+}

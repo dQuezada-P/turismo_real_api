@@ -5,7 +5,7 @@ import Transport from "../models/transport.model.js";
 //VER TRANSPORTES
 export const getTransports = async () => {
     try {
-        const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:cursor);END;`;
+        const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTES(:cursor);END;`;
   
         const binds = {
           cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
@@ -22,6 +22,33 @@ export const getTransports = async () => {
         
     }
 };
+
+//VER TRANSPORTE
+export const getTransport = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_TRANSPORTE.VER_TRANSPORTE(:id, :cursor);END;`;
+
+    const binds = {
+      id: id,
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT},
+    };
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+    
+    const { cursor } = await connectdb(sql, binds, options);
+
+    if (cursor != undefined){
+      const [transport] = await cursor.getRows();
+      return transport;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+}
 //AGREGAR TRANSPORTES
 export const addTransport = async (transport) => {
 
@@ -49,4 +76,37 @@ export const addTransport = async (transport) => {
 
     const {resultado} = await connectdb (sql, binds, options);
     return resultado
+};
+//EDITAR TRANSPORTE
+export const editTransport = async (transport) => {
+  try {
+    const sql = `BEGIN ACCIONES_TRANSPORTE.MODIFICAR_TRANSPORTE(:id,
+      :id_conductor,
+      :id_terminal,
+      :fecha,
+      :horario,
+      :precio,
+      :resultado);
+      END;`;
+    
+      const binds = {
+        id: transport.id,
+        id_conductor: transport.id_conductor,
+        id_terminal: transport.id_terminal,
+        fecha: transport.fecha,
+        horario: transport.horario,
+        precio: transport.precio,
+        resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      }
+      const options = {
+        isAutoCommit: true
+      };
+
+      const {resultado} = await connectdb(sql, binds, options);
+      return resultado
+    
+  } catch (error) {
+    console.log(error);
+  }
+  
 };
