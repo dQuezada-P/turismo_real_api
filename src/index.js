@@ -35,8 +35,8 @@ app.use(
 );
 
 //* routes
-app.use("/api/usuario", routerUser)
-app.use("/api/auth", routerAuth)
+app.use("/api/usuario", routerUser);
+app.use("/api/auth", routerAuth);
 app.use("/api/departamento/", routerDepartment);
 app.use("/api/utils", routerUtil);
 app.use("/api/inventario", routerInventary);
