@@ -318,6 +318,7 @@ AS
                                 U.NOMBRE,
                                 U.APELLIDO,
                                 U.CORREO,
+                                U.IMAGEN,
                                 U.ESTADO,
                                 U.DIRECCION,
                                 U.TELEFONO
