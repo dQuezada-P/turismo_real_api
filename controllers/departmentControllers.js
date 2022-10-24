@@ -3,39 +3,43 @@ import Department from "../models/departmentModel.js";
 export const getDepartments = async (req, res) => {
   try {
     const departmentList = await new Department().getDepartments();
-    const departmentsList  = departmentList.map((dept) => {
-      if(dept.IMAGENES != null)
-        dept.IMAGENES = dept.IMAGENES.split(',').map((img)=>{
-          const destructured = img.split('/')
-          const imgName = destructured[destructured.length - 1]
+    const departmentsList = departmentList.map((dept) => {
+      if (dept.IMAGENES != null)
+        dept.IMAGENES = dept.IMAGENES.split(",").map((img) => {
+          const destructured = img.split("/");
+          const imgName = destructured[destructured.length - 1];
           return {
             name: imgName,
-            url: img
-          }
-        })
-        return dept
+            url: img,
+          };
+        });
+      return dept;
     });
-    res.json(departmentsList)
+    res.json(departmentsList);
   } catch (error) {
     console.error(error);
   }
 };
 
 export const getDepartment = async (req, res) => {
-  const [department] = await new Department().getDepartment(req.query.id);
-  if (department == null)
-    res.json({ msg: "Departamento no se encuentra registrado" });
-  else {
-    if(department.IMAGENES != null)
-      department.IMAGENES = department.IMAGENES.split(',').map((img)=>{
-        const destructured = img.split('/')
-        const imgName = destructured[destructured.length - 1]
-        return {
-          name: imgName,
-          url: img
-        }
-      })
-    res.json(department);
+  try {
+    const [department] = await new Department().getDepartment(req.query.id);
+    if (department == null)
+      res.json({ msg: "Departamento no se encuentra registrado" });
+    else {
+      if (department.IMAGENES != null)
+        department.IMAGENES = department.IMAGENES.split(",").map((img) => {
+          const destructured = img.split("/");
+          const imgName = destructured[destructured.length - 1];
+          return {
+            name: imgName,
+            url: img,
+          };
+        });
+      res.json(department);
+    }
+  } catch (error) {
+    console.error(error)
   }
 };
 
@@ -55,10 +59,10 @@ export const addDepartment = async (req, res) => {
   const department = new Department(
     null,
     nombre,
-    parseInt(numero_banno,10),
-    parseInt(numero_habitacion,10),
+    parseInt(numero_banno, 10),
+    parseInt(numero_habitacion, 10),
     direccion,
-    parseInt(valor_arriendo.replace("$", "").replace(".", ""),10),
+    parseInt(valor_arriendo.replace("$", "").replace(".", ""), 10),
     localidad,
     null,
     descripcion,
@@ -69,7 +73,6 @@ export const addDepartment = async (req, res) => {
   await department.addDepartment(responseAction);
 };
 export const editDepartment = async (req, res) => {
-
   const {
     id,
     nombre,

@@ -44,6 +44,10 @@ AS
         RETURNING RESERVA.ID INTO ID;
         V_ID_RESERVA := ID;
         
+        INSERT INTO CHECKIN(ID) VALUES(ID);
+        INSERT INTO CHECKOUT(ID) VALUES(ID);
+        INSERT INTO PAGO(ID) VALUES(ID);
+        
         UPDATE RESERVA 
         SET ID_CHECKIN = ID, 
         ID_CHECKOUT = ID,
@@ -53,6 +57,10 @@ AS
         UPDATE PAGO
         SET ABONO = V_ABONO
         WHERE ID = V_ID_RESERVA;
+        
+        UPDATE DEPARTAMENTO
+        SET ESTADO_RESERVA = 'N'
+        WHERE ID = V_ID_DEPARTAMENTO;
         
     COMMIT;
     

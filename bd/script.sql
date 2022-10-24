@@ -404,23 +404,7 @@ INSERT INTO PAGO(ID) VALUES(PAGO_AUTO.NEXTVAL);
 --------------------------------------------------------------------------------------
 INSERT INTO RESERVA(ID,FECHA_INICIO,DIAS,CANTIDAD_PERSONA,ID_CLIENTE,ID_DEPARTAMENTO,ID_CHECKIN,ID_CHECKOUT,ID_PAGO) VALUES(RESERVA_AUTO.NEXTVAL,'22-08-22',3,2,'18937755-K',1,1,1,1);
 --------------------------------------------------------------------------------------
-create or replace TRIGGER CREAR_RESERVA
-    BEFORE INSERT ON RESERVA
-    DECLARE
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    ID_RESERVA NUMBER;
-    BEGIN
-        SELECT ID INTO ID_RESERVA FROM (SELECT * FROM RESERVA
-                        ORDER BY ID DESC )
-                        WHERE ROWNUM = 1 ;
-        ID_RESERVA := ID_RESERVA + 1;
-        INSERT INTO CHECKIN(ID) VALUES(ID_RESERVA);
-        INSERT INTO CHECKOUT(ID) VALUES(ID_RESERVA);
-        INSERT INTO PAGO(ID) VALUES(ID_RESERVA);
-        --acciones_reserva.actualizar_checks(ID_RESERVA,V,B);
-        --UPDATE RESERVA SET ID_CHECKIN = ID_RESERVA WHERE ID = ID_RESERVA;
-        --DBMS_OUTPUT.PUT_LINE(B);
-        COMMIT;
+COMMIT;
 
 END;
 /
