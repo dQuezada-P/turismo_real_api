@@ -17,6 +17,7 @@ export const addTransport = async (req, res) => {
         fecha, 
         horario,
         precio,
+        null
     );
     console.log(req.body)    
     console.log(transportModel)
@@ -38,15 +39,17 @@ export const getTransport = async (req, res) => {
 }
 
 export const editTransport = async (req, res) =>{
-    const {id, id_terminal, id_conductor, fecha, horario, precio } = req.body;
+    const {id, id_conductor, id_terminal, fecha, horario, precio, estado } = req.body;
     const newTransport = new Transport(
         id,
         id_conductor,
         id_terminal,
-        fecha, 
+        fecha,
         horario,
         precio,
+        estado,
     );
+    console.log(newTransport);
 
     const response = await newTransport.editTransport();
     res.json(response);

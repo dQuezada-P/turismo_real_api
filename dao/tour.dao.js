@@ -81,7 +81,7 @@ export const addTour = async (tour) => {
 
 //EDITAR TOUR
 export const editTour = async (tour) => {
-  try {
+  try {    
     const sql = `BEGIN ACCIONES_TOUR.MODIFICAR_TOUR(   
       :id,     
       :cupo,
@@ -90,6 +90,7 @@ export const editTour = async (tour) => {
       :hora_inicio,
       :duracion,
       :descripcion,
+      :estado,
       :id_localidad,
       :resultado);
       END;`;
@@ -102,6 +103,7 @@ export const editTour = async (tour) => {
     hora_inicio: tour.hora_inicio,
     duracion: tour.duracion,
     descripcion: tour.descripcion,
+    estado: tour.estado,
     id_localidad: tour.id_localidad,
     resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
   };
@@ -112,7 +114,9 @@ export const editTour = async (tour) => {
   };
 
   const { resultado } = await connectdb(sql, binds, options);
+  console.log(resultado);
   return resultado
+  
       
     } catch (error) {
       console.log(error);
@@ -121,8 +125,27 @@ export const editTour = async (tour) => {
 
 //ELIMINAR TOUR
 
-export const deletTour = async (id) => {
-  const sql = `BEGIN ACCIONES_TOUR.ELIMINAR_TOUR(:id,:resultado);END;`;
-  
+export const deleteTour = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_TOUR.ELIMINAR_TOUR(:id,:resultado);END;`;
+
+    const binds = {
+      id: id,
+      resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT},
+      };
+      console.log(binds);
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const resultado = await connectdb(sql, binds, options);
+    console.log(resultado);
+    return resultado;
+  } catch (error) {
+    console.error(error);
+  }
+
 
 };

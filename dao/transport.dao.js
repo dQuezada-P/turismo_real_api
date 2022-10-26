@@ -86,6 +86,7 @@ export const editTransport = async (transport) => {
       :fecha,
       :horario,
       :precio,
+      :estado,
       :resultado);
       END;`;
     
@@ -96,6 +97,7 @@ export const editTransport = async (transport) => {
         fecha: transport.fecha,
         horario: transport.horario,
         precio: transport.precio,
+        estado: transport.estado,
         resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
       }
       const options = {

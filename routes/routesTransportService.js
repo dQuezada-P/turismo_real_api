@@ -2,8 +2,7 @@
 import {Router} from 'express'
 import oracledb from 'oracledb'
 import { conectBD } from '../config/config.js'
-import { editDepartment } from '../controllers/departmentControllers.js';
-import { getTransports, addTransport, getTransport } from '../controllers/transport.controller.js';
+import { getTransports, addTransport, getTransport, editTransport } from '../controllers/transport.controller.js';
 const router = Router();
 
 //*GET
@@ -11,9 +10,8 @@ router.get("/all",getTransports);
 router.get("/", getTransport);
 //*POST
 router.post("/", addTransport);
-
 //*PUT
-router.put("/", editDepartment);
+router.put("/", editTransport);
 
 //*DELETE
 router.delete("/", async (req, res) => {

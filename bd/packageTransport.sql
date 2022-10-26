@@ -5,7 +5,7 @@ AS
                             V_ID_TERMINAL IN NUMBER,
                             V_FECHA IN VARCHAR2,
                             V_HORARIO IN VARCHAR2,
-                            V_PRECIO IN NUMBER,
+                            V_PRECIO IN NUMBER,                            
                             RESULTADO OUT NUMBER);
 
     PROCEDURE MODIFICAR_TRANSPORTE(
@@ -15,8 +15,8 @@ AS
                             V_FECHA IN VARCHAR2,
                             V_HORARIO IN VARCHAR2,
                             V_PRECIO IN NUMBER,
-                            RESULTADO OUT NUMBER,
-                            MSG OUT VARCHAR2);
+                            V_ESTADO IN NUMBER,                                                  
+                            RESULTADO OUT NUMBER);
 
     PROCEDURE ELIMINAR_TRANSPORTE( V_ID IN VARCHAR2,RESULTADO OUT NUMBER);
 
@@ -33,11 +33,17 @@ AS
                             V_ID_TERMINAL IN NUMBER,
                             V_FECHA IN VARCHAR2,
                             V_HORARIO IN VARCHAR2,
-                            V_PRECIO IN NUMBER,
+                            V_PRECIO IN NUMBER,                           
                             RESULTADO OUT NUMBER)
     AS
     BEGIN
-        INSERT INTO TRANSPORTE VALUES('TR_'||TO_CHAR(TRANSPORTE_AUTO.NEXTVAL),V_ID_CONDUCTOR,V_ID_TERMINAL,V_FECHA,V_HORARIO,V_PRECIO);
+        INSERT INTO TRANSPORTE (ID,ID_CONDUCTOR,ID_TERMINAL,FECHA,HORARIO,PRECIO) VALUES ('TR_'||TO_CHAR(TRANSPORTE_AUTO.NEXTVAL),
+        V_ID_CONDUCTOR,
+        V_ID_TERMINAL,
+        V_FECHA,
+        V_HORARIO,
+        V_PRECIO
+       );
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
@@ -54,25 +60,26 @@ AS
                             V_FECHA IN VARCHAR2,
                             V_HORARIO IN VARCHAR2,
                             V_PRECIO IN NUMBER,
-                            RESULTADO OUT NUMBER,
-                            MSG OUT VARCHAR2)
+                            V_ESTADO IN NUMBER,                            
+                            RESULTADO OUT NUMBER)
     AS
     BEGIN
         UPDATE TRANSPORTE
-        SET 
+        SET ID = V_ID,
         ID_CONDUCTOR = V_ID_CONDUCTOR,
         ID_TERMINAL = V_ID_TERMINAL,
         FECHA = V_FECHA,
         HORARIO = V_HORARIO,
-        PRECIO = V_PRECIO
+        PRECIO = V_PRECIO,
+        ESTADO = V_ESTADO       
         WHERE ID = V_ID;
         RESULTADO := SQL%ROWCOUNT;
         COMMIT;
 
         EXCEPTION
             WHEN OTHERS THEN
-            MSG := SQLERRM;
-            ROLLBACK;
+        RESULTADO := 0;
+        ROLLBACK;
 
     END;
 
@@ -101,14 +108,14 @@ AS
             TE.NOMBRE "TERMINAL",
             TR.FECHA "FECHA",
             TR.HORARIO "HORARIO",
-            TR.PRECIO  "PRECIO"
+            TR.PRECIO  "PRECIO"           
         FROM TRANSPORTE TR
         JOIN CONDUCTOR C
             ON TR.ID_CONDUCTOR = C.ID
         JOIN USUARIO U
             ON C.ID_USUARIO = U.ID
         JOIN TERMINAL TE
-            ON TR.ID_TERMINAL = TE.ID
+            ON TR.ID_TERMINAL = TE.ID       
             ;
     END;
 
@@ -123,6 +130,7 @@ AS
             TR.FECHA "FECHA",
             TR.HORARIO "HORARIO",
             TR.PRECIO  "PRECIO",
+            TR.ESTADO "ESTADO",
             L.ID "ID_LOCALIDAD"
         FROM TRANSPORTE TR
         JOIN CONDUCTOR C

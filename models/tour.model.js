@@ -2,7 +2,7 @@
 import * as tourDao from '../dao/tour.dao.js'
 
 class Tour {
-    constructor(id, cupo, precio, fecha, hora_inicio, duracion, descripcion, id_localidad){
+    constructor(id, cupo, precio, fecha, hora_inicio, duracion, descripcion, estado, id_localidad){
         this.id = id
         this.cupo = cupo
         this.precio = precio
@@ -10,6 +10,7 @@ class Tour {
         this.hora_inicio = hora_inicio
         this.duracion = duracion
         this.descripcion = descripcion
+        this.estado = estado
         this.id_localidad = id_localidad
     }
 
@@ -27,6 +28,10 @@ class Tour {
 
     async editTour(){
         return await tourDao.editTour(this);
+    }
+
+    async deleteTour(id){
+        return await tourDao.deleteTour(id);        
     }
 
 
@@ -77,13 +82,27 @@ class Tour {
     }  
     set descripcion(newvalue) {
         this._descripcion = newvalue;
-    }
+    }  
 
     get descripcion() {
         return this._descripcion;
     }  
-    set rut(newvalue) {
-        this._rut = newvalue;
+    set descripcion(newvalue) {
+        this._descripcion = newvalue;
+    }
+
+    get estado() {
+        return this._estado;
+    }  
+    set estado(newvalue) {
+        this._estado = newvalue;
+    }
+
+    get id_localidad() {
+        return this._id_localidad;
+    }  
+    set id_localidad(newvalue) {
+        this._id_localidad = newvalue;
     }
 }
 
