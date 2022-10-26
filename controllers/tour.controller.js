@@ -45,6 +45,7 @@ export const deleteTour = async (req, res) => {
     const {id} = req.params;    
     const tour = await new Tour().deleteTour(id)
     console.log(tour);
+    
     if (tour == 0)
       res.json({msg: "Tour no existe"});
     res.json(tour);    

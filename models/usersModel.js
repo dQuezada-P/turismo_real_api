@@ -36,6 +36,10 @@ class User {
         return await userDao.editUser(this)
     }
 
+    async deleteUser(rut){
+        return await userDao.deleteUser(rut)
+    }
+
     async findUser(username){
         return await userDao.findUser(username)
     }

@@ -24,6 +24,10 @@ class Transport {
         return await transportDao.editTransport(this);
     }
 
+    async deleteTranspsort(id){
+        return await transportDao.deleteTranspsort(id);
+    }
+
     get id() {
         return this._id;
     }  

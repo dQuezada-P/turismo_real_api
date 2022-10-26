@@ -41,10 +41,10 @@ export const getUser = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
-  const { rut, nombre, apellido, correo, direccion, telefono, password } =
+  const { rut, nombre, apellido, correo, estado, direccion, telefono, password } =
     req.body;
 
-  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 'A', direccion, telefono, null, 3);
+  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 1, direccion, telefono, null, 3);
   newUser.pass = await newUser.encryptPassword(password);
 
   const response = await newUser.addUser();
@@ -53,28 +53,26 @@ export const addUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
   console.log(req.body)
-  const { rut, nombre, apellido, correo, direccion, telefono, password } =
+  const { rut, nombre, apellido, correo, estado, direccion, telefono, password } =
     req.body;
     
 
-  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 'A', direccion, telefono, null, null);
+  const newUser = new User(rut, nombre, apellido, 'imagen', correo, estado, direccion, telefono, null, null);
 
   const response = await newUser.editUser();
   res.json(response);
 };
 
 export const deleteUser = async(req, res) => {
-  const { rut } = req.body;
-  const binds = {
-    rut: rut,
-    r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-  };
-
-  const sql = `BEGIN ACCIONES_USUARIO.ELIMINAR_USUARIO(:rut,:r);END;`;
-
-  const options = {
-    isAutoCommit: true,
-  };
-  const user = await conectBD(sql, binds, options, false);
-  res.json(user);
+  try {       
+    const { rut } = req.params;    
+    const user = await new User().deleteUser(rut)
+    console.log(rut);
+    if (user == 0)
+      res.json({msg: "Usuario no existe"});
+    res.json(user);  
+  } catch (error) {
+    
+  }
+ 
 };

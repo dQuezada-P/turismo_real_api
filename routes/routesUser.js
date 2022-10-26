@@ -16,6 +16,7 @@ router.post('/',addUser)
 
 router.put('/',editUser)
 
-router.delete('/',deleteUser)
+router.delete('/:rut',deleteUser)
 
+//:var = variable .params (ej: http://localhost:3000/api/usuario/21234325-2 )
 export default router;

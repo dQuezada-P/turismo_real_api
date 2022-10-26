@@ -2,7 +2,7 @@
 import {Router} from 'express'
 import oracledb from 'oracledb'
 import { conectBD } from '../config/config.js'
-import { getTransports, addTransport, getTransport, editTransport } from '../controllers/transport.controller.js';
+import { getTransports, addTransport, getTransport, editTransport, deleteTranspsort } from '../controllers/transport.controller.js';
 const router = Router();
 
 //*GET
@@ -14,18 +14,7 @@ router.post("/", addTransport);
 router.put("/", editTransport);
 
 //*DELETE
-router.delete("/", async (req, res) => {
-  const { id } = req.body;
-  binds = {
-    id: id,
-    resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-  };
-  sql = `BEGIN ACCIONES_TRANSPORTE.ELIMINAR_TRANSPORTE(:id,:resultado);END;`;
-  const callback = (result) => {
-    res.json(result);
-  };
-  await conectBD(sql, binds, { isAutoCommit: true }, callback);
-});
+router.delete("/:id", deleteTranspsort);
 
 
 export default router

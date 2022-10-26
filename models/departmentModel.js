@@ -9,6 +9,7 @@ class Department {
     NUMERO_HABITACION,
     DIRECCION,
     VALOR_ARRIENDO,
+    ESTADO,
     ID_LOCALIDAD,
     UBICACION,
     DESCRIPCION,
@@ -22,6 +23,7 @@ class Department {
     (this.numero_habitacion = NUMERO_HABITACION),
     (this.direccion = DIRECCION),
     (this.valor_arriendo = VALOR_ARRIENDO),
+    (this.estado = ESTADO),
     (this.id_localidad = ID_LOCALIDAD),
     (this.ubicacion = UBICACION),
     (this.descripcion = DESCRIPCION),
@@ -46,8 +48,8 @@ class Department {
     return await departmentDao.editDepartmentBD(this)
   }
 
-  async deleteDepartment(id,images){
-   return departmentDao.deleteDepartmentBD(id,images)
+  async deleteDepartment(id){
+   return departmentDao.deleteDepartmentBD(id)
   }
 
   get ID() {
@@ -103,6 +105,14 @@ class Department {
 
   set VALOR_ARRIENDO(newValue) {
     this.valor_arriendo = newValue;
+  }
+
+  get ESTADO() {
+    return this.estado;
+  }
+
+  set ESTADO(newValue) {
+    this.estado = newValue;
   }
 
   get ID_LOCALIDAD() {

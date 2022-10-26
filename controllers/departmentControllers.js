@@ -50,6 +50,7 @@ export const addDepartment = async (req, res) => {
     numero_banno,
     numero_habitacion,
     direccion,
+    estado,
     valor_arriendo,
     localidad,
     descripcion,
@@ -63,6 +64,7 @@ export const addDepartment = async (req, res) => {
     parseInt(numero_habitacion, 10),
     direccion,
     parseInt(valor_arriendo.replace("$", "").replace(".", ""), 10),
+    estado,
     localidad,
     null,
     descripcion,
@@ -80,6 +82,7 @@ export const editDepartment = async (req, res) => {
     numero_habitacion,
     direccion,
     valor_arriendo,
+    estado,
     localidad,
     descripcion,
     // estado_disponible,
@@ -94,6 +97,7 @@ export const editDepartment = async (req, res) => {
     numero_habitacion,
     direccion,
     valor_arriendo.replace("$", "").replace(".", ""),
+    estado,
     localidad,
     null,
     descripcion,
@@ -108,6 +112,15 @@ export const editDepartment = async (req, res) => {
 
 };
 export const deleteDepartment = async (req, res) => {
-  const departmenDao = await new Department().deleteDepartment(req.query.id);
-  res.json(departmenDao);
+  try {
+    const {id} = req.params;    
+    const department = await new Department().deleteDepartment(id)
+    console.log(department);
+    
+    if (department == 0)
+      res.json({msg: "Tour no existe"});
+    res.json(department);    
+  } catch (error) {
+    console.error(error);
+  }
 };

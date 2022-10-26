@@ -91,8 +91,8 @@ export const addUser = async (user) => {
       rut: user.rut,
       nombre: user.nombre,
       apellido: user.apellido,
-      correo: user.correo,
-      estado: "A",
+      correo: user.correo, 
+      estado: user.estado,     
       direccion: user.direccion,
       telefono: user.telefono,
       password: user.pass,
@@ -123,6 +123,7 @@ export const editUser = async (user) => {
       :nombre,
       :apellido,
       :correo,
+      :estado,
       :direccion,
       :telefono,
       :r,
@@ -134,6 +135,7 @@ export const editUser = async (user) => {
       nombre: user.nombre,
       apellido: user.apellido,
       correo: user.correo,
+      estado: user.estado,
       direccion: user.direccion,
       telefono: user.telefono,
       r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
@@ -154,4 +156,27 @@ export const editUser = async (user) => {
     return error;
   }
 };
+
+export const deleteUser = async (rut) => {
+  try {
+    const sql = `BEGIN ACCIONES_USUARIO.ELIMINAR_USUARIO(:rut,:r);END;`;
+
+    const binds = {
+      rut: rut,      
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT},
+    };
+   
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const r = await connectdb(sql, binds, options);    
+    return r;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 

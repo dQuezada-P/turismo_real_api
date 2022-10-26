@@ -112,3 +112,26 @@ export const editTransport = async (transport) => {
   }
   
 };
+
+//ELIMINIAR TRANSPORTE
+export const deleteTranspsort =async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_TRANSPORTE.ELIMINAR_TRANSPORTE(:id,:resultado);END;`;
+
+    const binds = {
+      id: id,
+      resultado: {type: connectdb.NUMBER, dir: oracledb.BIND_OUT}
+    };
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const resultado = await connectdb(sql, binds, options);
+    return resultado; 
+
+  } catch (error) {
+    console.error(error);
+  }
+}

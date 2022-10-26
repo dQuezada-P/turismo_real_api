@@ -54,3 +54,16 @@ export const editTransport = async (req, res) =>{
     const response = await newTransport.editTransport();
     res.json(response);
 }
+
+export const deleteTranspsort = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const transport = await new Transport().deleteTranspsort(id);
+
+        if (transport == 0)
+            res.json({msg: "Transporte no existe"});
+        res.json(transport);    
+    } catch (error) {
+        
+    }
+}

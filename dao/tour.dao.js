@@ -132,17 +132,16 @@ export const deleteTour = async (id) => {
     const binds = {
       id: id,
       resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT},
-      };
-      console.log(binds);
+      };      
 
     const options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       isAutoCommit: true,
     };
 
-    const resultado = await connectdb(sql, binds, options);
-    console.log(resultado);
+    const resultado = await connectdb(sql, binds, options);    
     return resultado;
+    
   } catch (error) {
     console.error(error);
   }

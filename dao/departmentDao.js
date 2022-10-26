@@ -3,6 +3,7 @@ import oracledb from "oracledb";
 import { UploadImagen,DeleteFile } from "../controllers/files.js";
 oracledb.fetchAsString = [ oracledb.CLOB ];
 
+//VER DEPARTAMENTO
 export const getDepartmentsBD = async () => {
   const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTOS(:cursor); END;`;
 
@@ -26,7 +27,7 @@ export const getDepartmentsBD = async () => {
   }
   return rows;
 };
-
+// VER DEPARTAMENTO
 export const getDepartmentBD = async (id) => {
   const sql = `BEGIN ACCIONES_DEPARTAMENTO.VER_DEPARTAMENTO(:id,:cursor); END;`;
   const binds = {
@@ -50,7 +51,7 @@ export const getDepartmentBD = async (id) => {
   }
   return rows;
 };
-
+//AGREGAR DEPARTAMENTO
 export const addDepartmetBD = async (department,responseAction) => {
 
   let sql = `BEGIN ACCIONES_DEPARTAMENTO.CREAR_DEPARTAMENTO(
@@ -59,6 +60,7 @@ export const addDepartmetBD = async (department,responseAction) => {
       :numero_habitacion,
       :direccion,
       :valor_arriendo,
+      :estado,
       :id_localidad,
       :descripcion,
       :estado_disponible,
@@ -73,6 +75,7 @@ export const addDepartmetBD = async (department,responseAction) => {
     numero_habitacion: department.NUMERO_HABITACION,
     direccion: department.DIRECCION,
     valor_arriendo: department.VALOR_ARRIENDO,
+    estado: department.DESTADO,
     id_localidad: department.ID_LOCALIDAD,
     descripcion: department.DESCRIPCION,
     estado_disponible: department.estado_disponible,
@@ -118,7 +121,7 @@ export const addDepartmetBD = async (department,responseAction) => {
   }
 };
 
-
+//EDITAR DEPARTAMENTO
 export const editDepartmentBD = async (department) => {
 
   let result;
@@ -129,6 +132,7 @@ export const editDepartmentBD = async (department) => {
                                                                 :numero_habitacion,
                                                                 :direccion,
                                                                 :valor_arriendo,
+                                                                :estado,
                                                                 :id_localidad,
                                                                 :descripcion,
                                                                 :estado_disponible,
@@ -143,6 +147,7 @@ export const editDepartmentBD = async (department) => {
     numero_habitacion: department.NUMERO_HABITACION,
     direccion: department.DIRECCION,
     valor_arriendo: department.VALOR_ARRIENDO,
+    estado: department.ESTADO,
     id_localidad: department.ID_LOCALIDAD,
     descripcion: department.DESCRIPCION,
     estado_disponible: department.estado_disponible,
@@ -167,28 +172,25 @@ export const editDepartmentBD = async (department) => {
   }
 };
 
-
+//ELIMINAR TOUR
 export const deleteDepartmentBD = async (id) => {
-  // let result;
-  // const sql = `BEGIN ACCIONES_DEPARTAMENTO.ELIMINAR_DEPARTAMENTO(:id,:r,:msg); END;`;
-  // const binds = {
-  //   id: id,
-  //   r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-  //   msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
-  // };
-  // const options = {
-  //   outFormat: oracledb.OUT_FORMAT_OBJECT,
-  //   isAutoCommit: true,
-  // };
-  // try {
-  //   await connectdb(sql, binds, options).then((resultSet) => {
-  //     result = resultSet;
-  //   });
-  //   result;
-  //   if(result.r)
-  //    console.log(await DeleteFile(dept.IMAGENES))
-      
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  try {
+    const sql = `BEGIN ACCIONES_DEPARTAMENTO.ELIMINAR_DEPARTAMENTO(:id,:resultado); END;`;
+    
+    const binds = {
+      id: id,
+      resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },             
+      };    
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const resultado = await connectdb(sql, binds, options);    
+    return resultado;
+    
+  } catch (error) {
+    console.error(error);
+  }
 };
