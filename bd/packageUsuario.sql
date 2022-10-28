@@ -328,7 +328,7 @@ AS
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID
-                                WHERE U.ID_ROL = 3 AND U.RUT = V_RUT;                                      
+                                WHERE U.RUT = V_RUT;                                      
 
     END;
     -------

@@ -7,9 +7,7 @@ import { API_SECRET_KEY } from "../config/credentials.js";
 export const loginHandler = async (req, res) => {
     try {
         console.log(req.body)
-        const { username, password } = req.body;
-        
-        // const { correo } = req.body;
+        const { username, password, remember } = req.body;
 
         // VALIDAR QUE EL USUARIO EXISTA
         const { userRes, msg } = await authUser(username)
@@ -18,7 +16,7 @@ export const loginHandler = async (req, res) => {
         {
             res.status(400).json({
                 auth: false,
-                message: "Usuario o Contraseña inválida"
+                message: "Usuario o Contraseña inválida. Porfavor intente nuevamente."
             });
             return;
         }
@@ -32,16 +30,21 @@ export const loginHandler = async (req, res) => {
         {
             res.status(400).json({
                 auth: false,
-                message: "Usuario o Contraseña inválida"
+                message: "Usuario o Contraseña inválida. Porfavor intente nuevamente."
             });
             return;
         }
+
+        options = {} 
+        if (!remember) options.expiresIn = 86400 // 24 hours
         
         const token = jwt.sign(
             { rut: userRes.RUT, correo: userRes.CORREO }, 
             API_SECRET_KEY, 
-            { expiresIn: 86400 } // 24 hours
+            options
         ); 
+
+        
         
         console.log({
             auth: true,
