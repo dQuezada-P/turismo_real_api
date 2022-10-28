@@ -17,9 +17,9 @@ export const getUser = async (rut, correo) => {
     };
 
     const { cursor } = await connectdb(sql, binds, options);
-    console.log(cursor)
     if ( cursor !== undefined ){
       const [user] = await cursor.getRows();
+      console.log(user)
       return user;
     }
     return false;

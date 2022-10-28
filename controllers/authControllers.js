@@ -6,8 +6,8 @@ import { API_SECRET_KEY } from "../config/credentials.js";
 
 export const loginHandler = async (req, res) => {
     try {
-        console.log(req.body)
         const { username, password, remember } = req.body;
+        console.log(req.body)
 
         // VALIDAR QUE EL USUARIO EXISTA
         const { userRes, msg } = await authUser(username)
@@ -20,14 +20,14 @@ export const loginHandler = async (req, res) => {
             });
             return;
         }
-
         const userModel = new User();
-
+        
         const matchPassword = await userModel.comparePassword(password, userRes.PASS)
         delete userRes.PASS
-
+        
         if (!matchPassword)
         {
+            console.log('hola')
             res.status(400).json({
                 auth: false,
                 message: "Usuario o Contraseña inválida. Porfavor intente nuevamente."
@@ -35,16 +35,14 @@ export const loginHandler = async (req, res) => {
             return;
         }
 
-        options = {} 
+        const options = {} 
         if (!remember) options.expiresIn = 86400 // 24 hours
-        
+
         const token = jwt.sign(
             { rut: userRes.RUT, correo: userRes.CORREO }, 
             API_SECRET_KEY, 
             options
         ); 
-
-        
         
         console.log({
             auth: true,

@@ -28,13 +28,13 @@ export const authUser = async (username) => {
             userRes: cursor,
             msg
         } 
-        console.log(resp)
 
         if ( cursor !== undefined ){
             const [user] = await cursor.getRows();
             resp.userRes = user
         }
-                                   
+                   
+        console.log(resp)                
         return resp
     } catch (error) {
         console.log(error)
