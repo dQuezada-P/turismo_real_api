@@ -324,7 +324,9 @@ AS
                                 U.IMAGEN,
                                 U.ESTADO,
                                 U.DIRECCION,
-                                U.TELEFONO
+                                U.TELEFONO,
+                                U.ID_ROL,
+                                R.CARGO
                                 FROM USUARIO U
                                 JOIN ROL R 
                                 ON U.ID_ROL = R.ID

@@ -3,9 +3,6 @@ import jwt from "jsonwebtoken";
 import { API_SECRET_KEY } from "../config/credentials.js";
 import User from "../models/usersModel.js";
 
-
-
-
 export const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization;
     const { login } = req.body;

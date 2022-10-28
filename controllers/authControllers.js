@@ -37,7 +37,7 @@ export const loginHandler = async (req, res) => {
 
         const options = {} 
         if (!remember) options.expiresIn = 86400 // 24 hours
-
+        console.log(options)
         const token = jwt.sign(
             { rut: userRes.RUT, correo: userRes.CORREO }, 
             API_SECRET_KEY, 
