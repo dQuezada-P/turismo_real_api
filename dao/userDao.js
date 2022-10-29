@@ -4,7 +4,7 @@ import { connectdb } from "../config/config.js";
 
 export const getUser = async (rut, correo) => {
   try {
-    const sql = `BEGIN ACCIONES_USUARIO.VER_USUARIO_CLIENTE(:rut,:cursor); END;`;
+    const sql = `BEGIN ACCIONES_USUARIO.GET_USUARIO(:rut,:cursor); END;`;
 
     const binds = {
       rut: rut,
