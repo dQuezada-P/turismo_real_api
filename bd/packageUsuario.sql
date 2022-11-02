@@ -51,7 +51,7 @@ AS
 
     PROCEDURE VER_USUARIOS_CLIENTE (V_USERS OUT SYS_REFCURSOR);
 
-    PROCEDURE VER_USUARIO_CLIENTE (V_RUT IN VARCHAR2 ,V_USERS OUT SYS_REFCURSOR);
+    PROCEDURE GET_USUARIO ( V_RUT IN VARCHAR2, V_USERS OUT SYS_REFCURSOR );
 
     PROCEDURE VER_USUARIO_FUNCIONARIO (V_USERS OUT SYS_REFCURSOR);
 
@@ -168,7 +168,7 @@ AS
                ROLLBACK;
     END;
     ----
-        PROCEDURE MODIFICAR_USUARIO(
+    PROCEDURE MODIFICAR_USUARIO(
         V_RUT IN VARCHAR2,
         V_NOMBRE IN VARCHAR2, 
         V_APELLIDO IN VARCHAR2, 
@@ -205,8 +205,8 @@ AS
                             V_ID_LOCALIDAD IN NUMBER,
                             RESULTADO OUT NUMBER,
                             MSG OUT VARCHAR2)
-        AS
-        BEGIN
+    AS
+    BEGIN
         UPDATE CONDUCTOR
         SET ID_USUARIO = V_ID_USUARIO,
         VEHICULO = V_VEHICULO,
@@ -218,10 +218,10 @@ AS
 
         EXCEPTION
             WHEN OTHERS THEN
-               RESULTADO:=0;
-               MSG:=SQLERRM;
-               ROLLBACK;
-        END;
+                RESULTADO:=0;
+                MSG:=SQLERRM;
+                ROLLBACK;
+    END;
     
 -------------------------------
     PROCEDURE ELIMINAR_USUARIO(V_RUT IN VARCHAR2, RESULTADO OUT NUMBER)
