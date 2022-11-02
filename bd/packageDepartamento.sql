@@ -179,7 +179,10 @@ AS
                                     D.DESCRIPCION ,
                                     D.ESTADO_DISPONIBLE,
                                     D.ESTADO_RESERVA,
-                                    D.IMAGENES FROM DEPARTAMENTO D JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID WHERE D.ID = V_ID;
+                                    D.IMAGENES,
+                                    D.ADDED_DATE,
+                                    D.MODIFIED_DATE
+                                    FROM DEPARTAMENTO D JOIN LOCALIDAD L ON D.ID_LOCALIDAD = L.ID WHERE D.ID = V_ID;
                                                                   
 
     END;

@@ -4,7 +4,6 @@ export const createReservation = async (req, res) => {
   const { fecha, dias, cantP, rut, id, abono } = req.body.payment;
   
   // const formatDate = fecha.splice('T',',');
-  console.log(fecha.split('T')[0])
   let [newfecha] = fecha.split('T')
   newfecha = newfecha.split('-')
   newfecha = newfecha[2]+'/'+newfecha[1]+'/'+newfecha[0]

@@ -15,7 +15,9 @@ class Department {
     DESCRIPCION,
     ESTADO_DISPONIBLE,
     ESTADO_RESERVA,
-    IMAGENES
+    IMAGENES,
+    ADD_DATE,
+    MODIFIED_DATE
   ) {
     (this.id = ID),
     (this.nombre  = NOMBRE),
@@ -30,6 +32,8 @@ class Department {
     (this.estado_disponible = ESTADO_DISPONIBLE),
     (this.estado_reserva = ESTADO_RESERVA),
     (this.imagenes = IMAGENES);
+    (this.add_date = ADD_DATE);
+    (this.modified_date = MODIFIED_DATE);
   }
 
   async getDepartments(){
@@ -154,6 +158,20 @@ class Department {
   }
   set ESTADO_RESERVA(newValue) {
     this.estado_reserva = newValue;
+  }
+
+  get ADD_DATE() {
+    return this.add_date;
+  }
+  set ADD_DATE(newValue) {
+    this.add_date = newValue;
+  }
+
+  get MODIFIED_DATE() {
+    return this.modified_date;
+  }
+  set MODIFIED_DATE(newValue) {
+    this.modified_date = newValue;
   }
 }
 export default Department;

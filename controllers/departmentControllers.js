@@ -22,6 +22,12 @@ export const getDepartments = async (req, res) => {
 };
 
 export const getDepartment = async (req, res) => {
+  function formatDate(date) {
+    let [newDate] = JSON.stringify(date).split("T");
+    newDate = newDate.split("-");
+    newDate = newDate[2] + "/" + newDate[1] + "/" + newDate[0].slice(1);
+    return newDate;
+  }
   try {
     const [department] = await new Department().getDepartment(req.query.id);
     if (department == null)
@@ -36,10 +42,14 @@ export const getDepartment = async (req, res) => {
             url: img,
           };
         });
+
+      department.ADDED_DATE = formatDate(department.ADDED_DATE);
+      department.MODIFIED_DATE = formatDate(department.MODIFIED_DATE);
+
       res.json(department);
     }
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
 
@@ -109,17 +119,15 @@ export const editDepartment = async (req, res) => {
   );
   const response = await newDepartment.editDepartment();
   res.json(response);
-
 };
 export const deleteDepartment = async (req, res) => {
   try {
-    const {id} = req.params;    
-    const department = await new Department().deleteDepartment(id)
+    const { id } = req.params;
+    const department = await new Department().deleteDepartment(id);
     console.log(department);
-    
-    if (department == 0)
-      res.json({msg: "Tour no existe"});
-    res.json(department);    
+
+    if (department == 0) res.json({ msg: "Tour no existe" });
+    res.json(department);
   } catch (error) {
     console.error(error);
   }
