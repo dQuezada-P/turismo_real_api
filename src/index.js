@@ -10,7 +10,7 @@ import routerTransport from "../routes/routesTransportService.js";
 import routerTour from "../routes/routesTourService.js";
 import fileUpload from "express-fileupload";
 import { UploadImagen, GetImage } from "../controllers/files.js";
-import routerEstadistic from "../routes/routesEstadist.js";
+import routerEstadistic from "../routes/routesEstadistic.js";
 import routerReservation from "../routes/routesReservation.js";
 import routerMercadoPago from "../routes/routesMercadoPago.js";
 
