@@ -10,7 +10,11 @@ export const loginHandler = async (req, res) => {
         console.log(req.body)
 
         // VALIDAR QUE EL USUARIO EXISTA
-        const { userRes, msg } = await authUser(username)
+        const { userRes, msg, error } = await authUser(username)
+        if (error){
+            res.status(400).json({error});
+            return;
+        }
         console.log('Mensaje de la bd: ', msg)
         if ( userRes === undefined ) 
         {

@@ -49,6 +49,6 @@ export const connectdb = async (sql, binds, options) => {
     return result;
   } catch (error) {
     console.error(error);
-    return error;
+    return {error};
   }
 };
