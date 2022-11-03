@@ -40,7 +40,7 @@ AS
                     LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
                 WHERE 
                     R.FECHA_INICIO BETWEEN V_FECHA1 AND V_FECHA2
-                    AND L.ID = 2
+                   
                 GROUP BY
                     D.ID, D.NOMBRE, R.FECHA_INICIO, L.NOMBRE
                 ORDER BY 
