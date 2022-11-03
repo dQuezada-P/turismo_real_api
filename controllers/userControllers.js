@@ -1,33 +1,50 @@
-import oracledb from "oracledb";
-
-import { conectBD } from "../config/config.js";
-
 import User from '../models/usersModel.js'
 
-export const getUsers = async (req, res) => {
+export const getUsersNew = async (req, res) => {
   try {
-    const { id_rol } = req.query;
-    const usersList = await new User().getUsers(id_rol);
+    const { type_user } = req.query;
+    let usersList;
+    if ( type_user == 'all'){
+      usersList = await new User().getUsers();
+    } else if ( type_user == 'client'){
+      usersList = await new User().getClients();
+    } else if ( type_user == 'employee') {
+      usersList = await new User().getEmployees();
+    } else {
+      res.status(400).json({ msg : 'No se entregó el tipo de usuario' })
+    }
 
-    if (id_rol != 4) { res.json(usersList); return;}
-    
-    const drivers = await getDrivers(usersList);
-    res.json(drivers);
+    res.json(usersList); 
     
   } catch (error) {
     console.error(error);
   }
 };
+// export const getUsers = async (req, res) => {
+//   try {
+//     const { id_rol } = req.query;
+//     const usersList = await new User().getUsers(id_rol);
 
-const getDrivers = async (usersList) => {
-  const { users, drivers } = usersList;
-    drivers.forEach((driver, index) => {
-      driver.CONDUCTOR = users[index];
-    })
+//     if (id_rol != 4) { res.json(usersList); return;}
+    
+//     const drivers = await getDrivers(usersList);
+//     res.json(drivers);
+    
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
-    console.log(drivers)
-    return drivers;
-}
+
+// const getDrivers = async (usersList) => {
+//   const { users, drivers } = usersList;
+//     drivers.forEach((driver, index) => {
+//       driver.CONDUCTOR = users[index];
+//     })
+
+//     console.log(drivers)
+//     return drivers;
+// }
 
 export const getUser = async (req, res) => {
   try {
@@ -41,10 +58,10 @@ export const getUser = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
-  const { rut, nombre, apellido, correo, estado, direccion, telefono, password } =
+  const { rut, nombre, apellido, correo, estado, direccion, telefono, password, id_rol } =
     req.body;
 
-  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 1, direccion, telefono, null, 3);
+  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 1, direccion, telefono, null, id_rol);
   newUser.pass = await newUser.encryptPassword(password);
 
   const response = await newUser.addUser();

@@ -20,13 +20,21 @@ class User {
         return await userDao.getUser(rut, correo)
     }
 
-    async getUsers(id_rol){
-        return await userDao.getUsers(id_rol)
+    async getUsers(){
+        return await userDao.getUsers()
     }
 
-    async getDrivers(id_rol){
-        return await userDao.getUsers(id_rol)
+    async getClients(){
+        return await userDao.getClients();
     }
+
+    async getEmployees(){
+        return await userDao.getEmployees();
+    }
+
+    // async getDrivers(id_rol){
+    //     return await userDao.getUsers(id_rol)
+    // }
 
     async addUser(){
         return await userDao.addUser(this)

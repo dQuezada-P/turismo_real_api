@@ -28,11 +28,10 @@ export const getUser = async (rut, correo) => {
   }
 };
 
-export const getUsers = async (id_rol) => {
+export const getUsers = async () => {
   try {
-	  let sql = `BEGIN ACCIONES_USUARIO.GET_USUARIOS(:id_rol, :cursor); END;`;
+	  let sql = `BEGIN ACCIONES_USUARIO.GET_USUARIOS(:cursor); END;`;
     let binds = {
-      id_rol: parseInt(id_rol),
       cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
     };
     const options = {
@@ -42,11 +41,58 @@ export const getUsers = async (id_rol) => {
 
     const { cursor } = await connectdb(sql, binds, options);
     const users = await cursor.getRows();
+    return users;
 
-    if (id_rol != 4) return users;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
+
+export const getClients = async () => {
+  try {
+	  let sql = `BEGIN ACCIONES_USUARIO.GET_CLIENTES(:cursor); END;`;
+    let binds = {
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: false,
+    };
+
+    const { cursor } = await connectdb(sql, binds, options);
+    const clients = await cursor.getRows();
+    return clients;
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getEmployees = async () => {
+  try {
+	  let sql = `BEGIN ACCIONES_USUARIO.GET_EMPLEADOS(:cursor); END;`;
+    let binds = {
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: false,
+    };
+
+    const { cursor } = await connectdb(sql, binds, options);
+    const employees = await cursor.getRows();
     const drivers = await getDrivers();
-    return { users, drivers }
+
+    employees.forEach(employee => {
+      drivers.map(driver => {
+        if ( employee.ID == driver.ID_USUARIO){
+          employee.CONDUCTOR = driver;
+        }
+      });
+    });
+
+    return employees;
 
   } catch (error) {
     console.error(error);
@@ -96,7 +142,7 @@ export const addUser = async (user) => {
       direccion: user.direccion,
       telefono: user.telefono,
       password: user.pass,
-      rol: 3,
+      rol: user.id_rol,
       r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
       msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
     };

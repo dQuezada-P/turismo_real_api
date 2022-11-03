@@ -20,3 +20,9 @@ export const getTerminals = async (req, res) => {
   
 };
 
+export const getRoles = async (req, res) => {
+  const roles = await utilsDao.getRoles()
+  roles?.length === 0 ? res.json({msg : 'No hay roles'}) : res.json(roles)
+  
+};
+

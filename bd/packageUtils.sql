@@ -5,39 +5,50 @@ AS
     PROCEDURE GET_CONDUCTORES (V_ID_LOCALIDAD IN NUMBER, V_DRIVERS OUT SYS_REFCURSOR);
 
     PROCEDURE GET_TERMINALES (V_ID_LOCALIDAD IN NUMBER, V_TERMINALS OUT SYS_REFCURSOR);
+
+    PROCEDURE GET_ROLES (V_ROLES OUT SYS_REFCURSOR);
 END;
 /
 create or replace PACKAGE BODY UTILS
 AS
     PROCEDURE VER_LOCALIDADES (V_LOCATION OUT SYS_REFCURSOR)
-    AS
-    BEGIN
-        OPEN V_LOCATION FOR SELECT * FROM LOCALIDAD;
-    END;
+        AS
+        BEGIN
+            OPEN V_LOCATION FOR SELECT * FROM LOCALIDAD;
+        END;
 
     PROCEDURE GET_CONDUCTORES (V_ID_LOCALIDAD IN NUMBER, V_DRIVERS OUT SYS_REFCURSOR)
-    AS
-    BEGIN
-        OPEN V_DRIVERS FOR 
-            SELECT 
-                C.ID, 
-                U.NOMBRE || ' ' || U.APELLIDO AS NOMBRE
-            FROM CONDUCTOR C
-            JOIN USUARIO U
-                ON C.ID_USUARIO = U.ID
-            WHERE C.ID_LOCALIDAD = V_ID_LOCALIDAD;
-    END;
+        AS
+        BEGIN
+            OPEN V_DRIVERS FOR 
+                SELECT 
+                    C.ID, 
+                    U.NOMBRE || ' ' || U.APELLIDO AS NOMBRE
+                FROM CONDUCTOR C
+                JOIN USUARIO U
+                    ON C.ID_USUARIO = U.ID
+                WHERE C.ID_LOCALIDAD = V_ID_LOCALIDAD;
+        END;
 
     PROCEDURE GET_TERMINALES (V_ID_LOCALIDAD IN NUMBER, V_TERMINALS OUT SYS_REFCURSOR)
-    AS
-    BEGIN
-        OPEN V_TERMINALS FOR 
-            SELECT 
-                T.ID, 
-                T.NOMBRE
-            FROM TERMINAL T
-            WHERE T.ID_LOCALIDAD = V_ID_LOCALIDAD;
-    END;
+        AS
+        BEGIN
+            OPEN V_TERMINALS FOR 
+                SELECT 
+                    T.ID, 
+                    T.NOMBRE
+                FROM TERMINAL T
+                WHERE T.ID_LOCALIDAD = V_ID_LOCALIDAD;
+        END;
+    PROCEDURE GET_ROLES (V_ROLES OUT SYS_REFCURSOR)
+        AS
+        BEGIN
+            OPEN V_ROLES FOR 
+                SELECT 
+                    R.ID, 
+                    R.CARGO
+                FROM ROL R;
+        END;
 
 
 END;

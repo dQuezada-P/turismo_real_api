@@ -65,3 +65,26 @@ export const getTerminals = async (id_localidad) => {
     console.error(error);
   }
 };
+
+export const getRoles = async () => {
+  const sql = `BEGIN UTILS.GET_ROLES(:cursor); END;`;
+
+  const binds = {
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+
+  const options = {
+    outFormat: oracledb.OUT_FORMAT_OBJECT,
+    isAutoCommit: false,
+  };
+  try {
+    const { cursor } = await connectdb(sql, binds, options);
+    const roles = await cursor.getRows()
+    roles.forEach(rol => {
+      rol.NOMBRE = rol.CARGO
+    });
+    return roles
+  } catch (error) {
+    console.error(error);
+  }
+};
