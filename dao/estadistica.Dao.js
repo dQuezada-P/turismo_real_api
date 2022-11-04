@@ -24,8 +24,7 @@ import Estadistica from "../models/estadistica.Model.js";
 //   };
 
 export const filtroAnno = async (fechas) => {
-  const sql = `BEGIN ESTADISTICA.ANNO(
-    
+  const sql = `BEGIN ESTADISTICA.REPORTE_DEPARTAMENTO(    
     :fecha1,
     :fecha2,
     :cursor); END;`;
