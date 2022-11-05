@@ -1,14 +1,14 @@
 import Estadistica from "../models/estadistica.Model.js";
 
 
-// export const countDepartments = async (req, res) => {
-//     try {
-//         const cant_departments = await EsDao.getCantDepartments();
-//         res.json(cant_departments);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
+export const countDepartments = async (req, res) => {
+    try {        
+        const cant_departments = await getCantDepartments();
+        res.json(cant_departments);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const filtroDepartamento = async (req, res ) => {
   try {  

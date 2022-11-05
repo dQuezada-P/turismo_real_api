@@ -8,6 +8,10 @@ class Estadistica {
         this.fecha2 = fecha2
     }
     
+    async getCantDepartments(){
+        return await EsDao.getCantDepartments();
+    }
+
     async filtroDepartamento(){
         return await EsDao.filtroDepartamento(this);
     }
@@ -46,3 +50,4 @@ class Estadistica {
 }
 
 export default Estadistica;
+
