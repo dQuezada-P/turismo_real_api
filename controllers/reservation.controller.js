@@ -1,6 +1,13 @@
-import Reservation from "../models/reservation.js";
+import Reservation from "../models/reservation.model.js";
 
-export const createReservation = async (req, res) => {
+export const getReservation = async (req, res) => {
+  const reservationModel = new Reservation()
+  const reservationList = await reservationModel.getReservations();
+
+  res.json(reservationList);
+}
+
+export const addReservation = async (req, res) => {
   const { fecha, dias, cantP, rut, id, abono } = req.body.payment;
   
   // const formatDate = fecha.splice('T',',');
@@ -8,7 +15,7 @@ export const createReservation = async (req, res) => {
   newfecha = newfecha.split('-')
   newfecha = newfecha[2]+'/'+newfecha[1]+'/'+newfecha[0]
 
-  const reservation = new Reservation(
+  const reservationModel = new Reservation(
     null,
     newfecha,
     dias,
@@ -19,9 +26,9 @@ export const createReservation = async (req, res) => {
     null,
     abono
   );
-  console.log(reservation)
+  console.log(reservationModel)
   try {
-    const result = await reservation.createReservation();
+    const result = await reservationModel.addReservation();
     if (result) {
       return res.json("reserva agregada");
     }

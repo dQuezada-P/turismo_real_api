@@ -1,6 +1,6 @@
 import { connectdb } from "../config/config.js";
 import oracledb from "oracledb";
-import { UploadImagen,DeleteFile } from "../controllers/files.js";
+import { UploadImagen,DeleteFile } from "../controllers/files.controller.js";
 oracledb.fetchAsString = [ oracledb.CLOB ];
 
 //VER DEPARTAMENTO
@@ -70,14 +70,14 @@ export const addDepartmetBD = async (department,responseAction) => {
       END;`;
 
   let binds = {
-    nombre: department.NOMBRE,
-    numero_banno: department.NUMERO_BANNO,
-    numero_habitacion: department.NUMERO_HABITACION,
-    direccion: department.DIRECCION,
-    valor_arriendo: department.VALOR_ARRIENDO,
-    estado: department.DESTADO,
-    id_localidad: department.ID_LOCALIDAD,
-    descripcion: department.DESCRIPCION,
+    nombre: department.nombre,
+    numero_banno: department.numero_banno,
+    numero_habitacion: department.numero_habitacion,
+    direccion: department.direccion,
+    valor_arriendo: department.valor_arriendo,
+    estado: department.destado,
+    id_localidad: department.id_localidad,
+    descripcion: department.descripcion,
     estado_disponible: department.estado_disponible,
     estado_reserva: department.estado_reserva,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
@@ -141,15 +141,15 @@ export const editDepartmentBD = async (department) => {
                                                                 :msg);
                                                                 END;`;
   let binds = {
-    id : department.ID,
-    nombre: department.NOMBRE,
-    numero_banno: department.NUMERO_BANNO,
-    numero_habitacion: department.NUMERO_HABITACION,
-    direccion: department.DIRECCION,
-    valor_arriendo: department.VALOR_ARRIENDO,
-    estado: department.ESTADO,
-    id_localidad: department.ID_LOCALIDAD,
-    descripcion: department.DESCRIPCION,
+    id : department.id,
+    nombre: department.nombre,
+    numero_banno: department.numero_banno,
+    numero_habitacion: department.numero_habitacion,
+    direccion: department.direccion,
+    valor_arriendo: department.valor_arriendo,
+    estado: department.estado,
+    id_localidad: department.id_localidad,
+    descripcion: department.descripcion,
     estado_disponible: department.estado_disponible,
     estado_reserva: department.estado_reserva,
     r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },

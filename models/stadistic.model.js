@@ -1,11 +1,11 @@
-import * as  EsDao from "../dao/estadistica.Dao.js";
+import * as  EsDao from "../dao/stadistic.dao.js";
 
 class Estadistica {
     constructor (id_departamento, id_localidad, fecha1, fecha2){
-        this.id_departamento = id_departamento
-        this.id_localidad = id_localidad
-        this.fecha1 = fecha1   
-        this.fecha2 = fecha2
+        this._id_departamento = id_departamento
+        this._id_localidad = id_localidad
+        this._fecha1 = fecha1   
+        this._fecha2 = fecha2
     }
     
     async getCantDepartments(){

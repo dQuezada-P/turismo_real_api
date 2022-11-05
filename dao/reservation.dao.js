@@ -1,14 +1,33 @@
 import oracledb from "oracledb";
 import { connectdb } from "../config/config.js";
 
-export const createReservationBD = async (reservation) => {
+export const getReservations = async () => {
+  try {
+      const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVAS(:cursor);END;`;
+
+      const binds = {
+        cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+      };
+    
+      const options = {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    
+      const { cursor } = await connectdb(sql, binds, options);
+      return await cursor.getRows();                  
+  } catch (error) {
+      
+  }
+};
+
+export const addReservation = async (reservation) => {
   let binds = {
-    fecha_inicio: reservation.FECHA_INICIO,
-    dias: reservation.DIAS,
-    cantidad_persona: reservation.CANTIDAD_PERSONA,
-    id_cliente: reservation.CLIENTE,
-    id_departamento: reservation.DEPARTAMENTO,
-    abono : reservation.ABONO,
+    fecha_inicio: reservation.fecha_inicio,
+    dias: reservation.dias,
+    cantidad_persona: reservation.cantidad_persona,
+    id_cliente: reservation.cliente,
+    id_departamento: reservation.departamento,
+    abono : reservation.abono,
     id_reserva: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };

@@ -2,13 +2,13 @@ import * as transportDao from '../dao/transport.dao.js'
 
 class Transport {
     constructor (id, id_conductor, id_terminal, fecha, horario, precio, estado){
-        this.id = id
-        this.id_conductor = id_conductor
-        this.id_terminal = id_terminal
-        this.fecha = fecha
-        this.horario = horario
-        this.precio = precio
-        this.estado = estado
+        this._id = id
+        this._id_conductor = id_conductor
+        this._id_terminal = id_terminal
+        this._fecha = fecha
+        this._horario = horario
+        this._precio = precio
+        this._estado = estado
     }
 
     async getTransports(){

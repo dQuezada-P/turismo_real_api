@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { verifyToken } from "../middlewares/auth.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 import {
   getDepartments,
   getDepartment,
   addDepartment,
   editDepartment,
   deleteDepartment,
-} from "../controllers/departmentControllers.js";
+} from "../controllers/department.controller.js";
 
 const router = Router();
 

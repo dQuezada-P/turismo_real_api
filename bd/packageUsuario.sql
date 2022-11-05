@@ -103,6 +103,7 @@ AS
 
             IF COUNT_ROW > 0 THEN
                 OPEN V_USER FOR SELECT 
+                                U.ID,
                                 U.RUT,
                                 U.NOMBRE,
                                 U.APELLIDO,
@@ -364,7 +365,9 @@ AS
     PROCEDURE GET_USUARIO ( V_RUT IN VARCHAR2, V_USERS OUT SYS_REFCURSOR )
     AS
     BEGIN
-        OPEN V_USERS FOR SELECT U.RUT,
+        OPEN V_USERS FOR SELECT 
+                                U.ID,
+                                U.RUT,
                                 U.NOMBRE,
                                 U.APELLIDO,
                                 U.CORREO,

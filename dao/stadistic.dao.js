@@ -1,6 +1,6 @@
 import oracledb from "oracledb";
 import { connectdb } from "../config/config.js";
-import Estadistica from "../models/estadistica.Model.js";
+import Estadistica from "../models/stadistic.model.js";
 
 export const getCantDepartments = async () => {
     const sql = `BEGIN ESTADISTICA.CANT_DEPTOS(:cant_deptos); END;`;

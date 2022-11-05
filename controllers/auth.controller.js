@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from "../models/usersModel.js";
+import User from "../models/user.model.js";
 
-import { authUser } from "../dao/authDao.js";
+import { authUser } from "../dao/auth.dao.js";
 import { API_SECRET_KEY } from "../config/credentials.js";
 
 export const loginHandler = async (req, res) => {

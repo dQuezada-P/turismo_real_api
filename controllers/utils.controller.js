@@ -1,4 +1,4 @@
-import * as utilsDao from "../dao/utilsDao.js";
+import * as utilsDao from "../dao/utils.dao.js";
 
 export const getLocations = async (req, res) => {
   const locations = await utilsDao.getLocationsBD()

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node-dev src/index.js",
     "server": "nodemon src/index.js"
   },
   "keywords": [],
@@ -26,6 +27,7 @@
     "mercadopago": "^1.5.14",
     "morgan": "1.10.0",
     "node": "16.17.0",
+    "node-dev": "^7.4.3",
     "node-oracledb": "1.0.2",
     "nodemon": "2.0.19",
     "oracledb": "5.4.0"

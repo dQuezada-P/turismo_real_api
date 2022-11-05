@@ -1,4 +1,4 @@
-import Department from "../models/departmentModel.js";
+import Department from "../models/department.model.js";
 
 export const getDepartments = async (req, res) => {
   try {
@@ -23,15 +23,20 @@ export const getDepartments = async (req, res) => {
 
 export const getDepartment = async (req, res) => {
   function formatDate(date) {
-    let [newDate] = JSON.stringify(date).split("T");
-    newDate = newDate.split("-");
-    newDate = newDate[2] + "/" + newDate[1] + "/" + newDate[0].slice(1);
-    return newDate;
+    try {
+      let [newDate] = JSON.stringify(date).split("T");
+      newDate = newDate.split("-");
+      newDate = newDate[2] + "/" + newDate[1] + "/" + newDate[0].slice(1);
+      return newDate;
+    } catch (error) {
+      return date;
+    }
+    
   }
   try {
     const [department] = await new Department().getDepartment(req.query.id);
     if (department == null)
-      res.json({ msg: "Departamento no se encuentra registrado" });
+      {res.json({ msg: "Departamento no se encuentra registrado" });return;}
     else {
       if (department.IMAGENES != null)
         department.IMAGENES = department.IMAGENES.split(",").map((img) => {

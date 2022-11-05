@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import * as userDao from "../dao/userDao.js"
+import * as userDao from "../dao/user.dao.js"
 
 class User {
     constructor(rut,nombre,apellido,imagen,correo,estado,direccion,telefono,pass,id_rol) {

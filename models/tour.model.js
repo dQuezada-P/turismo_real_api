@@ -3,15 +3,15 @@ import * as tourDao from '../dao/tour.dao.js'
 
 class Tour {
     constructor(id, cupo, precio, fecha, hora_inicio, duracion, descripcion, estado, id_localidad){
-        this.id = id
-        this.cupo = cupo
-        this.precio = precio
-        this.fecha = fecha
-        this.hora_inicio = hora_inicio
-        this.duracion = duracion
-        this.descripcion = descripcion
-        this.estado = estado
-        this.id_localidad = id_localidad
+        this._id = id
+        this._cupo = cupo
+        this._precio = precio
+        this._fecha = fecha
+        this._hora_inicio = hora_inicio
+        this._duracion = duracion
+        this._descripcion = descripcion
+        this._estado = estado
+        this._id_localidad = id_localidad
     }
 
     async getTours() {

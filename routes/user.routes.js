@@ -1,9 +1,9 @@
 
 import {Router} from 'express'
 
-import { verifyToken } from '../middlewares/auth.js'
+import { verifyToken } from '../middlewares/auth.middleware.js'
 
-import {getUser,addUser,editUser,deleteUser,getUsersNew } from '../controllers/userControllers.js'
+import {getUser,addUser,editUser,deleteUser,getUsersNew } from '../controllers/user.controller.js'
  
 const router = Router()
 // *Verbos HTTPS

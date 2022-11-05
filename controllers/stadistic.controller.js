@@ -1,4 +1,4 @@
-import Estadistica from "../models/estadistica.Model.js";
+import Estadistica from "../models/stadistic.model.js";
 
 
 export const countDepartments = async (req, res) => {

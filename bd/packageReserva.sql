@@ -23,7 +23,7 @@ AS
     -----------------------------------------------------------
     PROCEDURE VER_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
-    PROCEDURE VER_RESERVAS(V_RESERVA OUT SYS_REFCURSOR);
+    PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR);
 END;
 /
 create or replace PACKAGE BODY ACCIONES_RESERVA
@@ -109,7 +109,7 @@ AS
         OPEN V_RESERVA FOR SELECT * FROM RESERVA WHERE ID = V_ID_RESERVA;
     END;
     -------------------------------------------------------------------------------------------
-    PROCEDURE VER_RESERVAS(V_RESERVA OUT SYS_REFCURSOR)
+    PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR)
     AS
     BEGIN
         OPEN V_RESERVA FOR SELECT * FROM RESERVA ORDER BY ID;
