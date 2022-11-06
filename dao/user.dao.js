@@ -28,6 +28,32 @@ export const getUser = async (rut, correo) => {
   }
 };
 
+export const getUserById = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_USUARIO.GET_USUARIO_BY_ID(:id,:cursor); END;`;
+
+    const binds = {
+      id: id,
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+    };
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const { cursor } = await connectdb(sql, binds, options);
+    if ( cursor !== undefined ){
+      const [user] = await cursor.getRows();
+      console.log(user)
+      return user;
+    }
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUsers = async () => {
   try {
 	  let sql = `BEGIN ACCIONES_USUARIO.GET_USUARIOS(:cursor); END;`;

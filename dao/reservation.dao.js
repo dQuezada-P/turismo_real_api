@@ -20,6 +20,27 @@ export const getReservations = async () => {
   }
 };
 
+export const getReservation = async (id) => {
+  try {
+      const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVA(:id, :cursor);END;`;
+
+      const binds = {
+        id,
+        cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+      };
+    
+      const options = {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    
+      const { cursor } = await connectdb(sql, binds, options);
+      const [reservation] = await cursor.getRows();          
+      return reservation;        
+  } catch (error) {
+      
+  }
+};
+
 export const addReservation = async (reservation) => {
   let binds = {
     fecha_inicio: reservation.fecha_inicio,

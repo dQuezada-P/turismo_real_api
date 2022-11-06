@@ -21,7 +21,7 @@ AS
                                 RESULTADO OUT NUMBER,
                                 MSG OUT VARCHAR2);
     -----------------------------------------------------------
-    PROCEDURE VER_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
+    PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
     PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR);
 END;
@@ -103,10 +103,10 @@ AS
 
     END;
     -------------------------------------------------------------------------------------------
-    PROCEDURE VER_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR )
+    PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR )
     AS
     BEGIN
-        OPEN V_RESERVA FOR SELECT * FROM RESERVA WHERE ID = V_ID_RESERVA;
+        OPEN V_RESERVA FOR SELECT * FROM RESERVA R JOIN PAGO P ON R.ID_PAGO = P.ID WHERE R.ID = V_ID_RESERVA;
     END;
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR)

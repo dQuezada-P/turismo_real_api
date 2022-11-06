@@ -28,6 +28,10 @@ class Reservation{
     return await reservationDao.getReservations();
   }
 
+  async getReservation(id){
+    return await reservationDao.getReservation(id);
+  }
+
   async addReservation(){
     return await reservationDao.addReservation(this)
   }
