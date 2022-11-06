@@ -20,6 +20,25 @@ export const getReservations = async () => {
   }
 };
 
+export const getReservations2 = async () => {
+  try {
+      const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVAS2(:cursor);END;`;
+
+      const binds = {
+        cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+      };
+    
+      const options = {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    
+      const { cursor } = await connectdb(sql, binds, options);
+      return await cursor.getRows();                  
+  } catch (error) {
+      
+  }
+};
+
 export const getReservation = async (id) => {
   try {
       const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVA(:id, :cursor);END;`;
@@ -72,3 +91,34 @@ export const addReservation = async (reservation) => {
 };
 
 export const modifyReservationBD = () => {};
+
+export const checkInReservation = async (id,cancelado) => {
+  try {
+    const sql = `BEGIN ACCIONES_RESERVA.CHECKIN_RESERVA(  
+      :id,
+      :cancelado,
+      :r,
+      :msg );
+      END;`;
+
+    const binds = {
+      id,
+      cancelado,
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
+    };
+    console.log(binds)
+
+    const options = {
+      isAutoCommit: true,
+    };
+  
+    const response = await connectdb(sql, binds, options);
+    console.log(response)
+    return response;
+    
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

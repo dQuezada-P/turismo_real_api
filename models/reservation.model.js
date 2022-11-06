@@ -28,12 +28,20 @@ class Reservation{
     return await reservationDao.getReservations();
   }
 
+  async getReservations2(){
+    return await reservationDao.getReservations2();
+  }
+
   async getReservation(id){
     return await reservationDao.getReservation(id);
   }
 
   async addReservation(){
-    return await reservationDao.addReservation(this)
+    return await reservationDao.addReservation(this);
+  }
+
+  async checkInReservation(id, cancelado){
+    return await reservationDao.checkInReservation(id, cancelado);
   }
 
   get id() {

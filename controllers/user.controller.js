@@ -20,31 +20,6 @@ export const getUsersNew = async (req, res) => {
     console.error(error);
   }
 };
-// export const getUsers = async (req, res) => {
-//   try {
-//     const { id_rol } = req.query;
-//     const usersList = await new User().getUsers(id_rol);
-
-//     if (id_rol != 4) { res.json(usersList); return;}
-    
-//     const drivers = await getDrivers(usersList);
-//     res.json(drivers);
-    
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-
-// const getDrivers = async (usersList) => {
-//   const { users, drivers } = usersList;
-//     drivers.forEach((driver, index) => {
-//       driver.CONDUCTOR = users[index];
-//     })
-
-//     console.log(drivers)
-//     return drivers;
-// }
 
 export const getUser = async (req, res) => {
   try {
