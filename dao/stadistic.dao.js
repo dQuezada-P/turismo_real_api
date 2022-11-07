@@ -57,6 +57,7 @@ export const filtroDepartamento = async (fechas) => {
 };
 
 export const filtroLocalidad = async (fechas) => {
+  console.log(fechas.id_localidad);
   const sql = `BEGIN ESTADISTICA.REPORTE_LOCALIDAD(
     :id_localidad,    
     :fecha1,

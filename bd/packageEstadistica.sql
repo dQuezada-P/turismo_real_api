@@ -74,7 +74,7 @@ AS
                 JOIN
                     PAGO P ON R.ID_PAGO = P.ID
                 WHERE 
-                    R.FECHA_INICIO BETWEEN V_FECHA1 AND V_FECHA2
+                    TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')                     
                     AND L.ID = V_ID_LOCALIDAD
                     AND R.ESTADO = 1
                 GROUP BY D.NOMBRE, L.NOMBRE, R.FECHA_INICIO
