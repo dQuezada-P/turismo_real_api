@@ -38,7 +38,7 @@ AS
                 R.FECHA_INICIO AS "FECHA",
                 R.DIAS,
                 R.CANTIDAD_PERSONA,
-                D.VALOR_ARRIENDO AS TOTAL,
+                SUM(P.ABONO + P.PAGO_TOTAL + P.PAGO_INCONVENIENTE) AS TOTAL,
                 L.NOMBRE AS LOCALIDAD
                 FROM DEPARTAMENTO D
                 JOIN 
@@ -50,7 +50,10 @@ AS
                 WHERE 
                     TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')
                     AND D.ID = V_ID_DEPARTAMENTO
-                    AND R.ESTADO = 1
+                    AND R.ESTADO = 1 
+                GROUP BY
+                    D.ID, D.NOMBRE, R.FECHA_INICIO, R.DIAS, R.CANTIDAD_PERSONA, 
+                    L.NOMBRE
                 ORDER BY 
                     R.FECHA_INICIO ASC;
     END;

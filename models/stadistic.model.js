@@ -8,9 +8,9 @@ class Estadistica {
         this._fecha2 = fecha2
     }
     
-    async getCantDepartments(){
-        return await EsDao.getCantDepartments();
-    }
+    // async getCantDepartments(){
+    //     return await EsDao.getCantDepartments();
+    // }
 
     async filtroDepartamento(){
         return await EsDao.filtroDepartamento(this);

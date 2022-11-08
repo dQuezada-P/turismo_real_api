@@ -2,26 +2,26 @@ import oracledb from "oracledb";
 import { connectdb } from "../config/config.js";
 import Estadistica from "../models/stadistic.model.js";
 
-export const getCantDepartments = async () => {
-    const sql = `BEGIN ESTADISTICA.CANT_DEPTOS(:cant_deptos); END;`;
-    const binds = {      
-      cant_deptos: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-    };
-    const options = {
-      isAutoCommit: false,
-    };
+// export const getCantDepartments = async () => {
+//     const sql = `BEGIN ESTADISTICA.CANT_DEPTOS(:cant_deptos); END;`;
+//     const binds = {      
+//       cant_deptos: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+//     };
+//     const options = {
+//       isAutoCommit: false,
+//     };
 
-    try {
-        const { cant_deptos } = await connectdb(sql, binds, options);
-        return cant_deptos;
+//     try {
+//         const { cant_deptos } = await connectdb(sql, binds, options);
+//         return cant_deptos;
 
-    } 
-    catch (error) {
-      console.error(error);
-      return false;
-    }
+//     } 
+//     catch (error) {
+//       console.error(error);
+//       return false;
+//     }
 
-  };
+//   };
 
 export const filtroDepartamento = async (fechas) => {
   const sql = `BEGIN ESTADISTICA.REPORTE_DEPARTAMENTO(
