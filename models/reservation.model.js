@@ -24,12 +24,9 @@ class Reservation{
     this._abono = abono
   }
 
+
   async getReservations(){
     return await reservationDao.getReservations();
-  }
-
-  async getReservations2(){
-    return await reservationDao.getReservations2();
   }
 
   async getReservation(id){

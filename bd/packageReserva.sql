@@ -110,7 +110,31 @@ AS
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR )
         AS
         BEGIN
-            OPEN V_RESERVA FOR SELECT * FROM RESERVA R JOIN PAGO P ON R.ID_PAGO = P.ID WHERE R.ID = V_ID_RESERVA;
+            OPEN V_RESERVA FOR 
+            SELECT 
+                R.ID,
+                D.NOMBRE DEPARTAMENTO__NOMBRE,
+                D.VALOR_ARRIENDO DEPARTAMENTO__VALOR_ARRIENDO,
+                R.FECHA_INICIO,
+                R.DIAS,
+                R.CANTIDAD_PERSONA,
+                U.NOMBRE CLIENTE__NOMBRE,
+                U.APELLIDO CLIENTE__APELLIDO,
+                U.RUT CLIENTE__RUT,
+                U.CORREO CLIENTE__CORREO,
+                U.TELEFONO CLIENTE__TELEFONO,
+                P.ABONO PAGO__ABONO,
+                P.PAGO_TOTAL PAGO__PAGO_TOTAL,
+                P.PAGO_INCONVENIENTE PAGO__PAGO_INCONVENIENTE
+            FROM RESERVA R
+            JOIN USUARIO U
+                ON R.ID_CLIENTE = U.ID
+            JOIN DEPARTAMENTO D
+                ON R.ID_DEPARTAMENTO = D.ID
+            JOIN PAGO P
+                ON R.ID_PAGO = P.ID
+            WHERE R.ID = V_ID_RESERVA
+            ORDER BY ID;
         END;
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR)
@@ -135,6 +159,7 @@ AS
                 R.CANTIDAD_PERSONA,
                 U.NOMBRE CLIENTE__NOMBRE,
                 U.APELLIDO CLIENTE__APELLIDO,
+                U.RUT CLIENTE__RUT,
                 U.CORREO CLIENTE__CORREO,
                 P.ABONO
             FROM RESERVA R

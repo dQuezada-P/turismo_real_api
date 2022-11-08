@@ -3,25 +3,6 @@ import { connectdb } from "../config/config.js";
 
 export const getReservations = async () => {
   try {
-      const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVAS(:cursor);END;`;
-
-      const binds = {
-        cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
-      };
-    
-      const options = {
-        outFormat: oracledb.OUT_FORMAT_OBJECT,
-      }
-    
-      const { cursor } = await connectdb(sql, binds, options);
-      return await cursor.getRows();                  
-  } catch (error) {
-      
-  }
-};
-
-export const getReservations2 = async () => {
-  try {
       const sql = `BEGIN ACCIONES_RESERVA.GET_RESERVAS2(:cursor);END;`;
 
       const binds = {
