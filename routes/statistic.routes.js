@@ -6,5 +6,5 @@ const router = Router();
 
 router.get("/cant-deptos", countDepartments);
 router.get("/report-by-department", filtroDepartamento);
-router.get("/report-by-place", filtroLocalidad);
+router.get("/report-by-location", filtroLocalidad);
 export default router;
