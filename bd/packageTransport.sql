@@ -108,7 +108,8 @@ AS
             TE.NOMBRE "TERMINAL",
             TR.FECHA "FECHA",
             TR.HORARIO "HORARIO",
-            TR.PRECIO  "PRECIO"           
+            TR.PRECIO  "PRECIO",
+            TE.ID_LOCALIDAD           
         FROM TRANSPORTE TR
         JOIN CONDUCTOR C
             ON TR.ID_CONDUCTOR = C.ID
