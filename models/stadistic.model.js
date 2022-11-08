@@ -19,7 +19,7 @@ class Estadistica {
     async filtroLocalidad(){
         return await EsDao.filtroLocalidad(this);
     }
-   
+    
     get id_departamento(){
         return this._id_departamento;
     }

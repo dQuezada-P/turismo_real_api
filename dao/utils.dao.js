@@ -22,6 +22,26 @@ export const getLocationsBD = async () => {
   }
 };
 
+export const getDepartmentsBD = async () => {
+  const sql = `BEGIN UTILS.VER_DEPARTAMENTOS(:cursor); END;`;
+
+  const binds = {
+    cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+  };
+
+  const options = {
+    outFormat: oracledb.OUT_FORMAT_OBJECT,
+    isAutoCommit: false,
+  };
+  try {
+    const { cursor } = await connectdb(sql, binds, options);
+    const locations = await cursor.getRows()
+    return locations
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getDrivers = async (id_localidad) => {
   try {
     const sql = `BEGIN UTILS.GET_CONDUCTORES(:id_localidad, :cursor); END;`;

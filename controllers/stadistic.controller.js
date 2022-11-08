@@ -13,6 +13,7 @@ export const countDepartments = async (req, res) => {
 export const filtroDepartamento = async (req, res ) => {
   try {  
     const {  id_departamento, fecha1, fecha2 } = req.query;  
+    console.log(req.query);
     const newEstadistic = new Estadistica( id_departamento, null, fecha1, fecha2);
     
     const response = await newEstadistic.filtroDepartamento();
@@ -26,7 +27,7 @@ export const filtroLocalidad = async (req, res ) => {
   try {  
     const {  id_localidad, fecha1, fecha2 } = req.query;  
     const newEstadistic = new Estadistica( null, id_localidad, fecha1, fecha2);
-    
+    console.log(req.query);
     const response = await newEstadistic.filtroLocalidad();
     res.json(response);
   } catch (error) {

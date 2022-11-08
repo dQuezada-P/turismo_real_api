@@ -6,6 +6,12 @@ export const getLocations = async (req, res) => {
   
 };
 
+export const getDepartments = async (req, res) => {
+  const locations = await utilsDao.getDepartmentsBD()
+  locations?.length === 0 ? res.json({msg : 'No hay departamentos'}) : res.json(locations)
+  
+};
+
 export const getDrivers = async (req, res) => {
   const { id_localidad } = req.query;
   const drivers = await utilsDao.getDrivers(id_localidad)
