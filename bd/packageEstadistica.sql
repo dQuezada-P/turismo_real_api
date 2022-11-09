@@ -67,7 +67,7 @@ AS
             OPEN V_LOCALIDAD FOR SELECT 
                 D.NOMBRE,
                 SUM(P.ABONO + P.PAGO_TOTAL + P.PAGO_INCONVENIENTE) AS TOTAL,
-                R.FECHA_INICIO,
+                R.FECHA_INICIO AS "FECHA",
                 L.NOMBRE AS LOCALIDAD
                 FROM DEPARTAMENTO D
                 JOIN 
