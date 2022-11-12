@@ -1,6 +1,5 @@
 import { connectdb } from "../config/config.js";
 import oracledb from "oracledb";
-import Transport from "../models/transport.model.js";
 
 //VER TRANSPORTES
 export const getTransports = async () => {

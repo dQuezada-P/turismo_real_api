@@ -113,6 +113,7 @@ AS
             OPEN V_RESERVA FOR 
             SELECT 
                 R.ID,
+                D.ID DEPARTAMENTO__ID,
                 D.NOMBRE DEPARTAMENTO__NOMBRE,
                 D.VALOR_ARRIENDO DEPARTAMENTO__VALOR_ARRIENDO,
                 R.FECHA_INICIO,

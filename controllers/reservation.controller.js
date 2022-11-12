@@ -1,7 +1,4 @@
 import Reservation from "../models/reservation.model.js";
-import User from "../models/user.model.js";
-import Departamento from "../models/department.model.js";
-
 export const getReservations = async (req, res) => {
   const reservationList = await new Reservation().getReservations();
   const keys = Object.keys(reservationList[0]);
