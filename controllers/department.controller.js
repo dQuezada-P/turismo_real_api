@@ -13,8 +13,10 @@ export const getDepartments = async (req, res) => {
             url: img,
           };
         });
+      else delete dept.IMAGENES;
       return dept;
     });
+
     res.json(departmentsList);
   } catch (error) {
     console.error(error);

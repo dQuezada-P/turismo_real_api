@@ -103,3 +103,35 @@ export const checkInReservation = async (id,cancelado) => {
     return error;
   }
 };
+
+export const checkOutReservation = async (id,cancelado) => {
+  try {
+    const sql = `BEGIN ACCIONES_RESERVA.CHECKOUT_RESERVA(  
+      :id,
+      :cancelado,
+      :r,
+      :msg );
+      END;`;
+
+    const binds = {
+      id,
+      cancelado,
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
+    };
+    console.log(binds)
+
+    const options = {
+      isAutoCommit: true,
+    };
+  
+    const response = await connectdb(sql, binds, options);
+    console.log(response)
+    return response;
+    
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+

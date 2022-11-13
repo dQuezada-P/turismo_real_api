@@ -13,10 +13,75 @@ export const getInventary = async (id_departamento) => {
     const options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
     };
-
+    
     const { cursor } = await connectdb(sql, binds, options);
+    
     return await cursor.getRows();
   } catch (error) {
     console.log(error);
   }
+};
+
+export const editInventary = async (inventary) => {
+  try {
+    const sql = `BEGIN ACCIONES_INVENTARIO.MODIFICAR_INVENTARIO(
+      :id,
+      :cantidad,
+      :estado,
+      :descripcion,
+      :costo_reparacion,
+      :resultado);
+      END;`;
+    
+      const binds = {
+        id: inventary.id,
+        cantidad: inventary.cantidad,
+        estado: inventary.estado,
+        descripcion: inventary.descripcion,
+        costo_reparacion: inventary.costo_reparacion,
+        resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      }
+      const options = {
+        isAutoCommit: true
+      };
+
+      const {resultado} = await connectdb(sql, binds, options);
+      return resultado
+    
+  } catch (error) {
+    console.log(error);
+  }
+  
+};
+
+export const checkoutInventary = async (inventary) => {
+  try {
+    const sql = `BEGIN ACCIONES_INVENTARIO.CHECKOUT_INVENTARIO(
+      :id,
+      :estado,
+      :descripcion,
+      :costo_reparacion,
+      :resultado);
+      END;`;
+    
+      const binds = {
+        id: inventary.id,
+        estado: inventary.estado,
+        descripcion: inventary.descripcion,
+        costo_reparacion: inventary.costo_reparacion,
+        resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      }
+
+      console.log(binds)
+      const options = {
+        isAutoCommit: true
+      };
+
+      const {resultado} = await connectdb(sql, binds, options);
+      return resultado
+    
+  } catch (error) {
+    console.log(error);
+  }
+  
 };
