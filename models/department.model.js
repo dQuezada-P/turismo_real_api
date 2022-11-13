@@ -15,9 +15,7 @@ class Department {
     descripcion,
     estado_disponible,
     estado_reserva,
-    imagenes,
-    add_date,
-    modified_date
+    imagenes
   ) {
     (this._id = id),
     (this._nombre  = nombre),
@@ -32,8 +30,6 @@ class Department {
     (this._estado_disponible = estado_disponible),
     (this._estado_reserva = estado_reserva),
     (this._imagenes = imagenes);
-    (this._add_date = add_date);
-    (this._modified_date = modified_date);
   }
 
   async getDepartments(){

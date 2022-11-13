@@ -7,7 +7,6 @@ export const UploadImagen = async (files, department_id) => {
     const images = genImagesNames(Object.values(files), department_id); //const keys = Object.keys(req.files);
     async function SubirImagen() {
       images.forEach(async (image) => {
-        console.log(image)
         await uploadFile(image);
       });
     }
