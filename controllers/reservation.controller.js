@@ -97,3 +97,12 @@ export const checkInReservation = async (req, res) => {
 
   res.json(response);
 };
+
+export const checkOutReservation = async (req, res) => {
+  console.log(req.body)
+  const { id_reserva, cancelado } = req.body;
+  
+  const response = await new Reservation().checkOutReservation(id_reserva, cancelado);
+
+  res.json(response);
+};

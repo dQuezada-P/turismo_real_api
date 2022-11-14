@@ -50,10 +50,8 @@ AS
                 WHERE 
                     TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')
                     AND D.ID = V_ID_DEPARTAMENTO
-                    AND R.ESTADO = 1 
-                GROUP BY
-                    D.ID, D.NOMBRE, R.FECHA_INICIO, R.DIAS, R.CANTIDAD_PERSONA, 
-                    L.NOMBRE
+                    AND R.ESTADO BETWEEN 2 AND 3
+                GROUP BY D.ID, D.NOMBRE, R.FECHA_INICIO, R.DIAS, R.CANTIDAD_PERSONA, L.NOMBRE     
                 ORDER BY 
                     R.FECHA_INICIO ASC;
     END;
@@ -78,8 +76,8 @@ AS
                     PAGO P ON R.ID_PAGO = P.ID
                 WHERE 
                     TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')                     
-                    AND L.ID = V_ID_LOCALIDAD
-                    AND R.ESTADO = 1
+                    AND L.ID = V_ID_LOCALIDAD                 
+                    AND R.ESTADO BETWEEN 2 AND 3
                 GROUP BY D.NOMBRE, L.NOMBRE, R.FECHA_INICIO
                 ORDER BY 
                     R.FECHA_INICIO ASC;

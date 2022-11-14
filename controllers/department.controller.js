@@ -13,8 +13,10 @@ export const getDepartments = async (req, res) => {
             url: img,
           };
         });
+        else delete dept.IMAGENES;
       return dept;
     });
+
     res.json(departmentsList);
   } catch (error) {
     console.error(error);
@@ -65,21 +67,21 @@ export const addDepartment = async (req, res) => {
     numero_banno,
     numero_habitacion,
     direccion,
-    estado,
     valor_arriendo,
     localidad,
     descripcion,
     estado_disponible,
     estado_reserva,
   } = JSON.parse(req.body.content);
+  console.log(valor_arriendo)
   const department = new Department(
     null,
     nombre,
     parseInt(numero_banno, 10),
     parseInt(numero_habitacion, 10),
     direccion,
-    parseInt(valor_arriendo.replace("$", "").replace(".", ""), 10),
-    estado,
+    parseInt(valor_arriendo.replace("$", "").replace(".", "").replace(",", ""), 10),
+    null,
     localidad,
     null,
     descripcion,

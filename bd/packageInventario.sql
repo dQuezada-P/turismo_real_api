@@ -10,20 +10,24 @@ AS
     --     V_ID_DEPARTAMENTO IN VARCHAR2,
     --     RESULTADO OUT NUMBER);
 
-    -- PROCEDURE MODIFICAR_INVENTARIO(
-    --     V_ID IN NUMBER,
-    --     V_NOMBRE IN VARCHAR2, 
-    --     V_CANTIDAD IN NUMBER, 
-    --     V_ESTADO IN CHAR, 
-    --     V_DESCRIPCION IN VARCHAR2, 
-    --     V_ID_PRODUCTO IN NUMBER,
-    --     V_ID_DEPARTAMENTO IN VARCHAR2,
-    --     RESULTADO OUT NUMBER);
+    PROCEDURE MODIFICAR_INVENTARIO(
+        V_ID IN NUMBER,
+        V_CANTIDAD IN NUMBER, 
+        V_ESTADO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2, 
+        V_COSTO_REPARACION IN NUMBER,
+        RESULTADO OUT NUMBER);
 
     -- PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER);
 
     PROCEDURE GET_INVENTARIO(V_ID_DEPARTAMENTO IN NUMBER, V_INVENTARIOS OUT SYS_REFCURSOR);
-     
+    
+    PROCEDURE CHECKOUT_INVENTARIO(
+        V_ID IN NUMBER,
+        V_ESTADO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2, 
+        V_COSTO_REPARACION IN NUMBER,
+        RESULTADO OUT NUMBER);
 END;
 /
 ---------------------------------------------------------------
@@ -50,33 +54,7 @@ AS
     --                 ROLLBACK;
     --     END;
 
-    -- PROCEDURE MODIFICAR_INVENTARIO(
-    --     V_ID IN NUMBER,
-    --     V_NOMBRE IN VARCHAR2, 
-    --     V_CANTIDAD IN NUMBER, 
-    --     V_ESTADO IN CHAR, 
-    --     V_DESCRIPCION IN VARCHAR2, 
-    --     V_ID_PRODUCTO IN NUMBER,
-    --     V_ID_DEPARTAMENTO IN VARCHAR2,
-    --     RESULTADO OUT NUMBER)
-    --     AS
-    --     BEGIN
-    --         UPDATE INVENTARIO
-    --         SET NOMBRE = V_NOMBRE,
-    --         CANTIDAD = V_CANTIDAD,
-    --         ESTADO = V_ESTADO,
-    --         DESCRIPCION = V_DESCRIPCION,
-    --         ID_PRODUCTO = V_ID_PRODUCTO,
-    --         ID_DEPARTAMENTO = V_ID_DEPARTAMENTO
-    --         WHERE ID = V_ID;
-    --         RESULTADO := SQL%ROWCOUNT;
-    --         COMMIT;
-
-    --         EXCEPTION
-    --             WHEN OTHERS THEN
-    --                 RESULTADO:=0;
-    --                 ROLLBACK;
-    --     END;
+    
 
     -- PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER)
         -- AS
@@ -102,6 +80,7 @@ AS
                 I.CANTIDAD,
                 I.ESTADO,
                 I.DESCRIPCION, 
+                I.COSTO_REPARACION, 
                 P.ID PRODUCTO__ID,
                 P.NOMBRE PRODUCTO__NOMBRE,
                 P.PRECIO PRODUCTO__PRECIO,
@@ -111,5 +90,52 @@ AS
                 ON I.ID_PRODUCTO = P.ID
             WHERE I.ID_DEPARTAMENTO = V_ID_DEPARTAMENTO;
             
+        END;
+
+    PROCEDURE MODIFICAR_INVENTARIO(
+        V_ID IN NUMBER,
+        V_CANTIDAD IN NUMBER, 
+        V_ESTADO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2, 
+        V_COSTO_REPARACION IN NUMBER,
+        RESULTADO OUT NUMBER)
+        AS
+        BEGIN
+            UPDATE INVENTARIO
+            SET 
+            CANTIDAD = V_CANTIDAD,
+            ESTADO = V_ESTADO,
+            DESCRIPCION = V_DESCRIPCION,
+            COSTO_REPARACION = V_COSTO_REPARACION
+            WHERE ID = V_ID;
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
+
+            EXCEPTION
+                WHEN OTHERS THEN
+                    RESULTADO:=0;
+                    ROLLBACK;
+        END;
+    PROCEDURE CHECKOUT_INVENTARIO(
+        V_ID IN NUMBER,
+        V_ESTADO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2, 
+        V_COSTO_REPARACION IN NUMBER,
+        RESULTADO OUT NUMBER)
+        AS
+        BEGIN
+            UPDATE INVENTARIO
+            SET 
+            ESTADO = V_ESTADO,
+            DESCRIPCION = V_DESCRIPCION,
+            COSTO_REPARACION = V_COSTO_REPARACION
+            WHERE ID = V_ID;
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
+
+            EXCEPTION
+                WHEN OTHERS THEN
+                    RESULTADO:=0;
+                    ROLLBACK;
         END;
 END;

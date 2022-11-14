@@ -60,7 +60,6 @@ export const addDepartmetBD = async (department,responseAction) => {
       :numero_habitacion,
       :direccion,
       :valor_arriendo,
-      :estado,
       :id_localidad,
       :descripcion,
       :estado_disponible,
@@ -75,7 +74,6 @@ export const addDepartmetBD = async (department,responseAction) => {
     numero_habitacion: department.numero_habitacion,
     direccion: department.direccion,
     valor_arriendo: department.valor_arriendo,
-    estado: department.destado,
     id_localidad: department.id_localidad,
     descripcion: department.descripcion,
     estado_disponible: department.estado_disponible,
@@ -89,11 +87,12 @@ export const addDepartmetBD = async (department,responseAction) => {
     isAutoCommit: true,
   };
 
-  const callBack = async (res) => {3
+  const callBack = async (res) => {
     const department_id = res.r;
-    const images = await UploadImagen(department.IMAGENES, department_id.toString());
 
-    if (images) {
+    if (department.imagenes) {
+      const images = await UploadImagen(department.imagenes, department_id.toString());
+
       binds = {
         id: department_id,
         imagenes: images.toString(),
@@ -108,8 +107,9 @@ export const addDepartmetBD = async (department,responseAction) => {
 
       const { r } = await connectdb(sql, binds, { isAutoCommit: true });
       responseAction(r);
-     
+      return;
     }
+    responseAction(res);
   };
 
   try {
