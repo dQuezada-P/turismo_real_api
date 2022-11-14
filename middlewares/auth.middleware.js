@@ -6,8 +6,8 @@ import User from "../models/user.model.js";
 export const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization;
     const { login } = req.body;
-    console.log(req.headers)
-    console.log(req.body)
+    // console.log(req.headers)
+    // console.log(req.body)
     // console.log(req)
   
     if (!token) return res.status(403).json({ message: "No se ha enviado un Token", auth: false});
@@ -18,7 +18,7 @@ export const verifyToken = async (req, res, next) => {
 
             const { rut, correo } = decoded
 
-            console.log(rut, correo)
+            // console.log(rut, correo)
         
             req.query.rut = rut
 
@@ -39,8 +39,8 @@ export const verifyToken = async (req, res, next) => {
         });
         
     } catch (error) {
-        console.log('error')
-        console.log(error)
+        // console.log('error')
+        // console.log(error)
         return res.status(401).json({ message: "Acceso no permitido" });
     }
 };

@@ -13,6 +13,7 @@ import { UploadImagen, GetImage } from "../controllers/files.controller.js";
 import routerEstadistic from "../routes/statistic.routes.js";
 import routerReservation from "../routes/reservation.routes.js";
 import routerMercadoPago from "../routes/mercadoPago.routes.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 
 

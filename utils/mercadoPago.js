@@ -1,47 +1,54 @@
 import mercadopago from "mercadopago";
 import { config } from "dotenv";
 import axios from "axios";
-import { parse, stringify, toJSON, fromJSON } from "flatted";
 config();
 
 export const payMercadoPago = async (req, res) => {
-  console.log(req.body);
-  const { cliente, arriendo } = req.body;
+  const { id, nombre, total, img, correo } = req.body;
 
-  // console.log(
-  //   typeof parseInt(
-  //     arriendo.abono.substr(1, arriendo.abono.lenght).replace(".", "")
-  //   )
-  // );
   mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,
   });
   let preference = {
     items: [
       {
-        id: arriendo.id,
-        title: arriendo.nombre,
-        unit_price: parseInt(
-          arriendo.abono.substr(1, arriendo.abono.lenght).replace(".", "")
-        ),
+        id: id,
+        title: nombre,
         quantity: 1,
-        picture_url: arriendo.img,
+        unit_price: total,
+        picture_url: img,
       },
     ],
-    payer: {
-      name: cliente.nombre,
-      email: cliente.correo,
-    },
-    metadata: {
-      cliente: cliente,
-      arriendo: arriendo,
-    },
+    payer: { email: correo },
     back_urls: {
       success: "http://localhost:5173/notificacion",
       failure: "http://localhost:5173/notificacion",
     },
     auto_return: "approved",
-    notification_url: "",
+    metadata: { reservation: req.body },
+    //     id: arriendo.id,
+    //     title: arriendo.nombre,
+    //     quantity parseInt(
+    //       arriendo.abono.substr(1, arriendo.abono.lenght).replace(".", "")
+    //     ),
+    //     quantity: 1,
+    //     picture_url: arriendo.img,
+    //   },
+    // ],
+    // payer: {
+    //   name: cliente.nombre,
+    //   email: cliente.correo,
+    // },
+    // metadata: {
+    //   cliente: cliente,
+    //   arriendo: arriendo,
+    // },
+    // back_urls: {
+    //   success: "http://localhost:5173/notificacion",
+    //   failure: "http://localhost:5173/notificacion",
+    // },
+    // auto_return: "approved",
+    // notification_url: "",
   };
   try {
     const { response } = await mercadopago.preferences.create(preference);
@@ -63,13 +70,8 @@ export const webHook = async (req, res) => {
       }
     );
     res.json({
-      status : result.data.status,
-      abono : result.data.transaction_amount,
-      id : result.data.metadata.arriendo.id,
-      rut : result.data.metadata.cliente.rut,
-      fecha : result.data.metadata.arriendo.fecha,
-      dias : result.data.metadata.arriendo.dias,
-      cantP : result.data.metadata.arriendo.cant_personas
+      status: result.data.status,
+      reservation: result.data.metadata,
     });
   } catch (error) {
     console.log(error);

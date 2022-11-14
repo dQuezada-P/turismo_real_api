@@ -42,6 +42,7 @@ export const getReservation = async (id) => {
 };
 
 export const addReservation = async (reservation) => {
+
   let binds = {
     fecha_inicio: reservation.fecha_inicio,
     dias: reservation.dias,
