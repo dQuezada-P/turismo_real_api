@@ -93,14 +93,16 @@ export const addDepartmetBD = async (department,responseAction) => {
     if (department.imagenes) {
       const images = await UploadImagen(department.imagenes, department_id.toString());
 
-      binds = {
+      const binds = {
         id: department_id,
+        deleted: '',
         imagenes: images.toString(),
         r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
       };
 
-      sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
+      const sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
               :id,
+              :deleted,
               :imagenes,
               :r);
               END;`;
@@ -123,23 +125,21 @@ export const addDepartmetBD = async (department,responseAction) => {
 
 //EDITAR DEPARTAMENTO
 export const editDepartmentBD = async (department) => {
-
-  let result;
   const sql = `BEGIN ACCIONES_DEPARTAMENTO.MODIFICAR_DEPARTAMENTO(
-                                                                :id,
-                                                                :nombre,
-                                                                :numero_banno,
-                                                                :numero_habitacion,
-                                                                :direccion,
-                                                                :valor_arriendo,
-                                                                :estado,
-                                                                :id_localidad,
-                                                                :descripcion,
-                                                                :estado_disponible,
-                                                                :estado_reserva,
-                                                                :r,
-                                                                :msg);
-                                                                END;`;
+    :id,
+    :nombre,
+    :numero_banno,
+    :numero_habitacion,
+    :direccion,
+    :valor_arriendo,
+    :estado,
+    :id_localidad,
+    :descripcion,
+    :estado_disponible,
+    :estado_reserva,
+    :r,
+    :msg);
+    END;`;
   let binds = {
     id : department.id,
     nombre: department.nombre,
@@ -163,9 +163,42 @@ export const editDepartmentBD = async (department) => {
   console.log(binds);
 
   try {
-    await connectdb(sql, binds, options).then((resultSet) => {
-      result = resultSet;
-    });
+    const result = await connectdb(sql, binds, options);
+    console.log(result)
+    if (result.r == 1){
+      let prevImages = '';
+      let largo = department.prev_file_list_updated.length;
+      for (let i=0;i<largo;i++){
+        prevImages +=  department.prev_file_list_updated[i].url;
+        if (i<largo-1){
+          prevImages += ',';
+        }
+      }
+      console.log('nuevo '+ prevImages);
+
+      let images = null;
+      if (department.imagenes) {
+        images = await UploadImagen(department.imagenes, department.id.toString(), department.last_files_count);
+      }  
+
+      const binds = {
+        id: department.id,
+        imagenes: prevImages != '' ? images != null ? prevImages + ','+ images.toString() : prevImages : images != null ? images.toString() : '',
+        r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+      };
+
+      const sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
+              :id,
+              :imagenes,
+              :r);
+              END;`;
+
+      const { r } = await connectdb(sql, binds, { isAutoCommit: true });
+      
+      return r;
+      
+    }
+
     return result;
   } catch (error) {
     console.error(error);

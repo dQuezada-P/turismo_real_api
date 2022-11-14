@@ -1,8 +1,9 @@
+import { Console } from "console";
 import Department from "../models/department.model.js";
 
 export const getDepartments = async (req, res) => {
   try {
-    const departmentList = await new Department().getDepartments();
+    const departmentList = await new Department({}).getDepartments();
     const departmentsList = departmentList.map((dept) => {
       if (dept.IMAGENES != null)
         dept.IMAGENES = dept.IMAGENES.split(",").map((img) => {
@@ -36,7 +37,7 @@ export const getDepartment = async (req, res) => {
     
   }
   try {
-    const [department] = await new Department().getDepartment(req.query.id);
+    const [department] = await new Department({}).getDepartment(req.query.id);
     if (department == null)
       {res.json({ msg: "Departamento no se encuentra registrado" });return;}
     else {
@@ -100,29 +101,29 @@ export const editDepartment = async (req, res) => {
     direccion,
     valor_arriendo,
     estado,
-    localidad,
+    id_localidad,
     descripcion,
-    // estado_disponible,
-    // estado_reserva,
-    files,
-  } = req.body;
-
+    prev_file_list_updated,
+    last_files_count
+  } = JSON.parse(req.body.content);
+  console.log(JSON.parse(req.body.content));
+  console.log(req.files);
   const newDepartment = new Department(
-    id,
+    {id,
     nombre,
-    numero_banno,
-    numero_habitacion,
+    numero_banno:parseInt(numero_banno, 10),
+    numero_habitacion:parseInt(numero_habitacion, 10),
     direccion,
-    valor_arriendo.replace("$", "").replace(".", ""),
+    valor_arriendo: parseInt(valor_arriendo.replace("$", "").replace(".", "").replace(",", "")),
     estado,
-    localidad,
-    null,
+    id_localidad,
+    ubicacion: null,
     descripcion,
-    "y",
-    "y",
-    // estado_disponible,
-    // estado_reserva,
-    files
+    estado_disponible:"y",
+    estado_reserva:"y",
+    imagenes:req.files,
+    prev_file_list_updated,
+    last_files_count}
   );
   const response = await newDepartment.editDepartment();
   res.json(response);

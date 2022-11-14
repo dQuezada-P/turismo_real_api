@@ -1,10 +1,12 @@
 import { uploadFile, getUrl, deleteFile } from "../utils/s3.js";
 
 // export const UploadImagen = async (req, res, next) => {
-export const UploadImagen = async (files, department_id) => {
+export const UploadImagen = async (files, department_id, last_files_count = false) => {
   // console.log(req.files)
   try {
-    const images = genImagesNames(Object.values(files), department_id); //const keys = Object.keys(req.files);
+    const images = !last_files_count 
+      ? genImagesNames(Object.values(files), department_id) 
+      : genUpdatedImagesNames(Object.values(files), department_id, last_files_count);
     async function SubirImagen() {
       images.forEach(async (image) => {
         await uploadFile(image);
@@ -18,11 +20,20 @@ export const UploadImagen = async (files, department_id) => {
   }
 };
 
+
 const genImagesNames = (images, department_id) => {
   let i = 1
   return images.map((image) => {
     image.name = department_id + '_' + i.toString() + '.' + image.name.split('.')[1];
     i += 1
+    return image
+  })
+}
+
+const genUpdatedImagesNames = (images, department_id, last_files_count) => {
+  return images.map((image) => {
+    last_files_count += 1
+    image.name = department_id + '_' + last_files_count.toString() + '.' + image.name.split('.')[1];
     return image
   })
 }
