@@ -46,7 +46,7 @@ AS
                 JOIN 
                     LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
                 JOIN
-                    PAGO P ON R.ID_PAGO = P.ID
+                    PAGO P ON R.ID = P.ID
                 WHERE 
                     TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')
                     AND D.ID = V_ID_DEPARTAMENTO
@@ -73,7 +73,7 @@ AS
                 JOIN 
                     LOCALIDAD L ON D.ID_LOCALIDAD = L.ID
                 JOIN
-                    PAGO P ON R.ID_PAGO = P.ID
+                    PAGO P ON R.ID = P.ID
                 WHERE 
                     TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') BETWEEN  TO_DATE(V_FECHA1, 'DD/MM/YYYY') AND  TO_DATE(V_FECHA2, 'DD/MM/YYYY')                     
                     AND L.ID = V_ID_LOCALIDAD                 

@@ -16,6 +16,7 @@ class Department {
     this._estado_disponible = params.estado_disponible;
     this._estado_reserva = params.estado_reserva;
     this._imagenes = params.imagenes;
+    this._deleted_files = params.deleted_files;
     this._prev_file_list_updated = params.prev_file_list_updated;
     this._last_files_count = params.last_files_count;
   }
@@ -156,6 +157,13 @@ class Department {
   }
   set modified_date(newvalue) {
     this._modified_date = newvalue;
+  }
+
+  get deleted_files() {
+    return this._deleted_files;
+  }
+  set deleted_files(newvalue) {
+    this._deleted_files = newvalue;
   }
 
   get prev_file_list_updated() {

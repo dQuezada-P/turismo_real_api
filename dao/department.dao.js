@@ -160,14 +160,12 @@ export const editDepartmentBD = async (department) => {
     isAutoCommit: true,
   };
 
-  console.log(binds);
-
   try {
     const result = await connectdb(sql, binds, options);
     console.log(result)
     if (result.r == 1){
       let prevImages = '';
-      let largo = department.prev_file_list_updated.length;
+      const largo = department.prev_file_list_updated.length;
       for (let i=0;i<largo;i++){
         prevImages +=  department.prev_file_list_updated[i].url;
         if (i<largo-1){
@@ -176,6 +174,10 @@ export const editDepartmentBD = async (department) => {
       }
       console.log('nuevo '+ prevImages);
 
+      if (department.deleted_files) {
+        await (DeleteFile(department.deleted_files.map(file => file.name)));
+      }
+      
       let images = null;
       if (department.imagenes) {
         images = await UploadImagen(department.imagenes, department.id.toString(), department.last_files_count);
@@ -183,7 +185,7 @@ export const editDepartmentBD = async (department) => {
 
       const binds = {
         id: department.id,
-        imagenes: prevImages != '' ? images != null ? prevImages + ','+ images.toString() : prevImages : images != null ? images.toString() : '',
+        imagenes: prevImages != '' ? images != null ? prevImages + ','+ images.toString() : prevImages : images != null ? images.toString() : '' ,
         r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
       };
 

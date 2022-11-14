@@ -103,6 +103,7 @@ export const editDepartment = async (req, res) => {
     estado,
     id_localidad,
     descripcion,
+    deleted_files,
     prev_file_list_updated,
     last_files_count
   } = JSON.parse(req.body.content);
@@ -122,6 +123,7 @@ export const editDepartment = async (req, res) => {
     estado_disponible:"y",
     estado_reserva:"y",
     imagenes:req.files,
+    deleted_files,
     prev_file_list_updated,
     last_files_count}
   );
