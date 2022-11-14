@@ -8,18 +8,6 @@ AS
                         V_ABONO IN NUMBER,
                         V_ID_RESERVA OUT NUMBER,
                         MSG OUT VARCHAR2);
-    -------------------------------------------------------
-    PROCEDURE MODIFICAR_RESERVA(ID_RESERVA IN NUMBER,
-                                V_FECHA_INICIO IN DATE,
-                                V_DIAS IN NUMBER,
-                                V_CANTIDAD IN NUMBER,
-                                V_ID_CLIENTE IN VARCHAR2,
-                                V_ID_DEPARTAMENTO IN NUMBER,
-                                V_ID_CHECKIN IN NUMBER,
-                                V_ID_CHECKOUT IN NUMBER,
-                                V_PAGO IN NUMBER,
-                                RESULTADO OUT NUMBER,
-                                MSG OUT VARCHAR2);
     -----------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
@@ -69,39 +57,7 @@ AS
             MSG:= SQLERRM;
             ROLLBACK;
         END;
-    ------------------------------------------------------------------------------------------------------------------
-    PROCEDURE MODIFICAR_RESERVA(ID_RESERVA IN NUMBER,
-                                V_FECHA_INICIO IN DATE,
-                                V_DIAS IN NUMBER,
-                                V_CANTIDAD IN NUMBER,
-                                V_ID_CLIENTE IN VARCHAR2,
-                                V_ID_DEPARTAMENTO IN NUMBER,
-                                V_ID_CHECKIN IN NUMBER,
-                                V_ID_CHECKOUT IN NUMBER,
-                                V_PAGO IN NUMBER,
-                                RESULTADO OUT NUMBER,
-                                MSG OUT VARCHAR2)
-        AS 
-        BEGIN
-            UPDATE RESERVA
-            SET FECHA_INICIO = V_FECHA_INICIO,
-            DIAS = V_DIAS,
-            CANTIDAD_PERSONA = V_CANTIDAD,
-            ID_CLIENTE = V_ID_CLIENTE,
-            ID_DEPARTAMENTO = V_ID_DEPARTAMENTO,
-            ID_CHECKIN = V_ID_CHECKIN,
-            ID_CHECKOUT = V_ID_CHECKOUT,
-            ID_PAGO = V_PAGO
-            WHERE ID = ID_RESERVA;
-            RESULTADO := SQL%ROWCOUNT;
-            COMMIT;
-            EXCEPTION
-            WHEN OTHERS THEN
-                MSG := SQLERRM;
-                ROLLBACK;
-
-
-        END;
+   
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR )
         AS
