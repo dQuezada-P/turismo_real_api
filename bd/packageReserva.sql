@@ -54,12 +54,6 @@ AS
             INSERT INTO CHECKOUT(ID) VALUES(ID);
             INSERT INTO PAGO(ID) VALUES(ID);
             
-            UPDATE RESERVA 
-            SET ID_CHECKIN = ID, 
-            ID_CHECKOUT = ID,
-            ID_PAGO = ID
-            WHERE ID = ID;
-            
             UPDATE PAGO
             SET ABONO = V_ABONO
             WHERE ID = V_ID_RESERVA;
@@ -68,7 +62,7 @@ AS
             SET ESTADO_RESERVA = 'N'
             WHERE ID = V_ID_DEPARTAMENTO;
             
-        COMMIT;
+            COMMIT;
         
         EXCEPTION
             WHEN OTHERS THEN
@@ -135,7 +129,7 @@ AS
             JOIN DEPARTAMENTO D
                 ON R.ID_DEPARTAMENTO = D.ID
             JOIN PAGO P
-                ON R.ID_PAGO = P.ID
+                ON R.ID = P.ID
             WHERE R.ID = V_ID_RESERVA
             ORDER BY ID;
         END;
@@ -178,7 +172,7 @@ AS
             JOIN DEPARTAMENTO D
                 ON R.ID_DEPARTAMENTO = D.ID
             JOIN PAGO P
-                ON R.ID_PAGO = P.ID
+                ON R.ID = P.ID
             ORDER BY ID;
         END;
     -------------------------------------------------------------------------------------------
