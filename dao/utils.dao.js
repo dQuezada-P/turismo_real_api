@@ -35,8 +35,8 @@ export const getDepartmentsBD = async () => {
   };
   try {
     const { cursor } = await connectdb(sql, binds, options);
-    const locations = await cursor.getRows()
-    return locations
+    const departments = await cursor.getRows();
+    return departments
   } catch (error) {
     console.error(error);
   }

@@ -362,7 +362,7 @@ INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,DIRECCION,VAL
 VALUES(DEPARTAMENTO_AUTO.NEXTVAL,'Edificio Padre Hurtado',1,1,'AV. Vespucio 305',289990,1,'Departamento Básico','Y','Y','https://turismoreal2.s3.amazonaws.com/8_1.jpg,https://turismoreal2.s3.amazonaws.com/8_2.jpg,https://turismoreal2.s3.amazonaws.com/8_3.jpg');
 
 INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION,ESTADO_DISPONIBLE,ESTADO_RESERVA,IMAGENES)
-VALUES(DEPARTAMENTO_AUTO.NEXTVAL,'Edificio Las Palmas',1,2,'Calle Almagro 8322',259990,2,'Departamento Básico','Y','Y','https://turismoreal2.s3.amazonaws.com/9_1.jpg,https://turismoreal2.s3.amazonaws.com/9_2.jpg,https://turismoreal2.s3.amazonaws.com/9_3.jpg');
+VALUES(DEPARTAMENTO_AUTO.NEXTVAL,'Edificio Las Palmas',1,2,'Calle Almagro 8322',259990,1,'Departamento Básico','Y','Y','https://turismoreal2.s3.amazonaws.com/9_1.jpg,https://turismoreal2.s3.amazonaws.com/9_2.jpg,https://turismoreal2.s3.amazonaws.com/9_3.jpg');
 
 INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION,ESTADO_DISPONIBLE,ESTADO_RESERVA,IMAGENES)
 VALUES(DEPARTAMENTO_AUTO.NEXTVAL,'Condomio Paraiso Sur',3,2,'Calle Medalla 3942',439990,4,'Departamento Intermedio','Y','Y','https://turismoreal2.s3.amazonaws.com/10_1.jpg,https://turismoreal2.s3.amazonaws.com/10_2.jpg,https://turismoreal2.s3.amazonaws.com/10_3.jpg');

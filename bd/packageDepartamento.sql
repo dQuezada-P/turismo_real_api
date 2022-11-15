@@ -126,12 +126,14 @@ AS
         RESULTADO OUT NUMBER)
     AS
     BEGIN
+
         UPDATE DEPARTAMENTO 
         SET
             IMAGENES = V_IMAGENES
             WHERE ID = V_ID;
-            RESULTADO := SQL%ROWCOUNT;
-            COMMIT;
+                
+        RESULTADO := SQL%ROWCOUNT;
+        COMMIT;
 
         EXCEPTION
             WHEN INVALID_NUMBER THEN

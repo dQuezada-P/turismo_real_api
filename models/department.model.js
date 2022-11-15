@@ -2,34 +2,23 @@
 import * as departmentDao from '../dao/department.dao.js';
 
 class Department {
-  constructor(
-    id,
-    nombre,
-    numero_banno,
-    numero_habitacion,
-    direccion,
-    valor_arriendo,
-    estado,
-    id_localidad,
-    ubicacion,
-    descripcion,
-    estado_disponible,
-    estado_reserva,
-    imagenes
-  ) {
-    (this._id = id),
-    (this._nombre  = nombre),
-    (this._numero_banno = numero_banno),
-    (this._numero_habitacion = numero_habitacion),
-    (this._direccion = direccion),
-    (this._valor_arriendo = valor_arriendo),
-    (this._estado = estado),
-    (this._id_localidad = id_localidad),
-    (this._ubicacion = ubicacion),
-    (this._descripcion = descripcion),
-    (this._estado_disponible = estado_disponible),
-    (this._estado_reserva = estado_reserva),
-    (this._imagenes = imagenes);
+  constructor(params) {
+    this._id = params.id;
+    this._nombre  = params.nombre;
+    this._numero_banno = params.numero_banno;
+    this._numero_habitacion = params.numero_habitacion;
+    this._direccion = params.direccion;
+    this._valor_arriendo = params.valor_arriendo;
+    this._estado = params.estado;
+    this._id_localidad = params.id_localidad;
+    this._ubicacion = params.ubicacion;
+    this._descripcion = params.descripcion;
+    this._estado_disponible = params.estado_disponible;
+    this._estado_reserva = params.estado_reserva;
+    this._imagenes = params.imagenes;
+    this._deleted_files = params.deleted_files;
+    this._prev_file_list_updated = params.prev_file_list_updated;
+    this._last_files_count = params.last_files_count;
   }
 
   async getDepartments(){
@@ -168,6 +157,27 @@ class Department {
   }
   set modified_date(newvalue) {
     this._modified_date = newvalue;
+  }
+
+  get deleted_files() {
+    return this._deleted_files;
+  }
+  set deleted_files(newvalue) {
+    this._deleted_files = newvalue;
+  }
+
+  get prev_file_list_updated() {
+    return this._prev_file_list_updated;
+  }
+  set prev_file_list_updated(newvalue) {
+    this._prev_file_list_updated = newvalue;
+  }
+
+  get last_files_count() {
+    return this._last_files_count;
+  }
+  set last_files_count(newvalue) {
+    this._last_files_count = newvalue;
   }
 }
 export default Department;

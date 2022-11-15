@@ -7,8 +7,8 @@ export const getLocations = async (req, res) => {
 };
 
 export const getDepartments = async (req, res) => {
-  const locations = await utilsDao.getDepartmentsBD()
-  locations?.length === 0 ? res.json({msg : 'No hay departamentos'}) : res.json(locations)
+  const departments = await utilsDao.getDepartmentsBD()
+  departments?.length === 0 ? res.json({msg : 'No hay departamentos'}) : res.json(departments)
   
 };
 
