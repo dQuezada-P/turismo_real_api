@@ -1,6 +1,7 @@
 import { connectdb } from "../config/config.js";
 import oracledb from "oracledb";
 import { UploadImagen,DeleteFile } from "../controllers/files.controller.js";
+import { AWS_FILE_ROUTE } from "../utils/credentials.js";
 oracledb.fetchAsString = [ oracledb.CLOB ];
 
 //VER DEPARTAMENTO
@@ -91,18 +92,15 @@ export const addDepartmetBD = async (department,responseAction) => {
     const department_id = res.r;
 
     if (department.imagenes) {
-      const images = await UploadImagen(department.imagenes, department_id.toString());
+      const images = await UploadImagen(department.imagenes, department_id.toString(), AWS_FILE_ROUTE.D);
 
       const binds = {
         id: department_id,
-        deleted: '',
         imagenes: images.toString(),
         r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
       };
-
       const sql = `BEGIN ACCIONES_DEPARTAMENTO.ACTUALIZAR_IMAGENES(
               :id,
-              :deleted,
               :imagenes,
               :r);
               END;`;
@@ -175,12 +173,12 @@ export const editDepartmentBD = async (department) => {
       console.log('nuevo '+ prevImages);
 
       if (department.deleted_files) {
-        await (DeleteFile(department.deleted_files.map(file => file.name)));
+        await DeleteFile(department.deleted_files.map(file => file.name), AWS_FILE_ROUTE.D);
       }
       
       let images = null;
       if (department.imagenes) {
-        images = await UploadImagen(department.imagenes, department.id.toString(), department.last_files_count);
+        images = await UploadImagen(department.imagenes, department.id.toString(), AWS_FILE_ROUTE.D, department.last_files_count);
       }  
 
       const binds = {

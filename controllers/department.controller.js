@@ -69,26 +69,26 @@ export const addDepartment = async (req, res) => {
     numero_habitacion,
     direccion,
     valor_arriendo,
-    localidad,
+    id_localidad,
     descripcion,
     estado_disponible,
     estado_reserva,
   } = JSON.parse(req.body.content);
   console.log(valor_arriendo)
   const department = new Department(
-    null,
+    {id: null,
     nombre,
-    parseInt(numero_banno, 10),
-    parseInt(numero_habitacion, 10),
+    numero_banno: parseInt(numero_banno, 10),
+    numero_habitacion: parseInt(numero_habitacion, 10),
     direccion,
-    parseInt(valor_arriendo.replace("$", "").replace(".", "").replace(",", ""), 10),
-    null,
-    localidad,
-    null,
+    valor_arriendo: parseInt(valor_arriendo.replace("$", "").replace(".", "").replace(",", ""), 10),
+    estado:null,
+    id_localidad,
+    ubicacion:null,
     descripcion,
     estado_disponible,
     estado_reserva,
-    req.files
+    imagenes:req.files}
   );
   await department.addDepartment(responseAction);
 };

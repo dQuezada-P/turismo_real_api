@@ -29,9 +29,9 @@ AS
         MSG OUT VARCHAR2);
 
     PROCEDURE ACTUALIZAR_IMAGENES(
-    V_ID IN VARCHAR2, 
-    V_IMAGENES IN CLOB,
-    RESULTADO OUT NUMBER);
+        V_ID IN VARCHAR2, 
+        V_IMAGENES IN CLOB,
+        RESULTADO OUT NUMBER);
 
     PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER);
 
@@ -124,22 +124,22 @@ AS
         V_ID IN VARCHAR2, 
         V_IMAGENES IN CLOB,
         RESULTADO OUT NUMBER)
-    AS
-    BEGIN
+        AS
+        BEGIN
 
-        UPDATE DEPARTAMENTO 
-        SET
-            IMAGENES = V_IMAGENES
-            WHERE ID = V_ID;
-                
-        RESULTADO := SQL%ROWCOUNT;
-        COMMIT;
+            UPDATE DEPARTAMENTO 
+            SET
+                IMAGENES = V_IMAGENES
+                WHERE ID = V_ID;
+                    
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
 
-        EXCEPTION
-            WHEN INVALID_NUMBER THEN
-               RESULTADO:=0;
-               ROLLBACK;
-    END;
+            EXCEPTION
+                WHEN INVALID_NUMBER THEN
+                RESULTADO:=0;
+                ROLLBACK;
+        END;
     ---------------------
         PROCEDURE ELIMINAR_DEPARTAMENTO(V_ID IN VARCHAR2, RESULTADO OUT NUMBER)
     AS

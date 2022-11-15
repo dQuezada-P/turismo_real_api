@@ -23,12 +23,12 @@ const client = new S3Client({
   },
 });
 
-export const uploadFile = async (file) => {
+export const uploadFile = async (file, route) => {
   try {
     const stream = fs.createReadStream(file.tempFilePath);
     const bucketParams = {
       Bucket: AWS_BUCKET_NAME,
-      Key: file.name,
+      Key: route + file.name,
       Body: stream,
     };
     const command = new PutObjectCommand(bucketParams);
@@ -38,11 +38,11 @@ export const uploadFile = async (file) => {
   }
 };
 
-export const getUrl = async (file) => {
+export const getUrl = async (file, route) => {
   try {
     const photo = new GetObjectCommand({
       Bucket: AWS_BUCKET_NAME,
-      Key: file,
+      Key: route + file,
     });
 
     return await getSignedUrl(client, photo);
@@ -51,12 +51,14 @@ export const getUrl = async (file) => {
   }
 };
 
-export const deleteFile = async(file) =>{
+export const deleteFile = async(file, route) =>{
   try {
     const bucketParams = {
       Bucket: AWS_BUCKET_NAME,
-      Key: file,
+      Key: route + file,
     }
+    console.log('eliminar')
+    console.log(bucketParams)
     const command = new DeleteObjectCommand(bucketParams)
     return await client.send(command)
   } catch (error) {

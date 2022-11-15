@@ -2,16 +2,20 @@
 import * as tourDao from '../dao/tour.dao.js'
 
 class Tour {
-    constructor(id, cupo, precio, fecha, hora_inicio, duracion, descripcion, estado, id_localidad){
-        this._id = id
-        this._cupo = cupo
-        this._precio = precio
-        this._fecha = fecha
-        this._hora_inicio = hora_inicio
-        this._duracion = duracion
-        this._descripcion = descripcion
-        this._estado = estado
-        this._id_localidad = id_localidad
+    constructor(params){
+        this._id = params.id;
+        this._cupo = params.cupo;
+        this._precio = params.precio;
+        this._fecha = params.fecha;
+        this._hora_inicio = params.hora_inicio;
+        this._duracion = params.duracion;
+        this._descripcion = params.descripcion;
+        this._estado = params.estado;
+        this._id_localidad = params.id_localidad;
+        this._imagenes = params.imagenes;
+        this._deleted_files = params.deleted_files;
+        this._prev_file_list_updated = params.prev_file_list_updated;
+        this._last_files_count = params.last_files_count;
     }
 
     async getTours() {
@@ -103,6 +107,34 @@ class Tour {
     }  
     set id_localidad(newvalue) {
         this._id_localidad = newvalue;
+    }
+
+    get imagenes() {
+        return this._imagenes;
+    }
+    set imagenes(newvalue) {
+        this._imagenes = newvalue;
+    }
+
+    get deleted_files() {
+        return this._deleted_files;
+    }
+    set deleted_files(newvalue) {
+        this._deleted_files = newvalue;
+    }
+
+    get prev_file_list_updated() {
+        return this._prev_file_list_updated;
+    }
+    set prev_file_list_updated(newvalue) {
+        this._prev_file_list_updated = newvalue;
+    }
+
+    get last_files_count() {
+        return this._last_files_count;
+    }
+    set last_files_count(newvalue) {
+        this._last_files_count = newvalue;
     }
 }
 
