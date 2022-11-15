@@ -50,8 +50,9 @@ export const getReservation = async (req, res) => {
 };
 
 export const addReservation = async (req, res) => {
+  console.log(req.body)
   try {
-    const { id, total, fecha, rut, cant_personas, dias, id_user } =
+    const { id_dep, total, fecha, rut, cant_personas, dias, id_user } =
       req.body.reservation.reservation;
     let [newfecha] = fecha.split("T");
     newfecha = newfecha.split("-");
@@ -62,7 +63,7 @@ export const addReservation = async (req, res) => {
       parseInt(dias, 10),
       parseInt(cant_personas, 10),
       id_user,
-      id,
+      id_dep,
       null,
       null,
       total

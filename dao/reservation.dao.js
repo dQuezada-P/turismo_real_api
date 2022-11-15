@@ -53,6 +53,7 @@ export const addReservation = async (reservation) => {
     id_reserva: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
+  console.log(binds)
   let sql = `BEGIN ACCIONES_RESERVA.CREAR_RESERVA(:fecha_inicio,
                                             :dias,
                                             :cantidad_persona,
