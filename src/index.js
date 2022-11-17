@@ -14,8 +14,6 @@ import routerEstadistic from "../routes/statistic.routes.js";
 import routerReservation from "../routes/reservation.routes.js";
 import routerMercadoPago from "../routes/mercadoPago.routes.js";
 
-
-
 const app = express();
 
 //* setting
@@ -25,9 +23,11 @@ app.set("json spaces", 2);
 //* middlewares
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors({
-  origin: '*'
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(
   fileUpload({
@@ -46,9 +46,8 @@ app.use("/api/servicio-transporte", routerTransport);
 app.use("/api/servicio-tour", routerTour);
 app.use("/api/files", UploadImagen, GetImage);
 app.use("/api/estadistica", routerEstadistic);
-app.use("/api/reserva",routerReservation)
-app.use("/api/mercadopago",routerMercadoPago)
-
+app.use("/api/reserva", routerReservation);
+app.use("/api/mercadopago", routerMercadoPago);
 
 //* server
 app.listen(app.get("port"), () => {

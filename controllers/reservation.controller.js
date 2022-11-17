@@ -1,4 +1,5 @@
 import Reservation from "../models/reservation.model.js";
+import { emailReservation } from "../utils/email.js";
 export const getReservations = async (req, res) => {
   const reservationList = await new Reservation().getReservations();
   const keys = Object.keys(reservationList[0]);
@@ -52,7 +53,7 @@ export const getReservation = async (req, res) => {
 export const addReservation = async (req, res) => {
   console.log(req.body)
   try {
-    const { id_dep, total, fecha, rut, cant_personas, dias, id_user } =
+    const { id_dep, total, fecha, cant_personas, dias, id_user } =
       req.body.reservation.reservation;
     let [newfecha] = fecha.split("T");
     newfecha = newfecha.split("-");
@@ -70,6 +71,7 @@ export const addReservation = async (req, res) => {
     );
     const result = await reservationModel.addReservation();
     if (result) {
+      emailReservation(req.body.reservation)
       return res.json("reserva agregada");
     }
     return res.json("reserva no agregada");

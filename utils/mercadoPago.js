@@ -4,19 +4,18 @@ import axios from "axios";
 config();
 
 export const payMercadoPago = async (req, res) => {
-  const { id, nombre, total, img, correo } = req.body;
-
+  const { idDep, nombre, total, img, correo } = req.body;
   mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,
   });
   let preference = {
     items: [
       {
-        id: id,
+        picture_url: "https://turismoreal2.s3.amazonaws.com/10_1.jpg",
+        id: idDep,
         title: nombre,
         quantity: 1,
         unit_price: total,
-        picture_url: img,
       },
     ],
     payer: { email: correo },

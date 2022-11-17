@@ -11,6 +11,9 @@ export const AWS_FILE_ROUTE = {
   T: 'tours/'
 }
 
-//? Mercago Pago
-
+//? Mercado Pago
 export const ACCESS_TOKEN = process.env.ACCESS_TOKEN
+
+//?Gmail
+export const GMAIL_USER = process.env.GMAIL_USER
+export const GMAIL_PASS = process.env.GMAIL_PASS
