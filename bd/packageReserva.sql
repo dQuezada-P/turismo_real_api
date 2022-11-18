@@ -73,6 +73,7 @@ AS
                 D.NOMBRE DEPARTAMENTO__NOMBRE,
                 L.NOMBRE AS DEPARTAMENTO__UBICACION,
                 D.VALOR_ARRIENDO DEPARTAMENTO__VALOR_ARRIENDO,
+                R.TOTAL_RESERVA,
                 R.FECHA_INICIO,
                 R.DIAS,
                 R.CANTIDAD_PERSONA,
