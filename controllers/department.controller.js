@@ -133,7 +133,8 @@ export const editDepartment = async (req, res) => {
 export const deleteDepartment = async (req, res) => {
   try {
     const { id } = req.params;
-    const department = await new Department().deleteDepartment(id);
+    console.log(req.params)
+    const department = await new Department({}).deleteDepartment(id);
     console.log(department);
 
     if (department == 0) res.json({ msg: "Tour no existe" });
