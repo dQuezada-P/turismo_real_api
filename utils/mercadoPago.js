@@ -5,6 +5,7 @@ config();
 
 export const payMercadoPago = async (req, res) => {
   const { idDep, nombre, total, img, correo } = req.body;
+  console.log(req.body);
   mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,
   });
@@ -23,8 +24,11 @@ export const payMercadoPago = async (req, res) => {
       success: "http://localhost:5173/notificacion",
       failure: "http://localhost:5173/notificacion",
     },
-    auto_return: "approved",
     metadata: { reservation: req.body },
+    payment_methods: {
+      installments: 6,
+    },
+    auto_return: "all",
     //     id: arriendo.id,
     //     title: arriendo.nombre,
     //     quantity parseInt(

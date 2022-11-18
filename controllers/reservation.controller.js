@@ -51,13 +51,14 @@ export const getReservation = async (req, res) => {
 };
 
 export const addReservation = async (req, res) => {
-  console.log(req.body)
   try {
-    const { id_dep, total, fecha, cant_personas, dias, id_user } =
+    const { id_dep, total, fecha, cant_personas, dias, id_user , transporte , tour } =
       req.body.reservation.reservation;
     let [newfecha] = fecha.split("T");
     newfecha = newfecha.split("-");
     newfecha = newfecha[2] + "-" + newfecha[1] + "-" + newfecha[0];
+
+    console.log(req.body)
     const reservationModel = new Reservation(
       null,
       newfecha,
@@ -67,7 +68,9 @@ export const addReservation = async (req, res) => {
       id_dep,
       null,
       null,
-      total
+      total,
+      String(transporte),
+      String(tour),
     );
     const result = await reservationModel.addReservation();
     if (result) {

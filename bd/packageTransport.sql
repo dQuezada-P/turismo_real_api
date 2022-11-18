@@ -132,7 +132,8 @@ AS
             TR.HORARIO "HORARIO",
             TR.PRECIO  "PRECIO",
             TR.ESTADO "ESTADO",
-            L.ID "ID_LOCALIDAD"
+            L.ID "ID_LOCALIDAD",
+            TR.ESTADO
         FROM TRANSPORTE TR
         JOIN CONDUCTOR C
             ON TR.ID_CONDUCTOR = C.ID

@@ -50,6 +50,8 @@ export const addReservation = async (reservation) => {
     id_cliente: reservation.cliente,
     id_departamento: reservation.departamento,
     abono : reservation.abono,
+    transporte : reservation.transporte,
+    tour : reservation.tour,
     id_reserva: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
@@ -59,8 +61,11 @@ export const addReservation = async (reservation) => {
                                             :id_cliente,
                                             :id_departamento,
                                             :abono,
+                                            :transporte,
+                                            :tour,
                                             :id_reserva,
                                             :msg) ;END;`;
+  console.log(binds)
   try {
     const { id_reserva } = await connectdb(sql, binds, { isAutoCommit: true });
     if (id_reserva) {

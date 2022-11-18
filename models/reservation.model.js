@@ -11,6 +11,8 @@ class Reservation{
     checkin,
     checkout,
     abono,
+    transporte,
+    tour,
   )
   {
     this._id = id,
@@ -21,7 +23,9 @@ class Reservation{
     this._departamento = departamento,
     this._checkin = checkin,
     this._checkout = checkout,
-    this._abono = abono
+    this._abono = abono,
+    this._transporte = transporte,
+    this._tour = tour
   }
 
 
@@ -107,6 +111,20 @@ class Reservation{
 
   set abono(newvalue) {
     this._abono = newvalue;
+  }
+  get transporte() {
+    return this._transporte;
+  }
+
+  set transporte(newvalue) {
+    this._transporte = newvalue;
+  }
+  get tour() {
+    return this._tour;
+  }
+
+  set tour(newvalue) {
+    this._tour = newvalue;
   }
 }
 

@@ -49,6 +49,22 @@ AS
             UPDATE DEPARTAMENTO
             SET ESTADO_RESERVA = 'N'
             WHERE ID = V_ID_DEPARTAMENTO;
+
+            IF V_TRANSPORTE = '0' THEN
+                    NULL;
+            ELSE
+                    UPDATE TRANSPORTE 
+                    SET ESTADO = 0
+                    WHERE ID = V_TRANSPORTE;
+            END IF;
+            
+            IF V_TOUR = '0' THEN
+                    NULL;
+            ELSE
+                UPDATE TOUR 
+                SET CUPO = CUPO - 1
+                WHERE ID = V_TOUR;
+            END IF;
             
             COMMIT;
         
