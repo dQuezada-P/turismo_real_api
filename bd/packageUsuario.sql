@@ -81,6 +81,7 @@ AS
 
             IF COUNT_ROW > 0 THEN
                 OPEN V_USER FOR SELECT 
+                                    U.ID,
                                     U.RUT,
                                     U.NOMBRE,
                                     U.APELLIDO,

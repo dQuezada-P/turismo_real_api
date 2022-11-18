@@ -24,6 +24,31 @@ export const getReservations = async (req, res) => {
   res.json(reservationList);
 };
 
+export const getUserReservations = async (req, res) => {
+  const { id_user } = req.query;
+  const reservationList = await new Reservation().getUserReservations(id_user);
+  const keys = Object.keys(reservationList[0]);
+
+  reservationList.forEach((reservation) => {
+    const departamento = {};
+    const cliente = {};
+    keys.forEach((key) => {
+      const name = key.split("__");
+      if (name[0] == "DEPARTAMENTO") {
+        departamento[name[1]] = reservation[key];
+        delete reservation[key];
+      } else if (name[0] == "CLIENTE") {
+        cliente[name[1]] = reservation[key];
+        delete reservation[key];
+      }
+    });
+    reservation.DEPARTAMENTO = departamento;
+    reservation.CLIENTE = cliente;
+  });
+  console.log(reservationList)
+  res.json(reservationList);
+};
+
 export const getReservation = async (req, res) => {
   const reservation = await new Reservation().getReservation(req.query.id);
   const keys = Object.keys(reservation);

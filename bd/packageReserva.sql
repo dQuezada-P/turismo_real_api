@@ -15,6 +15,8 @@ AS
     ------------------------------------------------------------
     PROCEDURE GET_RESERVAS2(V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
+    PROCEDURE GET_RESERVAS_BY_USER(V_USER_ID IN NUMBER, V_RESERVAS OUT SYS_REFCURSOR);
+    ------------------------------------------------------------
     PROCEDURE CHECKIN_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     ------------------------------------------------------------
     PROCEDURE CHECKOUT_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
@@ -98,7 +100,6 @@ AS
             FROM RESERVA R
             ORDER BY ID;
         END;
-
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVAS2(V_RESERVA OUT SYS_REFCURSOR)
         AS
@@ -132,7 +133,36 @@ AS
             ORDER BY ID;
         END;
     -------------------------------------------------------------------------------------------
-    
+    PROCEDURE GET_RESERVAS_BY_USER(V_USER_ID IN NUMBER, V_RESERVAS OUT SYS_REFCURSOR)
+        AS
+        BEGIN
+            OPEN V_RESERVAS FOR 
+            SELECT 
+                R.ID,
+                R.ESTADO,
+                CASE R.ESTADO
+                    WHEN 0 THEN 'RESERVADO'
+                    WHEN 1 THEN 'CHECKIN'
+                    WHEN 2 THEN 'CHECKOUT S/INCIDENTES'
+                    WHEN 3 THEN 'CHECKOUT C/INCIDENTES'
+                END ESTADO_DESC,
+                D.ID DEPARTAMENTO__ID,
+                D.NOMBRE DEPARTAMENTO__NOMBRE,
+                R.FECHA_INICIO,
+                R.DIAS,
+                R.CANTIDAD_PERSONA,
+                R.TOTAL_RESERVA
+            FROM RESERVA R
+            JOIN USUARIO U
+                ON R.ID_CLIENTE = U.ID
+            JOIN DEPARTAMENTO D
+                ON R.ID_DEPARTAMENTO = D.ID
+            JOIN PAGO P
+                ON R.ID = P.ID
+            WHERE U.ID = V_USER_ID
+            ORDER BY TO_DATE(R.FECHA_INICIO, 'DD/MM/YYYY') DESC;
+        END;
+    -------------------------------------------------------------------------------------------
     PROCEDURE CHECKIN_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
         AS
         BEGIN
@@ -159,7 +189,6 @@ AS
 
         END;
     -------------------------------------------------------------------------------------------
-    
     PROCEDURE CHECKOUT_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
         AS
         BEGIN
