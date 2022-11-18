@@ -156,3 +156,22 @@ export const checkOutReservation = async (id,cancelado) => {
   }
 };
 
+export const getServicesByReservation = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_RESERVA.GET_SERVICES_BY_RESERVA(:id, :cursor);END;`;
+
+    const binds = {
+      id,
+      cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
+    };
+  
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    }
+  
+    const { cursor } = await connectdb(sql, binds, options);      
+    return await cursor.getRows();      
+} catch (error) {
+    
+}
+}

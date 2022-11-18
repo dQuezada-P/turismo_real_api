@@ -134,3 +134,9 @@ export const checkOutReservation = async (req, res) => {
 
   res.json(response);
 };
+
+export const getServicesByReservation = async (req, res) => {
+  const services = await new Reservation().getServicesByReservation(req.query.id);
+  console.log(services);
+  res.json(services);
+}

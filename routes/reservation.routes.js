@@ -5,7 +5,8 @@ import {
   getUserReservations,
   getReservation,
   checkInReservation,
-  checkOutReservation
+  checkOutReservation,
+  getServicesByReservation
 } from "../controllers/reservation.controller.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
@@ -20,6 +21,7 @@ router.post("/", verifyToken, addReservation);
 
 router.put("/checkin", checkInReservation);
 router.put("/checkout", checkOutReservation);
+router.get("/services", getServicesByReservation);
 
 
 

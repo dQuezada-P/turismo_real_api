@@ -20,6 +20,8 @@ AS
     PROCEDURE CHECKIN_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     ------------------------------------------------------------
     PROCEDURE CHECKOUT_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
+    -------------------------------------------------------------------------------------------
+    PROCEDURE GET_SERVICES_BY_RESERVA(V_RESERVA_ID IN NUMBER, V_SERVICES OUT SYS_REFCURSOR);
 END;
 /
 create or replace PACKAGE BODY ACCIONES_RESERVA
@@ -235,4 +237,33 @@ AS
                 ROLLBACK;
 
         END;
+    -------------------------------------------------------------------------------------------
+    PROCEDURE GET_SERVICES_BY_RESERVA(V_RESERVA_ID IN NUMBER, V_SERVICES OUT SYS_REFCURSOR)
+            AS
+            BEGIN
+                OPEN V_SERVICES FOR 
+                    SELECT 
+                      CASE 
+                        WHEN ID_TRANSPORTE IS NOT NULL THEN 'TRANSPORTE'
+                        ELSE 'TOUR'
+                      END AS TIPO_SERVICIO,
+                      CASE 
+                        WHEN ID_TRANSPORTE IS NOT NULL THEN TE.NOMBRE
+                        ELSE TOU.DESCRIPCION
+                      END AS NOMBRE,
+                      CASE 
+                        WHEN ID_TRANSPORTE IS NOT NULL THEN TR.PRECIO
+                        ELSE TOU.PRECIO
+                      END AS VALOR
+                    FROM SERVICIO S 
+                    LEFT JOIN TRANSPORTE TR
+                      ON S.ID_TRANSPORTE = TR.ID
+                    LEFT JOIN TERMINAL TE
+                      ON TR.ID_TERMINAL = TE.ID
+                    LEFT JOIN TOUR TOU
+                      ON S.ID_TOUR = TOU.ID
+                    WHERE ID_RESERVA = V_RESERVA_ID
+                    ORDER BY TIPO_SERVICIO ASC;
+            END;
+    
 END;
