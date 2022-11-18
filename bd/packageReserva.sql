@@ -73,6 +73,13 @@ AS
                 R.FECHA_INICIO,
                 R.DIAS,
                 R.CANTIDAD_PERSONA,
+                R.ESTADO,
+                CASE R.ESTADO
+                    WHEN 0 THEN 'RESERVADO'
+                    WHEN 1 THEN 'CHECKIN'
+                    WHEN 2 THEN 'CHECKOUT S/INCIDENTES'
+                    WHEN 3 THEN 'CHECKOUT C/INCIDENTES'
+                END ESTADO_DESC,
                 U.NOMBRE CLIENTE__NOMBRE,
                 U.APELLIDO CLIENTE__APELLIDO,
                 U.RUT CLIENTE__RUT,
