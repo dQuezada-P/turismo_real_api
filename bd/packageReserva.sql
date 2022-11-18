@@ -69,6 +69,7 @@ AS
                 R.ID,
                 D.ID DEPARTAMENTO__ID,
                 D.NOMBRE DEPARTAMENTO__NOMBRE,
+                L.NOMBRE AS DEPARTAMENTO__UBICACION,
                 D.VALOR_ARRIENDO DEPARTAMENTO__VALOR_ARRIENDO,
                 R.FECHA_INICIO,
                 R.DIAS,
@@ -95,6 +96,8 @@ AS
                 ON R.ID_DEPARTAMENTO = D.ID
             JOIN PAGO P
                 ON R.ID = P.ID
+            JOIN LOCALIDAD L
+                ON D.ID_LOCALIDAD = L.ID
             WHERE R.ID = V_ID_RESERVA
             ORDER BY ID;
         END;
