@@ -6,8 +6,13 @@ AS
                         V_CLIENTE IN VARCHAR2,
                         V_ID_DEPARTAMENTO IN NUMBER,
                         V_ABONO IN NUMBER,
+                        V_total_reserva IN NUMBER,
                         V_ID_RESERVA OUT NUMBER,
                         MSG OUT VARCHAR2);
+    -----------------------------------------------------------
+    PROCEDURE UPDATE_SERVICIOS_TRANSPORTE(V_ID_TRANSPORTE IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
+    -----------------------------------------------------------
+    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     -----------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
@@ -33,51 +38,67 @@ AS
                         V_CLIENTE IN VARCHAR2,
                         V_ID_DEPARTAMENTO IN NUMBER,
                         V_ABONO IN NUMBER,
+                        V_total_reserva IN NUMBER,
                         V_ID_RESERVA OUT NUMBER,
                         MSG OUT VARCHAR2)
         AS
         ID NUMBER;
         BEGIN
-            INSERT INTO RESERVA(ID,FECHA_INICIO,DIAS,CANTIDAD_PERSONA,ID_CLIENTE,ID_DEPARTAMENTO) VALUES(RESERVA_AUTO.nextval,TO_DATE(V_FECHA_INICIO,'DD/MM/YYYY'),V_DIAS,V_CANTIDAD_PERSONA,V_CLIENTE,V_ID_DEPARTAMENTO)
+            INSERT INTO RESERVA(ID,FECHA_INICIO,DIAS,CANTIDAD_PERSONA,ID_CLIENTE,ID_DEPARTAMENTO,total_reserva) VALUES(RESERVA_AUTO.nextval,TO_DATE(V_FECHA_INICIO,'DD/MM/YYYY'),V_DIAS,V_CANTIDAD_PERSONA,V_CLIENTE,V_ID_DEPARTAMENTO,v_total_reserva)
             RETURNING RESERVA.ID INTO ID;
             V_ID_RESERVA := ID;
             
             INSERT INTO CHECKIN(ID) VALUES(ID);
             INSERT INTO CHECKOUT(ID) VALUES(ID);
             INSERT INTO PAGO(ID) VALUES(ID);
-            
+
             UPDATE PAGO
             SET ABONO = V_ABONO
             WHERE ID = V_ID_RESERVA;
-            
+
             UPDATE DEPARTAMENTO
             SET ESTADO_RESERVA = 'N'
             WHERE ID = V_ID_DEPARTAMENTO;
 
-            IF V_TRANSPORTE = '0' THEN
-                    NULL;
-            ELSE
-                    UPDATE TRANSPORTE 
-                    SET ESTADO = 0
-                    WHERE ID = V_TRANSPORTE;
-            END IF;
-            
-            IF V_TOUR = '0' THEN
-                    NULL;
-            ELSE
-                UPDATE TOUR 
-                SET CUPO = CUPO - 1
-                WHERE ID = V_TOUR;
-            END IF;
-            
             COMMIT;
-        
+
         EXCEPTION
             WHEN OTHERS THEN
             MSG:= SQLERRM;
             ROLLBACK;
         END;
-   
+
+    -------------------------------------------------------------------------------------------
+    PROCEDURE UPDATE_SERVICIOS_TRANSPORTE(V_ID_TRANSPORTE IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
+        AS
+        BEGIN
+            UPDATE TRANSPORTE 
+            SET ESTADO = 0
+            WHERE ID = V_ID_TRANSPORTE;
+            
+            COMMIT;
+            
+            EXCEPTION
+                WHEN OTHERS THEN
+                MSG:= SQLERRM;
+                ROLLBACK;
+        END;
+    -------------------------------------------------------------------------------------------
+    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
+    AS
+        BEGIN
+            UPDATE TOUR 
+            SET CUPO = CUPO - 1
+            WHERE ID = V_ID_TOUR;
+            
+            COMMIT;
+            
+            EXCEPTION
+                WHEN OTHERS THEN
+                MSG:= SQLERRM;
+                ROLLBACK;
+        END;
+    
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR )
         AS
@@ -282,5 +303,5 @@ AS
                     WHERE ID_RESERVA = V_RESERVA_ID
                     ORDER BY TIPO_SERVICIO ASC;
             END;
-    
+
 END;

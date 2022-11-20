@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
 export const emailReservation = (data) => {
-  const { rut, nombre, valor, total, id_dep, correo, fecha , tour , transporte } = data.reservation;
+  const { rut, nombre, valor, total , abono, id_dep, correo, fecha , tour , transporte } = data.reservation;
   let [newfecha] = fecha.split("T");
     newfecha = newfecha.split("-");
     newfecha = newfecha[2] + "-" + newfecha[1] + "-" + newfecha[0];
@@ -22,7 +22,7 @@ export const emailReservation = (data) => {
     <p>Nombre del departamento: ${nombre}, ID departamento: ${id_dep}</p>
     <p>Fecha inicio de la reservación: ${newfecha}</p>
     <p>Valor del arriendo total: ${valor}</p>
-    <p>Abono reservación: ${total}</p>
+    <p>Abono reservación: ${abono}</p>
     `,
   };
 

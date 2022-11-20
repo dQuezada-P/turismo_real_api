@@ -4,11 +4,12 @@ import axios from "axios";
 config();
 
 export const payMercadoPago = async (req, res) => {
-  const { idDep, nombre, total, img, correo } = req.body;
-  console.log(req.body);
+  const { idDep, nombre, abono, correo } = req.body;
   mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,
   });
+
+  console.log(req.body)
   let preference = {
     items: [
       {
@@ -16,7 +17,7 @@ export const payMercadoPago = async (req, res) => {
         id: idDep,
         title: nombre,
         quantity: 1,
-        unit_price: total,
+        unit_price: abono,
       },
     ],
     payer: { email: correo },
@@ -28,7 +29,7 @@ export const payMercadoPago = async (req, res) => {
     payment_methods: {
       installments: 6,
     },
-    auto_return: "all",
+    auto_return: "approved",
     //     id: arriendo.id,
     //     title: arriendo.nombre,
     //     quantity parseInt(

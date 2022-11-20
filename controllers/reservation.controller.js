@@ -45,7 +45,7 @@ export const getUserReservations = async (req, res) => {
     reservation.DEPARTAMENTO = departamento;
     reservation.CLIENTE = cliente;
   });
-  console.log(reservationList)
+  console.log(reservationList);
   res.json(reservationList);
 };
 
@@ -77,13 +77,20 @@ export const getReservation = async (req, res) => {
 
 export const addReservation = async (req, res) => {
   try {
-    const { id_dep, total, fecha, cant_personas, dias, id_user , transporte , tour } =
-      req.body.reservation.reservation;
+    const {
+      id_dep,
+      abono,
+      total,
+      fecha,
+      cant_personas,
+      dias,
+      id_user,
+      transporte,
+      tour,
+    } = req.body.reservation.reservation;
     let [newfecha] = fecha.split("T");
     newfecha = newfecha.split("-");
     newfecha = newfecha[2] + "-" + newfecha[1] + "-" + newfecha[0];
-
-    console.log(req.body)
     const reservationModel = new Reservation(
       null,
       newfecha,
@@ -93,13 +100,26 @@ export const addReservation = async (req, res) => {
       id_dep,
       null,
       null,
-      total,
-      String(transporte),
-      String(tour),
+      abono,
+      transporte,
+      null,
+      total
     );
-    const result = await reservationModel.addReservation();
-    if (result) {
-      emailReservation(req.body.reservation)
+    const resultReserva = await reservationModel.addReservation();
+
+    await reservationModel.addReservationTransport();
+
+    if (Array.isArray(tour)) {
+      tour.forEach(async (tr) => {
+        reservationModel.tour = tr
+        await reservationModel.addReservationTour();
+      });
+    } else {
+      await reservationModel.addReservationTour();
+    }
+
+    if (resultReserva) {
+      emailReservation(req.body.reservation);
       return res.json("reserva agregada");
     }
     return res.json("reserva no agregada");
@@ -130,16 +150,21 @@ export const checkInReservation = async (req, res) => {
 };
 
 export const checkOutReservation = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { id_reserva, cancelado } = req.body;
-  
-  const response = await new Reservation().checkOutReservation(id_reserva, cancelado);
+
+  const response = await new Reservation().checkOutReservation(
+    id_reserva,
+    cancelado
+  );
 
   res.json(response);
 };
 
 export const getServicesByReservation = async (req, res) => {
-  const services = await new Reservation().getServicesByReservation(req.query.id);
+  const services = await new Reservation().getServicesByReservation(
+    req.query.id
+  );
   console.log(services);
   res.json(services);
-}
+};

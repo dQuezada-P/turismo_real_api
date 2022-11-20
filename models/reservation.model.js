@@ -13,6 +13,7 @@ class Reservation{
     abono,
     transporte,
     tour,
+    total_reserva
   )
   {
     this._id = id,
@@ -26,6 +27,7 @@ class Reservation{
     this._abono = abono,
     this._transporte = transporte,
     this._tour = tour
+    this._total_reserva = total_reserva
   }
 
 
@@ -43,6 +45,14 @@ class Reservation{
 
   async addReservation(){
     return await reservationDao.addReservation(this);
+  }
+
+  async addReservationTransport (){
+    return await reservationDao.addReservationTransports(this);
+  }
+
+  async addReservationTour (){
+    return await reservationDao.addReservationTours(this);
   }
 
   async checkInReservation(id, cancelado){
@@ -133,6 +143,14 @@ class Reservation{
 
   set tour(newvalue) {
     this._tour = newvalue;
+  }
+
+  get total_reserva() {
+    return this._total_reserva;
+  }
+
+  set total_reserva(newvalue) {
+    this._total_reserva = newvalue;
   }
 }
 
