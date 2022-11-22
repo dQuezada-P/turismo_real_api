@@ -45,7 +45,6 @@ export const getUserReservations = async (req, res) => {
     reservation.DEPARTAMENTO = departamento;
     reservation.CLIENTE = cliente;
   });
-  console.log(reservationList);
   res.json(reservationList);
 };
 
@@ -71,7 +70,6 @@ export const getReservation = async (req, res) => {
   reservation.DEPARTAMENTO = departamento;
   reservation.CLIENTE = cliente;
   reservation.PAGO = pago;
-  console.log(reservation);
   res.json(reservation);
 };
 
@@ -165,6 +163,5 @@ export const getServicesByReservation = async (req, res) => {
   const services = await new Reservation().getServicesByReservation(
     req.query.id
   );
-  console.log(services);
   res.json(services);
 };
