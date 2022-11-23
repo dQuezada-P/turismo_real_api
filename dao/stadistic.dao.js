@@ -2,26 +2,109 @@ import oracledb from "oracledb";
 import { connectdb } from "../config/config.js";
 import Estadistica from "../models/stadistic.model.js";
 
-// export const getCantDepartments = async () => {
-//     const sql = `BEGIN ESTADISTICA.CANT_DEPTOS(:cant_deptos); END;`;
-//     const binds = {      
-//       cant_deptos: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
-//     };
-//     const options = {
-//       isAutoCommit: false,
-//     };
+export const getCantDepartmentsDisp = async () => {
+    const sql = `BEGIN ESTADISTICA.CANT_DEPTOS_DISP(:cant_deptos_disp); END;`;
+    const binds = {      
+      cant_deptos_disp: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      isAutoCommit: false,
+    };
 
-//     try {
-//         const { cant_deptos } = await connectdb(sql, binds, options);
-//         return cant_deptos;
+    try {
+        const { cant_deptos_disp } = await connectdb(sql, binds, options);
+        return cant_deptos_disp;
 
-//     } 
-//     catch (error) {
-//       console.error(error);
-//       return false;
-//     }
+    } 
+    catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
-//   };
+  export const getCantDepartmentsRes = async () => {
+    const sql = `BEGIN ESTADISTICA.CANT_DEPTOS_RES(:cant_deptos_res); END;`;
+    const binds = {      
+      cant_deptos_res: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      isAutoCommit: false,
+    };
+
+    try {
+        const { cant_deptos_res } = await connectdb(sql, binds, options);
+        return cant_deptos_res;
+
+    } 
+    catch (error) {
+      console.error(error);
+      return false;
+    }
+
+  };
+
+  export const getCantTour = async () => {
+    const sql = `BEGIN ESTADISTICA.TOTAL_TOUR(:cant_tour); END;`;
+    const binds = {      
+      cant_tour: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      isAutoCommit: false,
+    };
+
+    try {
+        const { cant_tour } = await connectdb(sql, binds, options);
+        return cant_tour;
+
+    } 
+    catch (error) {
+      console.error(error);
+      return false;
+    }
+
+  };
+
+  export const getCantTransport = async () => {
+    const sql = `BEGIN ESTADISTICA.TOTAL_TRANSPORTE(:cant_transport); END;`;
+    const binds = {      
+      cant_transport: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      isAutoCommit: false,
+    };
+
+    try {
+        const { cant_transport } = await connectdb(sql, binds, options);
+        return cant_transport;
+
+    } 
+    catch (error) {
+      console.error(error);
+      return false;
+    }
+
+  };
+
+  export const getGananciaTotal = async () => {
+    const sql = `BEGIN ESTADISTICA.TOTAL_GANANCIA(:ganancia); END;`;
+    const binds = {      
+      ganancia: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+    };
+    const options = {
+      isAutoCommit: false,
+    };
+
+    try {
+        const { ganancia } = await connectdb(sql, binds, options);
+        return ganancia;
+
+    } 
+    catch (error) {
+      console.error(error);
+      return false;
+    }
+
+  };
 
 export const filtroDepartamento = async (fechas) => {
   const sql = `BEGIN ESTADISTICA.REPORTE_DEPARTAMENTO(

@@ -6,12 +6,8 @@ class Estadistica {
         this._id_localidad = id_localidad
         this._fecha1 = fecha1   
         this._fecha2 = fecha2
-    }
-    
-    // async getCantDepartments(){
-    //     return await EsDao.getCantDepartments();
-    // }
-
+    }   
+   
     async filtroDepartamento(){
         return await EsDao.filtroDepartamento(this);
     }
