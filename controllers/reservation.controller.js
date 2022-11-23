@@ -2,6 +2,12 @@ import Reservation from "../models/reservation.model.js";
 import { emailReservation } from "../utils/email.js";
 export const getReservations = async (req, res) => {
   const reservationList = await new Reservation().getReservations();
+
+  if (reservationList.length == 0) {
+    res.json(reservationList);
+    return;
+  }
+  
   const keys = Object.keys(reservationList[0]);
 
   reservationList.forEach((reservation) => {
@@ -27,6 +33,12 @@ export const getReservations = async (req, res) => {
 export const getUserReservations = async (req, res) => {
   const { id_user } = req.query;
   const reservationList = await new Reservation().getUserReservations(id_user);
+
+  if (reservationList.length == 0) {
+    res.json(reservationList);
+    return;
+  }
+  
   const keys = Object.keys(reservationList[0]);
 
   reservationList.forEach((reservation) => {

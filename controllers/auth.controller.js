@@ -24,6 +24,14 @@ export const loginHandler = async (req, res) => {
             });
             return;
         }
+
+        if (userRes.ESTADO == 0){
+            res.status(400).json({
+                auth: false,
+                message: "Usuario no ha sido verificado mediante correo electrónico."
+            });
+            return;
+        }
         const userModel = new User();
         
         const matchPassword = await userModel.comparePassword(password, userRes.PASS)

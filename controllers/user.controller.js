@@ -33,13 +33,14 @@ export const getUser = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
-  const { rut, nombre, apellido, correo, estado, direccion, telefono, password, id_rol } =
-    req.body;
-
-  const newUser = new User(rut, nombre, apellido, 'imagen', correo, 1, direccion, telefono, null, id_rol);
+  const { rut, nombre, apellido, correo, direccion, telefono, password, id_rol } = JSON.parse(req.body.content);
+  console.log(JSON.parse(req.body.content))
+  console.log(req.files)
+  const newUser = new User(rut, nombre, apellido, req.files, correo, null, direccion, telefono, null, id_rol);
   newUser.pass = await newUser.encryptPassword(password);
 
   const response = await newUser.addUser();
+
   res.json(response)
 };
 

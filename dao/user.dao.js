@@ -1,6 +1,10 @@
 import oracledb from "oracledb";
 import internal from "stream";
 import { connectdb } from "../config/config.js";
+import { UploadImagen,DeleteFile } from "../controllers/files.controller.js";
+import { AWS_FILE_ROUTE } from "../utils/credentials.js";
+
+
 
 export const getUser = async (rut, correo) => {
   try {
@@ -150,7 +154,6 @@ export const addUser = async (user) => {
       :nombre,
       :apellido,
       :correo,
-      :estado,
       :direccion,
       :telefono,
       :password,
@@ -164,7 +167,6 @@ export const addUser = async (user) => {
       nombre: user.nombre,
       apellido: user.apellido,
       correo: user.correo, 
-      estado: user.estado,     
       direccion: user.direccion,
       telefono: user.telefono,
       password: user.pass,
@@ -179,6 +181,27 @@ export const addUser = async (user) => {
     };
 
     const response = await connectdb(sql, binds, options);
+    const user_id = response.r;
+
+    if (user_id && user.imagen){
+      const image = await UploadImagen(user.imagen, user_id.toString(), AWS_FILE_ROUTE.U);
+
+      const binds = {
+        id: user_id,
+        imagen: image.toString(),
+        r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
+      };
+
+      const sql = `BEGIN ACCIONES_USUARIO.ACTUALIZAR_IMAGENES(
+        :id,
+        :imagen,
+        :r);
+        END;`;
+
+      const { r } = await connectdb(sql, binds, { isAutoCommit: true });
+      return r;
+    }
+
     console.log(response)
     return response;
   } catch (error){

@@ -5,13 +5,17 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_APELLIDO IN VARCHAR2, 
         V_CORREO IN VARCHAR2, 
-        V_ESTADO IN NUMBER,
         V_DIRECCION IN VARCHAR2,
         V_TELEFONO IN VARCHAR2,
         V_PASS IN VARCHAR2,
         V_ROL IN NUMBER,
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2);
+
+    PROCEDURE ACTUALIZAR_IMAGENES(
+        V_ID IN VARCHAR2, 
+        V_IMAGEN IN CLOB,
+        RESULTADO OUT NUMBER);
         
     PROCEDURE CREAR_CONDUCTOR(V_ID_USUARIO IN VARCHAR2,     
                         V_VEHICULO IN VARCHAR2,
@@ -137,7 +141,6 @@ AS
         V_NOMBRE IN VARCHAR2, 
         V_APELLIDO IN VARCHAR2, 
         V_CORREO IN VARCHAR2, 
-        V_ESTADO IN NUMBER,
         V_DIRECCION IN VARCHAR2,
         V_TELEFONO IN VARCHAR2,
         V_PASS IN VARCHAR2,
@@ -145,15 +148,39 @@ AS
         RESULTADO OUT NUMBER,
         MSG OUT VARCHAR2)
         AS
+            V_ID NUMBER;
         BEGIN
-            INSERT INTO USUARIO VALUES(USUARIO_AUTO.NEXTVAL,V_RUT,V_NOMBRE,V_APELLIDO,'',V_CORREO,V_ESTADO,V_DIRECCION,V_TELEFONO,V_PASS,V_ROL);  
-            RESULTADO := SQL%ROWCOUNT;
+            INSERT INTO USUARIO (ID, RUT, NOMBRE, APELLIDO, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL) VALUES(USUARIO_AUTO.NEXTVAL,V_RUT,V_NOMBRE,V_APELLIDO,V_CORREO,V_DIRECCION,V_TELEFONO,V_PASS,V_ROL)
+            RETURNING USUARIO.ID INTO V_ID;   
+            RESULTADO := V_ID;
             COMMIT;
 
             EXCEPTION
                 WHEN OTHERS THEN
                 RESULTADO:=0;
                 MSG:=SQLERRM;
+                ROLLBACK;
+        END;
+
+
+    -----------------
+    PROCEDURE ACTUALIZAR_IMAGENES(
+        V_ID IN VARCHAR2, 
+        V_IMAGEN IN CLOB,
+        RESULTADO OUT NUMBER)
+        AS
+        BEGIN
+            UPDATE USUARIO 
+            SET
+                IMAGEN = V_IMAGEN
+                WHERE ID = V_ID;
+                    
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
+
+            EXCEPTION
+                WHEN INVALID_NUMBER THEN
+                RESULTADO:=0;
                 ROLLBACK;
         END;
     -----------------

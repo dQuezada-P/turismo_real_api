@@ -8,7 +8,8 @@ export const AWS_PUBLIC_KEY = process.env.AWS_PUBLIC_KEY;
 export const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
 export const AWS_FILE_ROUTE = {
   D: 'departments/',
-  T: 'tours/'
+  T: 'tours/',
+  U: 'userProfile/'
 }
 
 //? Mercado Pago
