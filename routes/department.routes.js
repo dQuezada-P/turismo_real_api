@@ -15,4 +15,4 @@ router.get("/", getDepartment);
 router.post("/", addDepartment);
 router.put("/", editDepartment);
 router.delete("/:id", deleteDepartment);
- export default router;
+export default router;

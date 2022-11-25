@@ -179,3 +179,10 @@ export const getServicesByReservation = async (req, res) => {
   );
   res.json(services);
 };
+
+export const cancelReservation = async (req, res) => {
+  const services = await new Reservation().cancelReservation(
+    req.query.id
+  );
+  res.json(services);
+};

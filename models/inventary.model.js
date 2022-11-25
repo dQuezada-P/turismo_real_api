@@ -23,6 +23,10 @@ class Inventary {
     return await InventaryDao.checkoutInventary(this);
   }
 
+  async deleteInventaryItem(id_inventario) {
+    return await InventaryDao.deleteInventaryItem(id_inventario);
+  }
+
   get id(){
     return this._id;
   }

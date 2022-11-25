@@ -67,6 +67,10 @@ class Reservation{
     return await reservationDao.getServicesByReservation(id);
   }
 
+  async cancelReservation (id){
+    return await reservationDao.cancelReservation(id);
+  }
+
   get id() {
     return this._id;
   }

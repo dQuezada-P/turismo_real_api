@@ -16,8 +16,6 @@ AS
     -----------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
-    PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR);
-    ------------------------------------------------------------
     PROCEDURE GET_RESERVAS2(V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
     PROCEDURE GET_RESERVAS_BY_USER(V_USER_ID IN NUMBER, V_RESERVAS OUT SYS_REFCURSOR);
@@ -25,6 +23,8 @@ AS
     PROCEDURE CHECKIN_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     ------------------------------------------------------------
     PROCEDURE CHECKOUT_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
+    ------------------------------------------------------------
+    PROCEDURE CANCELAR_RESERVA(V_ID_RESERVA IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     -------------------------------------------------------------------------------------------
     PROCEDURE GET_SERVICES_BY_RESERVA(V_RESERVA_ID IN NUMBER, V_SERVICES OUT SYS_REFCURSOR);
 END;
@@ -124,6 +124,7 @@ AS
                     WHEN 1 THEN 'CHECKIN'
                     WHEN 2 THEN 'CHECKOUT S/INCIDENTES'
                     WHEN 3 THEN 'CHECKOUT C/INCIDENTES'
+                    WHEN 4 THEN 'CANCELADA'
                 END ESTADO_DESC,
                 U.NOMBRE CLIENTE__NOMBRE,
                 U.APELLIDO CLIENTE__APELLIDO,
@@ -146,15 +147,6 @@ AS
             ORDER BY ID;
         END;
     -------------------------------------------------------------------------------------------
-    PROCEDURE GET_RESERVAS(V_RESERVA OUT SYS_REFCURSOR)
-        AS
-        BEGIN
-            OPEN V_RESERVA FOR 
-            SELECT * 
-            FROM RESERVA R
-            ORDER BY ID;
-        END;
-    -------------------------------------------------------------------------------------------
     PROCEDURE GET_RESERVAS2(V_RESERVA OUT SYS_REFCURSOR)
         AS
         BEGIN
@@ -167,6 +159,7 @@ AS
                     WHEN 1 THEN 'CHECKIN'
                     WHEN 2 THEN 'CHECKOUT S/INCIDENTES'
                     WHEN 3 THEN 'CHECKOUT C/INCIDENTES'
+                    WHEN 4 THEN 'CANCELADA'
                 END ESTADO_DESC,
                 D.ID DEPARTAMENTO__ID,
                 D.NOMBRE DEPARTAMENTO__NOMBRE,
@@ -199,6 +192,7 @@ AS
                     WHEN 1 THEN 'CHECKIN'
                     WHEN 2 THEN 'CHECKOUT S/INCIDENTES'
                     WHEN 3 THEN 'CHECKOUT C/INCIDENTES'
+                    WHEN 4 THEN 'CANCELADA'
                 END ESTADO_DESC,
                 D.ID DEPARTAMENTO__ID,
                 D.NOMBRE DEPARTAMENTO__NOMBRE,
@@ -280,6 +274,26 @@ AS
 
         END;
     -------------------------------------------------------------------------------------------
+    PROCEDURE CANCELAR_RESERVA(V_ID_RESERVA IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
+        AS
+        BEGIN
+            
+            UPDATE RESERVA
+            SET ESTADO = 4 
+            WHERE ID = V_ID_RESERVA;
+
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
+
+            EXCEPTION
+                WHEN OTHERS THEN
+                RESULTADO:=0;
+                MSG:=SQLERRM;
+                ROLLBACK;
+
+        END;
+    -------------------------------------------------------------------------------------------
+
     PROCEDURE GET_SERVICES_BY_RESERVA(V_RESERVA_ID IN NUMBER, V_SERVICES OUT SYS_REFCURSOR)
             AS
             BEGIN
