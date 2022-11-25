@@ -86,7 +86,6 @@ export const getReservation = async (req, res) => {
 };
 
 export const addReservation = async (req, res) => {
-  console.log(req.body)
   try {
     const {
       id_dep,
@@ -118,16 +117,17 @@ export const addReservation = async (req, res) => {
     );
     const resultReserva = await reservationModel.addReservation();
 
-    await reservationModel.addReservationTransport();
+    console.log(resultReserva)
+    await reservationModel.addReservationTransport(resultReserva);
 
     if (Array.isArray(tour)) {
       tour.forEach(async (tr) => {
         reservationModel.tour = tr
-        await reservationModel.addReservationTour();
+        await reservationModel.addReservationTour(resultReserva);
       });
     } else {
       reservationModel.tour = tour
-      await reservationModel.addReservationTour();
+      await reservationModel.addReservationTour(resultReserva);
     }
 
     if (resultReserva) {

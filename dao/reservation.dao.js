@@ -76,7 +76,6 @@ export const addReservation = async (reservation) => {
                                             :total_reserva,
                                             :id_reserva,
                                             :msg) ;END;`;
-  console.log(binds);
   try {
     const { id_reserva } = await connectdb(sql, binds, { isAutoCommit: true });
     if (id_reserva) {
@@ -88,17 +87,19 @@ export const addReservation = async (reservation) => {
   }
 };
 
-export const addReservationTransports = async(reservation)=>{
-
+export const addReservationTransports = async(reservation,id)=>{
   let binds = {
     transporte : reservation.transporte,
+    id: id,
+    fecha: reservation.fecha_inicio,
     result: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
   let sql = `BEGIN ACCIONES_RESERVA.UPDATE_SERVICIOS_TRANSPORTE(:transporte,
+                                            :id,
+                                            :fecha,
                                             :result,
                                             :msg) ;END;`;
-  console.log(binds);
   try {
     const result = await connectdb(sql, binds, { isAutoCommit: true });
     if (result) {
@@ -111,17 +112,21 @@ export const addReservationTransports = async(reservation)=>{
 
 }
 
-export const addReservationTours = async(reservation)=>{
+export const addReservationTours = async(reservation,id)=>{
   
-
   let binds = {
     tour : reservation.tour,
     cupo : reservation.cantidad_persona + 1,
+    id: id,
+    fecha: reservation.fecha_inicio,
     result: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
+  console.log(binds)
   let sql = `BEGIN ACCIONES_RESERVA.UPDATE_SERVICIOS_TOUR(:tour,
                                             :cupo,
+                                            :id,
+                                            :fecha,
                                             :result,
                                             :msg) ;END;`;
   console.log(binds);

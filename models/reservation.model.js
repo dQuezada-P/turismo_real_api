@@ -47,12 +47,12 @@ class Reservation{
     return await reservationDao.addReservation(this);
   }
 
-  async addReservationTransport (){
-    return await reservationDao.addReservationTransports(this);
+  async addReservationTransport (id){
+    return await reservationDao.addReservationTransports(this,id);
   }
 
-  async addReservationTour (){
-    return await reservationDao.addReservationTours(this);
+  async addReservationTour (id){
+    return await reservationDao.addReservationTours(this,id);
   }
 
   async checkInReservation(id, cancelado){
