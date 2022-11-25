@@ -59,7 +59,7 @@ export const emailReservation = (data) => {
 
   const msg = {
     from: "turismoreal2022@gmail.com",
-    to: `cl.abele@duocuc.cl`,
+    to: `${correo}`,
     subject: `Reservación Departamento ${nombre}`,
     html: `<table style="height: 15px; width: 70.1894%; border-collapse: collapse; margin-left: auto; margin-right: auto;" height="142" border="2">
     <tbody>
@@ -67,7 +67,7 @@ export const emailReservation = (data) => {
     <td style="width: 100%; height: 15px;">
     <h1 style="text-align: center;"><span style="text-decoration: underline;">Felicidades!</span></h1>
     <h3><span style="text-decoration: underline;"><img src=${img} alt="" style="display: block; margin-left: auto; margin-right: auto;" width="300" height="300" /></span></h3>
-    <h2 style="text-align: center;">Datos reservacion</h2>
+    <h2 style="text-align: center;">Datos Reservación</h2>
     <table style="width: 67.5999%; border-collapse: collapse; border-style: groove; margin-left: auto; margin-right: auto;" border="2">
     <tbody>
     <tr>

@@ -12,7 +12,7 @@ AS
     -----------------------------------------------------------
     PROCEDURE UPDATE_SERVICIOS_TRANSPORTE(V_ID_TRANSPORTE IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     -----------------------------------------------------------
-    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
+    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2, V_CUPO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2);
     -----------------------------------------------------------
     PROCEDURE GET_RESERVA(V_ID_RESERVA IN NUMBER ,V_RESERVA OUT SYS_REFCURSOR);
     ------------------------------------------------------------
@@ -84,11 +84,11 @@ AS
                 ROLLBACK;
         END;
     -------------------------------------------------------------------------------------------
-    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
+    PROCEDURE UPDATE_SERVICIOS_TOUR(V_ID_TOUR IN VARCHAR2,V_CUPO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
     AS
         BEGIN
             UPDATE TOUR 
-            SET CUPO = CUPO - 1
+            SET CUPO = CUPO - V_CUPO
             WHERE ID = V_ID_TOUR;
             
             COMMIT;

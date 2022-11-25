@@ -13,7 +13,7 @@ export const payMercadoPago = async (req, res) => {
   let preference = {
     items: [
       {
-        picture_url: "https://turismoreal2.s3.amazonaws.com/10_1.jpg",
+        // picture_url: "https://turismoreal2.s3.amazonaws.com/10_1.jpg",
         id: idDep,
         title: nombre,
         quantity: 1,

@@ -86,6 +86,7 @@ export const getReservation = async (req, res) => {
 };
 
 export const addReservation = async (req, res) => {
+  console.log(req.body)
   try {
     const {
       id_dep,
@@ -125,6 +126,7 @@ export const addReservation = async (req, res) => {
         await reservationModel.addReservationTour();
       });
     } else {
+      reservationModel.tour = tour
       await reservationModel.addReservationTour();
     }
 

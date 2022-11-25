@@ -113,12 +113,15 @@ export const addReservationTransports = async(reservation)=>{
 
 export const addReservationTours = async(reservation)=>{
   
+
   let binds = {
     tour : reservation.tour,
+    cupo : reservation.cantidad_persona + 1,
     result: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
     msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
   };
   let sql = `BEGIN ACCIONES_RESERVA.UPDATE_SERVICIOS_TOUR(:tour,
+                                            :cupo,
                                             :result,
                                             :msg) ;END;`;
   console.log(binds);
