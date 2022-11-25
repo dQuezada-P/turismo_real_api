@@ -6,5 +6,5 @@ const router = Router();
 
 router.get("/", InventaryController.getInventary);
 router.put("/checkout", InventaryController.checkoutInventary);
-
+router.put("/", InventaryController.editInventary);
 export default router;
