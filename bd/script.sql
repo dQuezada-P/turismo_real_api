@@ -62,7 +62,8 @@ CREATE TABLE PRODUCTO(
     ID NUMBER NOT NULL PRIMARY KEY,
     NOMBRE VARCHAR2(60) NOT NULL,
     PRECIO NUMBER NOT NULL,
-    CANTIDAD_INICIAL NUMBER NOT NULL
+    CANTIDAD_INICIAL NUMBER,
+    IS_DEFAULT NUMBER DEFAULT 0
 );
 
 --**** TABLE ROL ****---
@@ -321,15 +322,15 @@ INSERT INTO ROL VALUES(ROL_AUTO.NEXTVAL,'Cliente');
 
 INSERT INTO ROL VALUES(ROL_AUTO.NEXTVAL,'Conductor');
 --------------------------------------------------------------------------------------
-INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Silla comedor',35000,6);
+INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Silla comedor',35000,6,1);
 
-INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Mesa comedor',500000,1);
+INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Mesa comedor',500000,1,1);
 
-INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Cama 2 Plazas',210000,1);
+INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Cama 2 Plazas',210000,1,1);
 
-INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Lampara sala de estar',25000,2);
+INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Lampara sala de estar',25000,2,1);
 
-INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Cama 1 Plaza',180000,2);
+INSERT INTO PRODUCTO VALUES(PRODUCTO_AUTO.NEXTVAL,'Cama 1 Plaza',180000,2,1);
 
 --------------------------------------------------------------------------------------
 INSERT INTO LOCALIDAD VALUES(LOCALIDAD_AUTO.NEXTVAL,'La Serena');
@@ -343,16 +344,16 @@ INSERT INTO LOCALIDAD VALUES(LOCALIDAD_AUTO.NEXTVAL,'Viña del Mar');
 --------------------------------------------------------------------------------------
 
 INSERT INTO USUARIO (ID,RUT, NOMBRE, APELLIDO, IMAGEN, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL, ESTADO) 
-VALUES(USUARIO_AUTO.NEXTVAL,'18937755-K','Claudio','Abele','https://pbs.twimg.com/profile_images/825896631132422144/XG4CZU8N_400x400.jpg','admin','TU CASA','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','1',1);
+VALUES(USUARIO_AUTO.NEXTVAL,'18937755-K','Claudio','Abele','https://img.freepik.com/foto-gratis/chico-worldface-espanol-fondo-blanco_53876-137665.jpg?w=360','admin','TU CASA','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','1',1);
 
 INSERT INTO USUARIO (ID,RUT, NOMBRE, APELLIDO, IMAGEN, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL, ESTADO)
-VALUES(USUARIO_AUTO.NEXTVAL,'20141805-4','Nicolas','Castillo','https://pbs.twimg.com/profile_images/825896631132422144/XG4CZU8N_400x400.jpg','func','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','2',1);
+VALUES(USUARIO_AUTO.NEXTVAL,'20141805-4','Nicolas','Castillo','https://img.freepik.com/foto-gratis/chico-worldface-espanol-fondo-blanco_53876-137665.jpg?w=360','func','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','2',1);
 
 INSERT INTO USUARIO (ID,RUT, NOMBRE, APELLIDO, IMAGEN, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL, ESTADO)
-VALUES(USUARIO_AUTO.NEXTVAL,'21234325-2','Diego','Pavez','https://pbs.twimg.com/profile_images/825896631132422144/XG4CZU8N_400x400.jpg','test@duocuc.cl','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','3',1);
+VALUES(USUARIO_AUTO.NEXTVAL,'21234325-2','Diego','Pavez','https://img.freepik.com/foto-gratis/chico-worldface-espanol-fondo-blanco_53876-137665.jpg?w=360','test@duocuc.cl','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','3',1);
 
 INSERT INTO USUARIO (ID,RUT, NOMBRE, APELLIDO, IMAGEN, CORREO, DIRECCION, TELEFONO, PASS, ID_ROL, ESTADO)
-VALUES(USUARIO_AUTO.NEXTVAL,'1234654-2','Conductor','Test','https://pbs.twimg.com/profile_images/825896631132422144/XG4CZU8N_400x400.jpg','conductor@turismoreal.cl','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','4',1);
+VALUES(USUARIO_AUTO.NEXTVAL,'1234654-2','Conductor','Test','https://img.freepik.com/foto-gratis/chico-worldface-espanol-fondo-blanco_53876-137665.jpg?w=360','conductor@turismoreal.cl','LA CASA DEL','9-12345678','$2b$10$1WKLtNaU8/hRbINDgMPBJuiyXp3Nhos1W/lVEl3xkJM9TL3N5aUWq','4',1);
 --------------------------------------------------------------------------------------
 INSERT INTO DEPARTAMENTO (ID,NOMBRE,NUMERO_BANNO,NUMERO_HABITACION,DIRECCION,VALOR_ARRIENDO,ID_LOCALIDAD,DESCRIPCION,ESTADO_DISPONIBLE,ESTADO_RESERVA,IMAGENES)
 VALUES(DEPARTAMENTO_AUTO.NEXTVAL,'Edificio Padre Hurtado',1,1,'AV. Vespucio 305',289990,1,'Departamento Básico','Y','Y','https://turismoreal2.s3.amazonaws.com/8_1.jpg,https://turismoreal2.s3.amazonaws.com/8_2.jpg,https://turismoreal2.s3.amazonaws.com/8_3.jpg');

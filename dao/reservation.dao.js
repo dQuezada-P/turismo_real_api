@@ -221,3 +221,27 @@ export const getServicesByReservation = async (id) => {
     return await cursor.getRows();
   } catch (error) {}
 };
+
+export const cancelReservation = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_RESERVA.CANCELAR_RESERVA(
+      :id,
+      :r,
+      :msg
+    );END;`;
+
+    const binds = {
+      id,
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT }
+    };
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    };
+
+    return await connectdb(sql, binds, options);
+  } catch (error) {
+
+  }
+};

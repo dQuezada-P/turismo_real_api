@@ -30,26 +30,26 @@ export const emailReservation = (data) => {
     Object.entries(transports).length === 0
       ? ""
       : `<h3>Transporte:</h3>
-  <ul>
-  <li>
-  <h3><em>C&oacute;digo: <strong>${transports.id}</strong><br /></em></h3>
-  </li>
-  <li>
-  <h3><em>Fecha: ${transports.fecha}<br /></em></h3>
-  </li>
-  <li>
-  <h3><em>Horario: ${transports.horario}<br /></em></h3>
-  </li>
-  <li>
-  <h3><em>Valor: ${Intl.NumberFormat("es-CL", {
-    currency: "CLP",
-    style: "currency",
-  }).format(transports.precio)}<br /></em></h3>
-  </li>
-  <li>
-  <h3><em>Terminal: ${transports.terminal}<br /></em></h3>
-  </li>
-  </ul>`;
+      <ul>
+      <li>
+      <h3><em>C&oacute;digo: <strong>${transports.id}</strong><br /></em></h3>
+      </li>
+      <li>
+      <h3><em>Fecha: ${transports.fecha}<br /></em></h3>
+      </li>
+      <li>
+      <h3><em>Horario: ${transports.horario}<br /></em></h3>
+      </li>
+      <li>
+      <h3><em>Valor: ${Intl.NumberFormat("es-CL", {
+        currency: "CLP",
+        style: "currency",
+      }).format(transports.precio)}<br /></em></h3>
+      </li>
+      <li>
+      <h3><em>Terminal: ${transports.terminal}<br /></em></h3>
+      </li>
+      </ul>`;
 
   const length = tours.length >= 1 ? true : false;
 

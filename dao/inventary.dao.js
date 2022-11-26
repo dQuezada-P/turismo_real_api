@@ -84,4 +84,28 @@ export const checkoutInventary = async (inventary) => {
     console.log(error);
   }
   
-};
+}
+
+export const deleteInventaryItem = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_INVENTARIO.ELIMINAR_INVENTARIO(:id,:resultado); END;`;
+    
+    const binds = {
+      id: id,
+      resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },             
+    };    
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    return await connectdb(sql, binds, options);    
+    
+    
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+

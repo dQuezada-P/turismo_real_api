@@ -4,7 +4,12 @@ import { connectdb } from "../config/config.js";
 import { UploadImagen,DeleteFile } from "../controllers/files.controller.js";
 import { AWS_FILE_ROUTE } from "../utils/credentials.js";
 
-
+const ORACLE_ERRORS = {
+  cons_duplicated: {
+    code: 'ORA-00001',
+    msg: 'El correo o rut ya se encuentra registrado con otra cuenta'
+  }
+}
 
 export const getUser = async (rut, correo) => {
   try {
@@ -182,8 +187,18 @@ export const addUser = async (user) => {
 
     const response = await connectdb(sql, binds, options);
     const user_id = response.r;
+    const msg = response.msg;
+    if (user_id == 0) {
+      console.log(response)
 
-    if (user_id && user.imagen){
+      if (msg.includes(ORACLE_ERRORS.cons_duplicated.code)) {
+        response.msg = ORACLE_ERRORS.cons_duplicated.msg;
+      }
+
+      return response;
+    }
+
+    if (user.imagen){
       const image = await UploadImagen(user.imagen, user_id.toString(), AWS_FILE_ROUTE.U);
 
       const binds = {
@@ -198,12 +213,13 @@ export const addUser = async (user) => {
         :r);
         END;`;
 
-      const { r } = await connectdb(sql, binds, { isAutoCommit: true });
-      return r;
+      return {
+        r: await connectdb(sql, binds, { isAutoCommit: true }),
+        msg: null
+      }
     }
 
-    console.log(response)
-    return response;
+    
   } catch (error){
     console.log(error);
     return error;

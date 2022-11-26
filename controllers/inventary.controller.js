@@ -46,3 +46,19 @@ export const checkoutInventary = async (req, res) =>{
   const response = await newInventary.checkoutInventary();
   res.json(response);
 }
+
+export const deleteInventary = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.params)
+    const response = await new Inventary({}).deleteInventaryItem(id);
+
+    if (response == 0) {
+      res.json({ msg: "Item no existe" });
+      return;
+    }
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+  }
+}

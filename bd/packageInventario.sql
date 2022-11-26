@@ -1,14 +1,12 @@
 create or replace PACKAGE ACCIONES_INVENTARIO
 AS   
-    -- PROCEDURE CREAR_INVENTARIO(
-    --     V_ID IN NUMBER,
-    --     V_NOMBRE IN VARCHAR2, 
-    --     V_CANTIDAD IN NUMBER, 
-    --     V_ESTADO IN CHAR, 
-    --     V_DESCRIPCION IN VARCHAR2, 
-    --     V_ID_PRODUCTO IN NUMBER,
-    --     V_ID_DEPARTAMENTO IN VARCHAR2,
-    --     RESULTADO OUT NUMBER);
+    PROCEDURE CREAR_INVENTARIO(
+        V_ID_DEPARTAMENTO IN NUMBER,
+        V_CANTIDAD IN NUMBER,   
+        V_NOMBRE IN VARCHAR2,
+        V_PRECIO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2,   
+        RESULTADO OUT NUMBER);
 
     PROCEDURE MODIFICAR_INVENTARIO(
         V_ID IN NUMBER,
@@ -18,7 +16,7 @@ AS
         V_COSTO_REPARACION IN NUMBER,
         RESULTADO OUT NUMBER);
 
-    -- PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER);
+    PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER);
 
     PROCEDURE GET_INVENTARIO(V_ID_DEPARTAMENTO IN NUMBER, V_INVENTARIOS OUT SYS_REFCURSOR);
     
@@ -33,43 +31,52 @@ END;
 ---------------------------------------------------------------
 create or replace PACKAGE BODY ACCIONES_INVENTARIO
 AS
-    -- PROCEDURE CREAR_INVENTARIO(
-    --     V_ID IN NUMBER,
-    --     V_NOMBRE IN VARCHAR2, 
-    --     V_CANTIDAD IN NUMBER, 
-    --     V_ESTADO IN CHAR, 
-    --     V_DESCRIPCION IN VARCHAR2, 
-    --     V_ID_PRODUCTO IN NUMBER,
-    --     V_ID_DEPARTAMENTO IN VARCHAR2,
-    --     RESULTADO OUT NUMBER)
-    --     AS
-    --     BEGIN
-    --         INSERT INTO INVENTARIO VALUES(V_ID,V_NOMBRE,V_CANTIDAD,V_ESTADO,V_DESCRIPCION,V_ID_PRODUCTO,V_ID_DEPARTAMENTO);
-    --         RESULTADO := SQL%ROWCOUNT;
-    --         COMMIT;
+    PROCEDURE CREAR_INVENTARIO(
+        V_ID_DEPARTAMENTO IN NUMBER,
+        V_CANTIDAD IN NUMBER,   
+        V_NOMBRE IN VARCHAR2,
+        V_PRECIO IN NUMBER, 
+        V_DESCRIPCION IN VARCHAR2,   
+        RESULTADO OUT NUMBER)
+        AS
+            V_ID_PRODUCTO NUMBER;
+        BEGIN
+            INSERT INTO PRODUCTO (ID, NOMBRE, PRECIO) VALUES(
+                PRODUCTO_AUTO.NEXTVAL, 
+                V_NOMBRE, 
+                V_PRECIO
+                ) RETURNING PRODUCTO.ID INTO V_ID_PRODUCTO;
 
-    --         EXCEPTION
-    --             WHEN OTHERS THEN
-    --                 RESULTADO:=0;
-    --                 ROLLBACK;
-    --     END;
+            INSERT INTO INVENTARIO (ID, ID_DEPARTAMENTO, ID_PRODUCTO, CANTIDAD) VALUES(
+                INVENTARIO_AUTO.NEXTVAL,
+                V_ID_DEPARTAMENTO,
+                V_ID_PRODUCTO,
+                V_CANTIDAD);
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
+
+            EXCEPTION
+                WHEN OTHERS THEN
+                    RESULTADO:=0;
+                    ROLLBACK;
+        END;
 
     
 
-    -- PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER)
-        -- AS
-        -- BEGIN
-        --     DELETE FROM INVENTARIO
-        --     WHERE ID = V_ID;
-        --     RESULTADO := SQL%ROWCOUNT;
-        --     COMMIT;
+    PROCEDURE ELIMINAR_INVENTARIO(V_ID IN NUMBER, RESULTADO OUT NUMBER)
+        AS
+        BEGIN
+            DELETE FROM INVENTARIO
+            WHERE ID = V_ID;
+            RESULTADO := SQL%ROWCOUNT;
+            COMMIT;
 
-        --     EXCEPTION
-        --         WHEN OTHERS THEN
-        --             RESULTADO:=0;
-        --             ROLLBACK;
+            EXCEPTION
+                WHEN OTHERS THEN
+                    RESULTADO:=0;
+                    ROLLBACK;
 
-        -- END;
+        END;
 
     PROCEDURE GET_INVENTARIO(V_ID_DEPARTAMENTO IN NUMBER, V_INVENTARIOS OUT SYS_REFCURSOR)
         AS

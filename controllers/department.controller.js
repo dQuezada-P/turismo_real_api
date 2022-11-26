@@ -130,6 +130,7 @@ export const editDepartment = async (req, res) => {
   const response = await newDepartment.editDepartment();
   res.json(response);
 };
+
 export const deleteDepartment = async (req, res) => {
   try {
     const { id } = req.params;
