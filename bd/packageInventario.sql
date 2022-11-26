@@ -6,7 +6,8 @@ AS
         V_NOMBRE IN VARCHAR2,
         V_PRECIO IN NUMBER, 
         V_DESCRIPCION IN VARCHAR2,   
-        RESULTADO OUT NUMBER);
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2);
 
     PROCEDURE MODIFICAR_INVENTARIO(
         V_ID IN NUMBER,
@@ -37,7 +38,8 @@ AS
         V_NOMBRE IN VARCHAR2,
         V_PRECIO IN NUMBER, 
         V_DESCRIPCION IN VARCHAR2,   
-        RESULTADO OUT NUMBER)
+        RESULTADO OUT NUMBER,
+        MSG OUT VARCHAR2)
         AS
             V_ID_PRODUCTO NUMBER;
         BEGIN
@@ -58,6 +60,7 @@ AS
             EXCEPTION
                 WHEN OTHERS THEN
                     RESULTADO:=0;
+                    MSG:=SQLERRM;
                     ROLLBACK;
         END;
 
