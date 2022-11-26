@@ -25,6 +25,20 @@ export const getInventary = async (req, res) => {
   }
 }
 
+export const addInventary = async (req, res) => {
+  const {id_departamento, cantidad, nombre, precio, descripcion} = req.body;
+  console.log(req.body)
+  const newInventary = new Inventary(
+   { id_departamento,
+    cantidad,
+    nombre,
+    precio,
+    descripcion}
+  )
+  const resultado = await newInventary.addInventary();
+    res.json(resultado);
+};
+
 export const editInventary = async (req, res) =>{
   const {id, cantidad, estado, descripcion, costo_reparacion } = req.body;
   const newInventary = new Inventary(

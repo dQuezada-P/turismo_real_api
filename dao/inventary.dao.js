@@ -22,6 +22,41 @@ export const getInventary = async (id_departamento) => {
   }
 };
 
+export const addInventary = async (inventary) => {
+  try {
+    const sql = `BEGIN ACCIONES_INVENTARIO.CREAR_INVENTARIO(
+      :id_departamento,
+      :cantidad,
+      :nombre,
+      :precio,
+      :descripcion,
+      :resultado,
+      :msg);
+      END;`;
+    
+      const binds = {
+        id_departamento: inventary.id_departamento,
+        cantidad: inventary.cantidad,
+        nombre: inventary.nombre,
+        precio: inventary.precio,
+        descripcion: inventary.descripcion,        
+        resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
+        msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
+      }
+      const options = {
+        isAutoCommit: true
+      };
+
+      const {resultado, msg} = await connectdb(sql, binds, options);
+      console.log(msg)
+      return resultado
+    
+  } catch (error) {
+    console.log(error);
+  }
+  
+};
+
 export const editInventary = async (inventary) => {
   try {
     const sql = `BEGIN ACCIONES_INVENTARIO.MODIFICAR_INVENTARIO(

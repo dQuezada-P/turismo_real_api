@@ -4,15 +4,21 @@ class Inventary {
   constructor(args){
     this._id = args.id;
     this._id_departamento = args.id_departamento;
-    this._id_producto = args.id_producto;
-    this._cantidad = args.cantidad;
+    this._id_producto = args.id_producto;    
+    this._cantidad = args.cantidad;    
     this._estado = args.estado;
-    this._descripcion = args.descripcion;
+    this._descripcion = args.descripcion;    
     this._costo_reparacion = args.costo_reparacion;
+    this._nombre = args.nombre;
+    this._precio = args.precio;
   }
 
   async getInventary(id_departamento) {
     return await InventaryDao.getInventary(id_departamento);
+  }
+
+  async addInventary () {
+    return await InventaryDao.addInventary(this);
   }
 
   async editInventary() {
@@ -43,6 +49,14 @@ class Inventary {
     this._id_producto = newvalue;
   }
 
+  get nombre(){
+    return this._nombre;
+  }
+
+  set nombre(newvalue){
+    this._nombre = newvalue;
+  }
+
   get id_departamento(){
     return this._id_departamento;
   }
@@ -57,6 +71,14 @@ class Inventary {
 
   set cantidad(newvalue){
     this._cantidad = newvalue;
+  }
+
+  get precio(){
+    return this._precio;
+  }
+
+  set precio(newvalue){
+    this._precio = newvalue;
   }
 
   get estado(){
