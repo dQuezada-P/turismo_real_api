@@ -22,8 +22,8 @@ export const payMercadoPago = async (req, res) => {
     ],
     payer: { email: correo },
     back_urls: {
-      success: "http://http://52.91.212.222:3001/notificacion",
-      failure: "http://http://52.91.212.222:3001/notificacion",
+      success: "http://52.91.212.222:3001/notificacion",
+      failure: "http://52.91.212.222:3001/notificacion",
     },
     metadata: { reservation: req.body },
     payment_methods: {
