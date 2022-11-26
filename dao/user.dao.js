@@ -5,13 +5,9 @@ import { UploadImagen,DeleteFile } from "../controllers/files.controller.js";
 import { AWS_FILE_ROUTE } from "../utils/credentials.js";
 
 const ORACLE_ERRORS = {
-  cons_correo: {
-    code: 'C0016961',
-    msg: 'El correo ya se encuentra registrado con otra cuenta'
-  },
-  cons_rut: {
-    code: 'C0016960',
-    msg: 'El rut ya se encuentra registrado con otra cuenta'
+  cons_duplicated: {
+    code: 'ORA-00001',
+    msg: 'El correo o rut ya se encuentra registrado con otra cuenta'
   }
 }
 
@@ -195,10 +191,8 @@ export const addUser = async (user) => {
     if (user_id == 0) {
       console.log(response)
 
-      if (msg.includes(ORACLE_ERRORS.cons_correo.code)) {
-        response.msg = ORACLE_ERRORS.cons_correo.msg;
-      } else if (msg.includes(ORACLE_ERRORS.cons_rut.code)){
-        response.msg = ORACLE_ERRORS.cons_rut.msg;
+      if (msg.includes(ORACLE_ERRORS.cons_duplicated.code)) {
+        response.msg = ORACLE_ERRORS.cons_duplicated.msg;
       }
 
       return response;
