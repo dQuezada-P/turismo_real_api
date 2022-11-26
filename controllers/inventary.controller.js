@@ -26,16 +26,13 @@ export const getInventary = async (req, res) => {
 }
 
 export const addInventary = async (req, res) => {
-  const {id_departamento, cantidad, nombre, precio, descripcion} = req.body;
+  const {id_departamento, cantidad, nombre, precio} =  req.body;
   console.log(req.body)
-  const newInventary = new Inventary(
-   { id_departamento,
-    cantidad,
-    nombre,
-    precio,
-    descripcion}
-  )
-  const resultado = await newInventary.addInventary();
+  const inventaryModel = new Inventary(
+   { id_departamento, cantidad, nombre, precio}
+  );
+  console.log(inventaryModel)
+  const resultado = await inventaryModel.addInventary();
     res.json(resultado);
 };
 
@@ -64,9 +61,9 @@ export const checkoutInventary = async (req, res) =>{
 export const deleteInventary = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.params)
+    
     const response = await new Inventary({}).deleteInventaryItem(id);
-
+    console.log(id)
     if (response == 0) {
       res.json({ msg: "Item no existe" });
       return;

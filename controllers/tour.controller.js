@@ -68,7 +68,7 @@ export const editTour = async (req, res) => {
 export const deleteTour = async (req, res) => {
   try {
     const {id} = req.params;    
-    const tour = await new Tour({}).deleteTour(id)
+    const tour = await new Tour({}).deleteTour(id);
     console.log(tour);
     
     if (tour == 0)
