@@ -69,8 +69,10 @@ AS
                         P.ID AS ID_PRODUCTO, 
                         P.CANTIDAD_INICIAL 
                     FROM PRODUCTO P 
-                    LEFT JOIN DEPARTAMENTO D 
-                        ON D.ID IS NULL;
+                    LEFT JOIN DEPARTAMENTO D
+                        ON D.ID IS NULL
+                    WHERE P.IS_DEFAULT = 1    
+                    ;
                         
                 COMMIT;
 
