@@ -176,7 +176,7 @@ export const emailConfirmAccount = (data) => {
     to: `${correo}`,
     subject: `Confirmar Cuenta usuario ${nombre} `,
     html: `<h1 style="text-align: center;"><span style="text-decoration: underline; text-transform: capitalize;">Hola ${nombre} ${apellido} Gracias por Registrarte!</span></h1>
-    <h2 style="text-align: center;">Para confirmar t&uacute; cuenta haz click en 'Continuar'</h2>
+    <h2 style="text-align: center;">Para confirmar tu cuenta haz click en 'Confirmar Correo'</h2>
     <p style="text-align: center;"><a href='http://localhost:5173/confirmar-cuenta?token=${token}' style="font-family: Georgia; color: #ffffff; font-size: 20px; padding: 10px; text-decoration: none; -webkit-border-radius: 30px; -moz-border-radius: 30px; border-radius: 30px; -webkit-box-shadow: 0px 1px 3px #666666; -moz-box-shadow: 0px 1px 3px #666666; box-shadow: 0px 1px 3px #666666; text-shadow: 1px 1px 3px #666666; border: solid #87428e 1px; background: #87428e;">Confirmar Correo</a></p>
     <p></p>`
   }
