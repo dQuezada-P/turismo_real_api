@@ -41,4 +41,6 @@ export const authUser = async (username) => {
         return error
     }
       
-  }
+}
+
+

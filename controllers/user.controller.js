@@ -67,7 +67,7 @@ export const addUser = async (req, res) => {
   const token = jwt.sign(
     { id : response.r },
     API_SECRET_KEY,
-    {expiresIn : 3600}
+    {}
   );
 
   emailConfirmAccount({token,nombre,apellido,correo})

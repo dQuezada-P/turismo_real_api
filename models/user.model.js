@@ -20,6 +20,10 @@ class User {
         return await userDao.getUser(rut, correo)
     }
 
+    async validateUser(id){
+        return await userDao.validateUser(id);
+    }
+
     async getUserById(id) {
         return await userDao.getUserById(id)
     }

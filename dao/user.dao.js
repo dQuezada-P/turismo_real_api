@@ -211,11 +211,12 @@ export const addUser = async (user) => {
         :r);
         END;`;
       const res = await connectdb(sql, binds, { isAutoCommit: true });
-      return {
-        r: user_id,
-        msg: null,
-      };
     }
+    
+    return {
+      r: user_id,
+      msg: null,
+    };
   } catch (error) {
     console.log(error);
     return error;
@@ -281,4 +282,29 @@ export const deleteUser = async (rut) => {
   } catch (error) {
     console.error(error);
   }
-};
+}
+
+export const validateUser = async (id) => {
+  try {
+    const sql = `BEGIN ACCIONES_USUARIO.CONFIRMAR_USUARIO(:id,:r,:msg);END;`;
+
+    const binds = {
+      id,      
+      r: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT},
+      msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT},
+    };
+   
+
+    const options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      isAutoCommit: true,
+    };
+
+    const response = await connectdb(sql, binds, options);    
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+

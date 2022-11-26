@@ -71,3 +71,27 @@ export const loginHandler = async (req, res) => {
         res.json({error})
     }
 }
+
+export const confirmAccount = async (req, res) => {
+    try {
+        const { token } = req.body;
+        console.log(req.body)
+        return jwt.verify(token, API_SECRET_KEY, async (err, decoded) => { 
+            console.log(err)
+            if (err?.name == "TokenExpiredError") return res.status(403).json({ msg: "La solicitud ha expirado. ¿Deseas enviar una nueva a tu correo?" , r: 0 });
+
+            const { id } = decoded
+
+            const userModel = new User()
+            const {r,msg} = await userModel.validateUser(id);
+            console.log(r,msg)
+            if (!r) return res.status(404).json({ msg: "Usuario no encontrado" , r: 0 });
+            
+            res.json({
+                r
+            });
+        });
+    } catch (error) {
+        
+    }
+}
