@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 
 export const emailReservation = (data) => {
-  console.log(data.reservation);
   const {
     rut,
     nombre,
@@ -152,31 +151,42 @@ export const emailReservation = (data) => {
     </tr>
     </tbody>
     </table>`,
-    // html: `<br/>
-    //       <p>Gracias por tu Reservación, los datos son los siguientes: </p>
-    //         <img src=${img} width="200 height="300" alter='img'/>
-    //       <p>Rut de la persona registrada: ${rut}</p>
-    //       <p>Nombre del departamento: ${nombre}, ID departamento: ${id_dep}</p>
-    //       <p style="color:black" >Fecha inicio de la reservación: ${newfecha}</p>
-    //       <p>Días: ${dias}</p>
-    //       <p>Acompañantes: ${cant_personas}</p>
-    //       <p style="color:black" >Valor del arriendo total: ${Intl.NumberFormat("es-CL", {
-    //         currency: "CLP",
-    //         style: "currency",
-    //       }).format(valor)}</p>
-    //       <p style="color:black" >Abono reservación: ${Intl.NumberFormat("es-CL", {
-    //         currency: "CLP",
-    //         style: "currency",
-    //       }).format(abono)}</p>
-
-    // `,
   };
+  transporter.sendMail(msg, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent Reservation: ");
+    }
+  });
+};
+
+export const emailConfirmAccount = (data) => {
+  // const {} = data
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    },
+  });
+
+  const msg = {
+    from: "turismoreal2022@gmail.com",
+    to: `claudio.abele@gmail.com`,
+    subject: `#`,
+    html: `<h1 style="text-align: center;"><span style="text-decoration: underline;">Gracias por Registrarte!</span></h1>
+    <h2 style="text-align: center;">Para confirmar t&uacute; cuenta haz click en 'Continuar'</h2>
+    <p style="text-align: center;"><a href=${'#'} style="font-family: Georgia; color: #ffffff; font-size: 20px; padding: 10px; text-decoration: none; -webkit-border-radius: 30px; -moz-border-radius: 30px; border-radius: 30px; -webkit-box-shadow: 0px 1px 3px #666666; -moz-box-shadow: 0px 1px 3px #666666; box-shadow: 0px 1px 3px #666666; text-shadow: 1px 1px 3px #666666; border: solid #87428e 1px; background: #87428e;">Confirmar Correo</a></p>
+    <p></p>`
+  }
 
   transporter.sendMail(msg, function (error, info) {
     if (error) {
       console.log(error);
     } else {
-      console.log("Email sent: ");
+      console.log("Email sent Confirm: ");
     }
   });
+
 };
