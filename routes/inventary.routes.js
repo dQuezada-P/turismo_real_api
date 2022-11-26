@@ -8,6 +8,6 @@ router.get("/", InventaryController.getInventary);
 router.post("/", InventaryController.addInventary);
 router.put("/checkout", InventaryController.checkoutInventary);
 router.put("/", InventaryController.editInventary);
-router.delete("/", InventaryController.deleteInventary);
+router.delete("/:id", InventaryController.deleteInventary);
 
 export default router;

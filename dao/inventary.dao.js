@@ -29,7 +29,6 @@ export const addInventary = async (inventary) => {
       :cantidad,
       :nombre,
       :precio,
-      :descripcion,
       :resultado,
       :msg);
       END;`;
@@ -38,8 +37,7 @@ export const addInventary = async (inventary) => {
         id_departamento: inventary.id_departamento,
         cantidad: inventary.cantidad,
         nombre: inventary.nombre,
-        precio: inventary.precio,
-        descripcion: inventary.descripcion,        
+        precio: inventary.precio,      
         resultado: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT },
         msg: { type: oracledb.STRING, dir: oracledb.BIND_OUT },
       }
@@ -48,7 +46,7 @@ export const addInventary = async (inventary) => {
       };
 
       const {resultado, msg} = await connectdb(sql, binds, options);
-      console.log(msg)
+      console.log(binds)
       return resultado
     
   } catch (error) {
@@ -134,6 +132,7 @@ export const deleteInventaryItem = async (id) => {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       isAutoCommit: true,
     };
+    console.log(binds);
 
     return await connectdb(sql, binds, options);    
     

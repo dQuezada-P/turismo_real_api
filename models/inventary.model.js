@@ -18,7 +18,7 @@ class Inventary {
   }
 
   async addInventary () {
-    return await InventaryDao.addInventary(this);
+    return await InventaryDao.addInventary(this);   
   }
 
   async editInventary() {
@@ -29,8 +29,8 @@ class Inventary {
     return await InventaryDao.checkoutInventary(this);
   }
 
-  async deleteInventaryItem(id_inventario) {
-    return await InventaryDao.deleteInventaryItem(id_inventario);
+  async deleteInventaryItem(id) {
+    return await InventaryDao.deleteInventaryItem(id);
   }
 
   get id(){
