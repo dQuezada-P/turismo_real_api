@@ -2,22 +2,26 @@
 import Tour from "../models/tour.model.js";
 
 export const getTours = async (req, res) => {
-  const tourModel = new Tour({});  
-  let tourList = await tourModel.getTours();
-  tourList = tourList.map((tour) => {
-    if (tour.IMAGENES != null)
-      tour.IMAGENES = tour.IMAGENES.split(",").map((img) => {
-        const destructured = img.split("/");
-        const imgName = destructured[destructured.length - 1];
-        return {
-          name: imgName,
-          url: img,
-        };
-      });
-      else delete tour.IMAGENES;
-    return tour;
-  });  
-  res.json(tourList);
+  try {
+    const tourModel = new Tour({});  
+    let tourList = await tourModel.getTours();
+    tourList = tourList.map((tour) => {
+      if (tour.IMAGENES != null)
+        tour.IMAGENES = tour.IMAGENES.split(",").map((img) => {
+          const destructured = img.split("/");
+          const imgName = destructured[destructured.length - 1];
+          return {
+            name: imgName,
+            url: img,
+          };
+        });
+        else delete tour.IMAGENES;
+      return tour;
+    });  
+    res.json(tourList);
+  } catch (error) {
+    return error
+  }
   
 };
 

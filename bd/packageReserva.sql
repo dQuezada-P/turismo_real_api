@@ -38,13 +38,13 @@ AS
                         V_CLIENTE IN VARCHAR2,
                         V_ID_DEPARTAMENTO IN NUMBER,
                         V_ABONO IN NUMBER,
-                        V_total_reserva IN NUMBER,
+                        V_TOTAL_RESERVA IN NUMBER,
                         V_ID_RESERVA OUT NUMBER,
                         MSG OUT VARCHAR2)
         AS
         ID NUMBER;
         BEGIN
-            INSERT INTO RESERVA(ID,FECHA_INICIO,DIAS,CANTIDAD_PERSONA,ID_CLIENTE,ID_DEPARTAMENTO,total_reserva) VALUES(RESERVA_AUTO.nextval,TO_DATE(V_FECHA_INICIO,'DD/MM/YYYY'),V_DIAS,V_CANTIDAD_PERSONA,V_CLIENTE,V_ID_DEPARTAMENTO,v_total_reserva)
+            INSERT INTO RESERVA(ID,FECHA_INICIO,DIAS,CANTIDAD_PERSONA,ID_CLIENTE,ID_DEPARTAMENTO,total_reserva) VALUES(RESERVA_AUTO.nextval,V_FECHA_INICIO,V_DIAS,V_CANTIDAD_PERSONA,V_CLIENTE,V_ID_DEPARTAMENTO,V_TOTAL_RESERVA)
             RETURNING RESERVA.ID INTO ID;
             V_ID_RESERVA := ID;
             
@@ -239,14 +239,17 @@ AS
     -------------------------------------------------------------------------------------------
     PROCEDURE CHECKOUT_RESERVA(V_ID_RESERVA IN NUMBER, V_MONTO_CANCELADO IN NUMBER, RESULTADO OUT NUMBER, MSG OUT VARCHAR2)
         AS
+            V_ID_DEPARTAMENTO NUMBER;
         BEGIN
             UPDATE CHECKOUT
             SET  ESTADO = 1
             WHERE ID = V_ID_RESERVA;
 
+            SELECT ID_DEPARTAMENTO INTO V_ID_DEPARTAMENTO FROM RESERVA WHERE ID = V_ID_RESERVA;
+
             UPDATE DEPARTAMENTO
             SET ESTADO_RESERVA = 'Y'
-            WHERE ID = V_ID_RESERVA;
+            WHERE ID = V_ID_DEPARTAMENTO;
 
             IF V_MONTO_CANCELADO > 0 THEN
                 UPDATE PAGO
