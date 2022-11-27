@@ -244,6 +244,10 @@ AS
             SET  ESTADO = 1
             WHERE ID = V_ID_RESERVA;
 
+            UPDATE DEPARTAMENTO
+            SET ESTADO_RESERVA = 'Y'
+            WHERE ID = V_ID_RESERVA;
+
             IF V_MONTO_CANCELADO > 0 THEN
                 UPDATE PAGO
                 SET PAGO_INCONVENIENTE = V_MONTO_CANCELADO
