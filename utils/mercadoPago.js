@@ -22,8 +22,8 @@ export const payMercadoPago = async (req, res) => {
     ],
     payer: { email: correo },
     back_urls: {
-      success: "http://localhost:5173/notificacion",
-      failure: "http://localhost:5173/notificacion",
+      success: "http://127.0.0.1:5173/notificacion",
+      failure: "http://127.0.0.1:5173/notificacion",
     },
     metadata: { reservation: req.body },
     payment_methods: {
